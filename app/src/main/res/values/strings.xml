@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">mi_nevera_app</string>
+    <string-array name="ingredientes">
+        <item>macarrones</item>
+        <item>salsa de tomate</item>
+        <item>arroz</item>
+        <item>manzana</item>
+    </string-array>
 </resources>

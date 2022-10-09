@@ -6,21 +6,47 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
-
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="409dp"
+    <AutoCompleteTextView
+        android:id="@+id/actvEntry"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="184dp" />
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="20dp"
+        android:hint="Introduce ingredientes"
+        app:layout_constraintEnd_toStartOf="@+id/btAddIngredient"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Spinner
-        android:id="@+id/spinner2"
-        android:layout_width="409dp"
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cgIngredients"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="282dp" />
+        app:layout_constraintBottom_toTopOf="@+id/btSearch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/actvEntry"
+        app:layout_constraintTop_toBottomOf="@+id/actvEntry">
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <Button
+        android:id="@+id/btSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Buscar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/actvEntry"
+        app:layout_constraintVertical_bias="0.194" />
+
+    <Button
+        android:id="@+id/btAddIngredient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:text="Añadir"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/actvEntry" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

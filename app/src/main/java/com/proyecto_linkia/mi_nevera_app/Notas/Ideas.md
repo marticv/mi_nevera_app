@@ -1,2 +1,6 @@
-* Funcionalidades a añadir
-- Conectar Base de datos
+## Funcionalidades a añadir
+* Conectar Base de datos
+* Añadir publicidad
+* 
+
+## Ideas

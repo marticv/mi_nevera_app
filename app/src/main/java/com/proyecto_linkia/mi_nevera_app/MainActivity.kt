@@ -18,6 +18,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cgIngredients : ChipGroup
     private lateinit var btSearch : Button
 
+    var arroz:Ingrediente= Ingrediente(null,"arroz")
+    var pasta:Ingrediente= Ingrediente(null,"pasta")
+    var tomate:Ingrediente= Ingrediente(null,"tomate")
+    var manzana:Ingrediente= Ingrediente(null,"manzana")
+    var huevo:Ingrediente= Ingrediente(null,"huevo")
+
+    var ingArrozHervido: ArrayList<Ingrediente> = ArrayList<Ingrediente>()
+    var ingArrozConTomate:ArrayList<Ingrediente> = ArrayList<Ingrediente>()
+    var ingPastaConTomate: ArrayList<Ingrediente> = ArrayList<Ingrediente>()
+    var ingArrozCubana: ArrayList<Ingrediente> = ArrayList<Ingrediente>()
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

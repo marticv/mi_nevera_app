@@ -10,6 +10,7 @@
 * crear setings
 * elegir recetas veganas
 * que se abra elmulador
+* que jairo pueda ejecutar el proyecto
 
 ## Ideas
 * Diferenciar recetas originales vs creadas mediante id (A0000 nuestras B0000 propias de usuario C0000 compartidas

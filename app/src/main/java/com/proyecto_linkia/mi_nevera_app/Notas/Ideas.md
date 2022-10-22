@@ -9,7 +9,6 @@
 * añadir idiomas
 * crear setings
 * elegir recetas veganas
-* que se abra elmulador
 
 
 ## Ideas

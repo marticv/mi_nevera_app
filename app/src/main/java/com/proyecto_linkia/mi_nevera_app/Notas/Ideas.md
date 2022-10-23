@@ -8,7 +8,7 @@
 * compartir recetas
 * añadir idiomas
 * crear setings
-* elegir recetas veganas
+
 
 
 ## Ideas

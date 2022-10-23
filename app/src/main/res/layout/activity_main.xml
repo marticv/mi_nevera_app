@@ -36,8 +36,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/actvEntry"
-        app:layout_constraintVertical_bias="0.194" />
+        app:layout_constraintTop_toBottomOf="@+id/cgIngredients"
+        app:layout_constraintVertical_bias="0.305" />
 
     <Button
         android:id="@+id/btAddIngredient"
@@ -47,6 +47,15 @@
         android:text="Añadir"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/actvEntry" />
+
+    <Switch
+        android:id="@+id/sVegan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.849"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvVegan" />
 
     <TextView
         android:id="@+id/tvResultados"
@@ -59,6 +68,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btSearch"
         app:layout_constraintVertical_bias="0.177" />
+
+    <TextView
+        android:id="@+id/tvVegan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Solo recetas veganas"
+        app:layout_constraintStart_toEndOf="@+id/btSearch"
+        app:layout_constraintTop_toTopOf="@+id/btSearch" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
+import android.widget.Switch
 import android.widget.TextView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btSearch : Button
     private lateinit var listaRecetas:ArrayList<Receta>
     private lateinit var tvResultados: TextView
+    private lateinit var sVegan:Switch
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         btAddIngedient = findViewById(R.id.btAddIngredient)
         cgIngredients = findViewById(R.id.cgIngredients)
         btSearch =findViewById(R.id.btSearch)
+        sVegan=findViewById(R.id.sVegan)
         tvResultados=findViewById(R.id.tvResultados)
 
         //creamos recetas e ingredientes de prueva
@@ -55,10 +58,10 @@ class MainActivity : AppCompatActivity() {
         ingArrozCubana.add(tomate)
         ingArrozCubana.add(huevo)
 
-        var arrozHevido:Receta = Receta(null,"arroz hervido", ingArrozHervido)
-        var arrozConTomate:Receta= Receta(null,"arroz con tomate",ingArrozConTomate)
-        var macarronesConTomate:Receta = Receta(null,"macarrones con tomate", ingPastaConTomate)
-        var arrozCubana:Receta = Receta(null,"arroz a la cubana",ingArrozCubana)
+        var arrozHevido:Receta = Receta(null,"arroz hervido", ingArrozHervido,true)
+        var arrozConTomate:Receta= Receta(null,"arroz con tomate",ingArrozConTomate,true,)
+        var macarronesConTomate:Receta = Receta(null,"macarrones con tomate", ingPastaConTomate,true)
+        var arrozCubana:Receta = Receta(null,"arroz a la cubana",ingArrozCubana,false)
 
         listaRecetas = ArrayList<Receta>()
         listaRecetas.add(arrozConTomate)
@@ -80,7 +83,16 @@ class MainActivity : AppCompatActivity() {
             var selectedIngr:ArrayList<String> = obtainSelectedIngredients()
             var myRecipes = obtainRecipes()
             var resultRecipes = findSuitableRecipes(selectedIngr,myRecipes)
+
+            if(checkVegan(sVegan)){
+                for(i in 0..resultRecipes.size-1){
+                    if(resultRecipes.get(i).vegan==false){
+                        resultRecipes.remove(resultRecipes.get(i))
+                    }
+                }
+            }
             var resultString =printRecipes(resultRecipes)
+
             tvResultados.text=resultString
         }
     }
@@ -166,6 +178,9 @@ class MainActivity : AppCompatActivity() {
         var count:Int=0
         val ingredientNumber: Int =recipe.ingredientes.size
         var ingredientInRecipe:String
+        if(checkVegan(sVegan)){
+            if(!recipe.vegan)return false
+        }
         for(i in 0 until recipe.ingredientes.size){
             ingredientInRecipe= recipe.ingredientes[i].toString()
             if(selectedIngredients.contains(ingredientInRecipe))count++
@@ -185,5 +200,15 @@ class MainActivity : AppCompatActivity() {
             myList=myList+ recipes[i].toString()+" "
         }
         return myList
+    }
+
+    /**
+     * Comprobamos si el estado del switch
+     *
+     * @param sVegan
+     * @return true si esta checked
+     */
+    fun checkVegan(sVegan:Switch):Boolean{
+        return sVegan.isChecked
     }
 }

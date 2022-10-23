@@ -10,4 +10,7 @@ class Ingrediente{
         this.nombreIngrediente = nombreIngrediente
     }
 
+    override fun toString():String{
+        return nombreIngrediente
+    }
 }

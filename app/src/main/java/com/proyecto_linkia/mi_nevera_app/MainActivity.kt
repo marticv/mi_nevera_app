@@ -2,15 +2,14 @@ package com.proyecto_linkia.mi_nevera_app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
+import android.widget.TextView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.proyecto_linkia.mi_nevera_app.clases.Ingrediente
 import com.proyecto_linkia.mi_nevera_app.clases.Receta
-import kotlinx.coroutines.newFixedThreadPoolContext
 
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cgIngredients : ChipGroup
     private lateinit var btSearch : Button
     private lateinit var listaRecetas:ArrayList<Receta>
+    private lateinit var tvResultados: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,10 +30,11 @@ class MainActivity : AppCompatActivity() {
         btAddIngedient = findViewById(R.id.btAddIngredient)
         cgIngredients = findViewById(R.id.cgIngredients)
         btSearch =findViewById(R.id.btSearch)
+        tvResultados=findViewById(R.id.tvResultados)
 
         //creamos recetas e ingredientes de prueva
         var arroz:Ingrediente= Ingrediente(null,"arroz")
-        var pasta:Ingrediente= Ingrediente(null,"pasta")
+        var macarrones:Ingrediente= Ingrediente(null,"macarrones")
         var tomate:Ingrediente= Ingrediente(null,"salsa de tomate")
         var manzana:Ingrediente= Ingrediente(null,"manzana")
         var huevo:Ingrediente= Ingrediente(null,"huevo")
@@ -46,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         ingArrozConTomate.add(tomate)
 
         var ingPastaConTomate: ArrayList<Ingrediente> = ArrayList<Ingrediente>()
-        ingPastaConTomate.add(pasta)
+        ingPastaConTomate.add(macarrones)
         ingPastaConTomate.add(tomate)
 
         var ingArrozCubana: ArrayList<Ingrediente> = ArrayList<Ingrediente>()
@@ -66,10 +67,9 @@ class MainActivity : AppCompatActivity() {
         listaRecetas.add(macarronesConTomate)
 
 
-
         //hacemos que al clicar al boton añadir se cree un chip
         btAddIngedient.setOnClickListener {
-            if(!actvEntry.text.toString().isEmpty()){
+            if(actvEntry.text.toString().isNotEmpty()){
                 addChip(actvEntry.text.toString())
                 actvEntry.setText("")
             }
@@ -78,24 +78,27 @@ class MainActivity : AppCompatActivity() {
 
         btSearch.setOnClickListener {
             var selectedIngr:ArrayList<String> = obtainSelectedIngredients()
-            var myRecipies:ArrayList<Receta> = obtainRecipes()
-            findSuitableRecipes(selectedIngr,myRecipies)
+            var myRecipes = obtainRecipes()
+            var resultRecipes = findSuitableRecipes(selectedIngr,myRecipes)
+            var resultString =printRecipes(resultRecipes)
+            tvResultados.text=resultString
         }
-        
-
     }
 
     /**
-     * funcion que permite llenar el AutoCompleteTextView
+     * Funcion que rellena el AutoCompleteTextView
+     *
      */
     private fun fillActvEntry(){
-        var sistemIngredients : Array<String> = resources.getStringArray(R.array.sistemIngredients)
-        var adapter : ArrayAdapter<String> = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, sistemIngredients)
+        var systemIngredients : Array<String> = resources.getStringArray(R.array.sistemIngredients)
+        var adapter : ArrayAdapter<String> = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, systemIngredients)
         actvEntry.setAdapter(adapter)
     }
 
     /**
-     * Añade un chip al grupo con el texto introducido
+     * Funcion que añade chips al chipgroup
+     *
+     * @param text que contrendra el chip
      */
     private fun addChip(text:String){
         //creamos un chip
@@ -111,49 +114,76 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Funcion que el nombre de los ingredientes seleccionados
+     * Obtenemos la lista de ingredientes que hay en el chipgroup
+     *
+     * @return lista con el nombre de los ingredientes seleccionados
      */
-    fun obtainSelectedIngredients():ArrayList<String>{
+    private fun obtainSelectedIngredients():ArrayList<String>{
         var ingredientList : ArrayList<String> = ArrayList<String>()
         var chip : Chip
 
-        for(i in 0 .. cgIngredients.childCount-1){
+        for(i in 0 until cgIngredients.childCount){
             chip = cgIngredients.getChildAt(i) as Chip
             if(!ingredientList.contains(chip.text)){
                 ingredientList.add(chip.text.toString())
-                println(chip.text)
-                // TODO: borrar funcion de imprimir por consola al implantar busqueda
             }
         }
         return ingredientList
     }
 
     /**
-     * funcion que obtiene la lista de recetas
+     * Obtiene una lista de recetas del almacenamiento
+     *
+     * @return lista con las recetas del sistema
      */
-    fun obtainRecipes():ArrayList<Receta>{
+    private fun obtainRecipes():ArrayList<Receta>{
         return listaRecetas
     }
 
     /**
-     * funcion que busca las recetas que contienen los ingredientes seleccionados
+     * Compara la lista de recetas del sistema con la lista de ingredientes para ver cuales son las recetas adientes
+     *
+     * @param ingredients seleccionados por el usuario
+     * @param recipes del sistema
+     * @return lista con las recetas que cumplen los parametros
      */
-    fun findSuitableRecipes(ingredients:ArrayList<String>,recetas:ArrayList<Receta>):ArrayList<Receta>{
+    private fun findSuitableRecipes(ingredients:ArrayList<String>, recipes:ArrayList<Receta>):ArrayList<Receta>{
         var correctRecipes:ArrayList<Receta> = ArrayList<Receta>()
-        for(r in recetas){
-            if(checkRecipe(r,ingredients)){
-                correctRecipes.add(r)
-                println(r.toString())
-            }
+        for(i in 0 until recipes.size){
+            if(checkRecipe(recipes[i],ingredients)) correctRecipes.add(recipes[i])
         }
         return correctRecipes
     }
 
     /**
-     * funcion que comprueba si una receta necesita los ingredientes que tenemos
+     * comprueba si una receta se puede hacer con los ingredientes seleccionados
+     *
+     * @param recipe del sistema
+     * @param selectedIngredients ingredientes entrados por el usuario
+     * @return true si la receta cumple los criterios o false si no
      */
-    fun checkRecipe(recipe:Receta,selectedIngredients:ArrayList<String>):Boolean{
-// TODO: crear funcion  
-        return false
+    private fun checkRecipe(recipe:Receta,selectedIngredients:ArrayList<String>):Boolean{
+        var count:Int=0
+        val ingredientNumber: Int =recipe.ingredientes.size
+        var ingredientInRecipe:String
+        for(i in 0 until recipe.ingredientes.size){
+            ingredientInRecipe= recipe.ingredientes[i].toString()
+            if(selectedIngredients.contains(ingredientInRecipe))count++
+        }
+        return count==ingredientNumber
+    }
+
+    /**
+     * transforma el array de recetas a una String
+     *
+     * @param recipes
+     * @return String con la lista de recetas
+     */
+    private fun printRecipes(recipes:ArrayList<Receta>):String{
+        var myList:String=""
+        for(i in 0 until recipes.size){
+            myList=myList+ recipes[i].toString()+" "
+        }
+        return myList
     }
 }

@@ -8,7 +8,7 @@
 * compartir recetas
 * añadir idiomas
 * crear setings
-
+* añadir testing
 
 
 ## Ideas

@@ -9,6 +9,7 @@ import android.widget.Switch
 import android.widget.TextView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.proyecto_linkia.mi_nevera_app.clases.DbNevera
 import com.proyecto_linkia.mi_nevera_app.clases.Ingrediente
 import com.proyecto_linkia.mi_nevera_app.clases.Receta
 
@@ -21,10 +22,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var listaRecetas:ArrayList<Receta>
     private lateinit var tvResultados: TextView
     private lateinit var sVegan:Switch
+    private lateinit var db: DbNevera
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Start DB configuration
+        db = DbNevera(this)
 
         //creamos objetos para todos los Views
         actvEntry = findViewById(R.id.actvEntry)

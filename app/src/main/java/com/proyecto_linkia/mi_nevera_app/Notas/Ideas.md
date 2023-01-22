@@ -9,6 +9,7 @@
 * añadir idiomas
 * crear setings
 * añadir testing
+* añadir splash art al principio
 
 
 ## Ideas

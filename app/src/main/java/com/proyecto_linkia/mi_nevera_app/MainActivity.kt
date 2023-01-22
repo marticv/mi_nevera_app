@@ -1,5 +1,6 @@
 package com.proyecto_linkia.mi_nevera_app
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -9,16 +10,18 @@ import android.widget.Switch
 import android.widget.TextView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.proyecto_linkia.mi_nevera_app.clases.Ingrediente
-import com.proyecto_linkia.mi_nevera_app.clases.Receta
+import com.proyecto_linkia.mi_nevera_app.clases.Ingredient
+import com.proyecto_linkia.mi_nevera_app.clases.Recipie
+import com.proyecto_linkia.mi_nevera_app.data.IngredientProvider
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var actvEntry: AutoCompleteTextView
     private lateinit var btAddIngedient: Button
+    private lateinit var btMyIngredients: Button
     private lateinit var cgIngredients : ChipGroup
     private lateinit var btSearch : Button
-    private lateinit var listaRecetas:ArrayList<Receta>
+    private lateinit var listaRecipies:ArrayList<Recipie>
     private lateinit var tvResultados: TextView
     private lateinit var sVegan:Switch
 
@@ -30,44 +33,41 @@ class MainActivity : AppCompatActivity() {
         actvEntry = findViewById(R.id.actvEntry)
         fillActvEntry()
         btAddIngedient = findViewById(R.id.btAddIngredient)
+        btMyIngredients = findViewById(R.id.btMyIngredients)
         cgIngredients = findViewById(R.id.cgIngredients)
         btSearch =findViewById(R.id.btSearch)
         sVegan=findViewById(R.id.sVegan)
         tvResultados=findViewById(R.id.tvResultados)
 
-        //creamos recetas e ingredientes de prueva
-        var arroz:Ingrediente= Ingrediente(null,"arroz")
-        var macarrones:Ingrediente= Ingrediente(null,"macarrones")
-        var tomate:Ingrediente= Ingrediente(null,"salsa de tomate")
-        var manzana:Ingrediente= Ingrediente(null,"manzana")
-        var huevo:Ingrediente= Ingrediente(null,"huevo")
 
-        var ingArrozHervido: ArrayList<Ingrediente> = ArrayList<Ingrediente>()
-        ingArrozHervido.add(arroz)
+        val ingredients = IngredientProvider.ingredientList
 
-        var ingArrozConTomate:ArrayList<Ingrediente> = ArrayList<Ingrediente>()
-        ingArrozConTomate.add(arroz)
-        ingArrozConTomate.add(tomate)
+        var ingArrozHervido: ArrayList<Ingredient> = ArrayList<Ingredient>()
+        ingArrozHervido.add(ingredients[0])
 
-        var ingPastaConTomate: ArrayList<Ingrediente> = ArrayList<Ingrediente>()
-        ingPastaConTomate.add(macarrones)
-        ingPastaConTomate.add(tomate)
+        var ingArrozConTomate:ArrayList<Ingredient> = ArrayList<Ingredient>()
+        ingArrozConTomate.add(ingredients[0])
+        ingArrozConTomate.add(ingredients[2])
 
-        var ingArrozCubana: ArrayList<Ingrediente> = ArrayList<Ingrediente>()
-        ingArrozCubana.add(arroz)
-        ingArrozCubana.add(tomate)
-        ingArrozCubana.add(huevo)
+        var ingPastaConTomate: ArrayList<Ingredient> = ArrayList<Ingredient>()
+        ingPastaConTomate.add(ingredients[1])
+        ingPastaConTomate.add(ingredients[2])
 
-        var arrozHevido:Receta = Receta(null,"arroz hervido", ingArrozHervido,true)
-        var arrozConTomate:Receta= Receta(null,"arroz con tomate",ingArrozConTomate,true,)
-        var macarronesConTomate:Receta = Receta(null,"macarrones con tomate", ingPastaConTomate,true)
-        var arrozCubana:Receta = Receta(null,"arroz a la cubana",ingArrozCubana,false)
+        var ingArrozCubana: ArrayList<Ingredient> = ArrayList<Ingredient>()
+        ingArrozCubana.add(ingredients[0])
+        ingArrozCubana.add(ingredients[2])
+        ingArrozCubana.add(ingredients[4])
 
-        listaRecetas = ArrayList<Receta>()
-        listaRecetas.add(arrozConTomate)
-        listaRecetas.add(arrozCubana)
-        listaRecetas.add(arrozHevido)
-        listaRecetas.add(macarronesConTomate)
+        var arrozHevido:Recipie = Recipie(null,"arroz hervido", ingArrozHervido,true)
+        var arrozConTomate:Recipie= Recipie(null,"arroz con tomate",ingArrozConTomate,true,)
+        var macarronesConTomate:Recipie = Recipie(null,"macarrones con tomate", ingPastaConTomate,true)
+        var arrozCubana:Recipie = Recipie(null,"arroz a la cubana",ingArrozCubana,false)
+
+        listaRecipies = ArrayList<Recipie>()
+        listaRecipies.add(arrozConTomate)
+        listaRecipies.add(arrozCubana)
+        listaRecipies.add(arrozHevido)
+        listaRecipies.add(macarronesConTomate)
 
 
         //hacemos que al clicar al boton añadir se cree un chip
@@ -76,6 +76,10 @@ class MainActivity : AppCompatActivity() {
                 addChip(actvEntry.text.toString())
                 actvEntry.setText("")
             }
+        }
+
+        btMyIngredients.setOnClickListener {
+            startActivity(Intent(this,MyIngredients::class.java))
         }
 
 
@@ -148,8 +152,8 @@ class MainActivity : AppCompatActivity() {
      *
      * @return lista con las recetas del sistema
      */
-    private fun obtainRecipes():ArrayList<Receta>{
-        return listaRecetas
+    private fun obtainRecipes():ArrayList<Recipie>{
+        return listaRecipies
     }
 
     /**
@@ -159,8 +163,8 @@ class MainActivity : AppCompatActivity() {
      * @param recipes del sistema
      * @return lista con las recetas que cumplen los parametros
      */
-    private fun findSuitableRecipes(ingredients:ArrayList<String>, recipes:ArrayList<Receta>):ArrayList<Receta>{
-        var correctRecipes:ArrayList<Receta> = ArrayList<Receta>()
+    private fun findSuitableRecipes(ingredients:ArrayList<String>, recipes:ArrayList<Recipie>):ArrayList<Recipie>{
+        var correctRecipes:ArrayList<Recipie> = ArrayList<Recipie>()
         for(i in 0 until recipes.size){
             if(checkRecipe(recipes[i],ingredients)) correctRecipes.add(recipes[i])
         }
@@ -174,15 +178,15 @@ class MainActivity : AppCompatActivity() {
      * @param selectedIngredients ingredientes entrados por el usuario
      * @return true si la receta cumple los criterios o false si no
      */
-    private fun checkRecipe(recipe:Receta,selectedIngredients:ArrayList<String>):Boolean{
+    private fun checkRecipe(recipe:Recipie, selectedIngredients:ArrayList<String>):Boolean{
         var count:Int=0
-        val ingredientNumber: Int =recipe.ingredientes.size
+        val ingredientNumber: Int =recipe.ingredients.size
         var ingredientInRecipe:String
         if(checkVegan(sVegan)){
             if(!recipe.vegan)return false
         }
-        for(i in 0 until recipe.ingredientes.size){
-            ingredientInRecipe= recipe.ingredientes[i].toString()
+        for(i in 0 until recipe.ingredients.size){
+            ingredientInRecipe= recipe.ingredients[i].toString()
             if(selectedIngredients.contains(ingredientInRecipe))count++
         }
         return count==ingredientNumber
@@ -194,7 +198,7 @@ class MainActivity : AppCompatActivity() {
      * @param recipes
      * @return String con la lista de recetas
      */
-    private fun printRecipes(recipes:ArrayList<Receta>):String{
+    private fun printRecipes(recipes:ArrayList<Recipie>):String{
         var myList:String=""
         for(i in 0 until recipes.size){
             myList=myList+ recipes[i].toString()+" "

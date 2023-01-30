@@ -8,6 +8,9 @@ class MyIngredients : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_ingredients)
 
-        //pendiente conectar
+    //pendiente binding
+
+    //pendiente conectar
+
     }
 }

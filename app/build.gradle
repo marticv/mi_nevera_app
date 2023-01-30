@@ -30,6 +30,11 @@ android {
         jvmTarget = '1.8'
     }
     namespace 'com.proyecto_linkia.mi_nevera_app'
+
+    //activamos buildbinding
+    buildFeatures{
+        viewBinding = true
+    }
 }
 
 dependencies {

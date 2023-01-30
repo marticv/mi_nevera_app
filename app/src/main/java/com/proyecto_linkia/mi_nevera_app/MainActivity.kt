@@ -83,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+
         btSearch.setOnClickListener {
             var selectedIngr:ArrayList<String> = obtainSelectedIngredients()
             var myRecipes = obtainRecipes()

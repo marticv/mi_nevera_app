@@ -9,7 +9,13 @@ class IngredientViewHolder(view: View) :RecyclerView.ViewHolder(view){
 
     private val binding= ItemIngredientBinding.bind(view)
 
-    fun render(ingredientModel:Ingredient){
+    fun render(
+        ingredientModel: Ingredient,
+        onClickListener: (Ingredient) -> Unit,
+        onClickDeleted: (Int) -> Unit
+    ){
         binding.tvIngredientName.text=ingredientModel.ingredientName
+
+        itemView.setOnClickListener { onClickDeleted(adapterPosition)}
     }
 }

@@ -14,6 +14,7 @@ class MyIngredients : AppCompatActivity() {
     private lateinit var binding: ActivityMyIngredientsBinding
     private var ingredientsMutableList:MutableList<Ingredient> = IngredientProvider.ingredientList.toMutableList()
     private lateinit var adapter: IngredientAdapter
+    private val glManager =GridLayoutManager(this,2)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,21 +22,26 @@ class MyIngredients : AppCompatActivity() {
         setContentView(binding.root)
 
         initRecycleView()
+
+        binding.btAddMyIngredient.setOnClickListener { addIngredient() }
+    }
+
+    private fun addIngredient() {
+        val name:String = binding.actvEntry.text.toString()
+        val ingredient:Ingredient= Ingredient(null,name)
+        ingredientsMutableList.add(0,ingredient)
+        adapter.notifyItemInserted(0)
+        glManager.scrollToPosition(0)
     }
 
     private fun initRecycleView(){
         val recyclerView=binding.rvIngredients
         adapter = IngredientAdapter(ingredientList = ingredientsMutableList,
-        onClickListener = {ingredient ->
-            onItemSelected(ingredient)
-        },
-        onClickDeleted = {position->onDeletedItem(position)})
-        recyclerView.layoutManager = GridLayoutManager(this,2)
+        onClickListener = {position ->
+            onDeletedItem(position)
+        })
+        recyclerView.layoutManager = glManager
         recyclerView.adapter = adapter
-    }
-
-    private fun onItemSelected(ingredient: Ingredient){
-        Toast.makeText( this,ingredient.ingredientName, Toast.LENGTH_SHORT).show()
     }
 
     private fun onDeletedItem(position:Int){

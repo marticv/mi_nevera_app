@@ -7,8 +7,7 @@ import com.proyecto_linkia.mi_nevera_app.R
 import com.proyecto_linkia.mi_nevera_app.clases.Ingredient
 
 class IngredientAdapter(private val ingredientList:List<Ingredient>,
-                        private val onClickListener:(Ingredient)->Unit,
-                        private val onClickDeleted:(Int)-> Unit)
+                        private val onClickListener:(Int)->Unit)
     : RecyclerView.Adapter<IngredientViewHolder>(){
 
     //al crear cada celda se usara el layout item_ingredient
@@ -20,7 +19,7 @@ class IngredientAdapter(private val ingredientList:List<Ingredient>,
     //a cada item de la lista le creamos un viewHolder
     override fun onBindViewHolder(holder: IngredientViewHolder, position: Int) {
         val item = ingredientList[position]
-        holder.render(item,onClickListener,onClickDeleted)
+        holder.render(item,onClickListener)
     }
 
     //obtenemos el numero de items en la lista

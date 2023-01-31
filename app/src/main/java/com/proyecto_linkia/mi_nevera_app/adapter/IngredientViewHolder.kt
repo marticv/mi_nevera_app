@@ -11,11 +11,10 @@ class IngredientViewHolder(view: View) :RecyclerView.ViewHolder(view){
 
     fun render(
         ingredientModel: Ingredient,
-        onClickListener: (Ingredient) -> Unit,
-        onClickDeleted: (Int) -> Unit
+        onClickListener: (Int) -> Unit
     ){
         binding.tvIngredientName.text=ingredientModel.ingredientName
 
-        itemView.setOnClickListener { onClickDeleted(adapterPosition)}
+        itemView.setOnClickListener { onClickListener(adapterPosition)}
     }
 }

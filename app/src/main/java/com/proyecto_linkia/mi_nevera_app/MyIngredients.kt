@@ -30,7 +30,7 @@ class MyIngredients : AppCompatActivity() {
 
     private fun addIngredient() {
         val name:String = binding.actvEntry.text.toString()
-        val ingredient:MyIngredient= MyIngredient(name)
+        val ingredient= MyIngredient(name)
         ingredientsMutableList.add(0,ingredient)
         adapter.notifyItemInserted(0)
         glManager.scrollToPosition(0)
@@ -51,9 +51,9 @@ class MyIngredients : AppCompatActivity() {
     private fun onDeletedItem(position:Int){
         val myIngredient = ingredientsMutableList[position]
         CoroutineScope(Dispatchers.IO).launch {
-            var db = DataBaseBuilder.getInstance(this@MyIngredients)
-            var dao =db.getMyIngredientDao()
-            dao.deleteMyIngredient(ingredientsMutableList[position])
+            val db = DataBaseBuilder.getInstance(this@MyIngredients)
+            val dao =db.getMyIngredientDao()
+            dao.deleteMyIngredient(myIngredient)
         }
         ingredientsMutableList.removeAt(position)
         adapter.notifyItemRemoved(position)
@@ -62,13 +62,14 @@ class MyIngredients : AppCompatActivity() {
     private fun getData(){
 
         CoroutineScope(Dispatchers.IO).launch {
-            var db = DataBaseBuilder.getInstance(this@MyIngredients)
-            var dao=db.getMyIngredientDao()
+            val db = DataBaseBuilder.getInstance(this@MyIngredients)
+            val dao=db.getMyIngredientDao()
             val myIngredientsList=dao.getAllMyIngredients()
             val list=myIngredientsList.toMutableList()
             for(item in list){
                 ingredientsMutableList.add(item)
             }
+
             adapter.notifyDataSetChanged()
         }
     }

@@ -4,8 +4,13 @@ import android.app.Application
 import androidx.room.Room
 
 class MyIngredientsApp:Application() {
-    val room = Room.databaseBuilder(
-        this,
-        AppDB::class.java,
-        "database").build()
+    companion object{
+        lateinit var database:AppDB
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        MyIngredientsApp.database =  Room.databaseBuilder(this, AppDB::class.java, "appdb").build()
+    }
+
 }

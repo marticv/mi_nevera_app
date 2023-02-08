@@ -2,16 +2,10 @@ package com.proyecto_linkia.mi_nevera_app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
-import com.proyecto_linkia.mi_nevera_app.adapter.IngredientAdapter
-import com.proyecto_linkia.mi_nevera_app.clases.Ingredient
-import com.proyecto_linkia.mi_nevera_app.clases.toDomain
-import com.proyecto_linkia.mi_nevera_app.data.IngredientProvider
-import com.proyecto_linkia.mi_nevera_app.data.db.dao.MyIngredientDao
-import com.proyecto_linkia.mi_nevera_app.data.db.database.MyIngredientsApp
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.MyIngredientEntity
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.toEntity
+import com.proyecto_linkia.mi_nevera_app.adapter.MyIngredientAdapter
+import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
+import com.proyecto_linkia.mi_nevera_app.data.db.entities.MyIngredient
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivityMyIngredientsBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,18 +14,14 @@ import kotlinx.coroutines.launch
 class MyIngredients : AppCompatActivity() {
 
     private lateinit var binding: ActivityMyIngredientsBinding
-    private var ingredientsMutableList:MutableList<Ingredient> = IngredientProvider.ingredientList.toMutableList()
-    private lateinit var adapter: IngredientAdapter
+    private var ingredientsMutableList:MutableList<MyIngredient> = mutableListOf()
+    private lateinit var adapter: MyIngredientAdapter
     private val glManager =GridLayoutManager(this,2)
-    val app = applicationContext as MyIngredientsApp
-    var dao: MyIngredientDao = app.room.getMyIngredientDao()
-    lateinit var entityList:List<MyIngredientEntity>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMyIngredientsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         initRecycleView()
 
@@ -40,23 +30,20 @@ class MyIngredients : AppCompatActivity() {
 
     private fun addIngredient() {
         val name:String = binding.actvEntry.text.toString()
-        val ingredient:Ingredient= Ingredient(null,name)
+        val ingredient:MyIngredient= MyIngredient(name)
         ingredientsMutableList.add(0,ingredient)
         adapter.notifyItemInserted(0)
         glManager.scrollToPosition(0)
-
-        CoroutineScope(Dispatchers.IO).launch {
-            dao.insertMyIngredient(ingredient.toEntity())
-        }
     }
 
     private fun initRecycleView(){
 
         val recyclerView=binding.rvIngredients
-        adapter = IngredientAdapter(ingredientList = ingredientsMutableList,
-        onClickListener = {position ->
-            onDeletedItem(position)
-        })
+        adapter = MyIngredientAdapter(myIngredientList = ingredientsMutableList,
+            onClickListener = {position ->
+                onDeletedItem(position)
+            })
+        getData()
         recyclerView.layoutManager = glManager
         recyclerView.adapter = adapter
     }
@@ -64,10 +51,26 @@ class MyIngredients : AppCompatActivity() {
     private fun onDeletedItem(position:Int){
         val myIngredient = ingredientsMutableList[position]
         CoroutineScope(Dispatchers.IO).launch {
-            dao.deleteMyIngredient(myIngredient.toEntity())
+            var db = DataBaseBuilder.getInstance(this@MyIngredients)
+            var dao =db.getMyIngredientDao()
+            dao.deleteMyIngredient(ingredientsMutableList[position])
         }
         ingredientsMutableList.removeAt(position)
         adapter.notifyItemRemoved(position)
+    }
+
+    private fun getData(){
+
+        CoroutineScope(Dispatchers.IO).launch {
+            var db = DataBaseBuilder.getInstance(this@MyIngredients)
+            var dao=db.getMyIngredientDao()
+            val myIngredientsList=dao.getAllMyIngredients()
+            val list=myIngredientsList.toMutableList()
+            for(item in list){
+                ingredientsMutableList.add(item)
+            }
+            adapter.notifyDataSetChanged()
+        }
     }
 
     /*

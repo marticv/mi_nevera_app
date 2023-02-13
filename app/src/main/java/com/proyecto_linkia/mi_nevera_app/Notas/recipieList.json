@@ -1,0 +1,31 @@
+{
+    "recipiees":[
+        {
+            "id_recipie":1,
+            "recipieName": "Arroz Hervido",
+            "ingredients":[
+                "Arroz"
+            ],
+            "isVegan":true
+        },
+        {
+            "id_recipie":2,
+            "recipieName": "Arroz con tomate",
+            "ingredients":[
+                "Arroz",
+                "Tomate"
+            ],
+            "isVegan":true
+        },
+                {
+            "id_recipie":3,
+            "recipieName": "Arroz a la cubana",
+            "ingredients":[
+                "Arroz",
+                "Tomate",
+                "huevo"
+            ],
+            "isVegan":false
+        }
+    ]
+}

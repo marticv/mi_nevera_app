@@ -1,18 +1,30 @@
 package com.proyecto_linkia.mi_nevera_app
 
+import com.proyecto_linkia.mi_nevera_app.MyIngredients
+import com.proyecto_linkia.mi_nevera_app.R
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.view.isVisible
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.proyecto_linkia.mi_nevera_app.clases.Ingredient
 import com.proyecto_linkia.mi_nevera_app.clases.Recipie
-import com.proyecto_linkia.mi_nevera_app.data.IngredientProvider
+import com.proyecto_linkia.mi_nevera_app.data.RecipeResponse
+import com.proyecto_linkia.mi_nevera_app.databinding.ActivityMainBinding
+import com.proyecto_linkia.mi_nevera_app.internet.APIService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class MainActivity : AppCompatActivity() {
@@ -21,42 +33,47 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btMyIngredients: Button
     private lateinit var cgIngredients : ChipGroup
     private lateinit var btSearch : Button
-    private lateinit var listaRecipies:ArrayList<Recipie>
     private lateinit var tvResultados: TextView
     private lateinit var sVegan:Switch
+    private lateinit var binding:ActivityMainBinding
+    val recipeList: MutableList<Recipie> = mutableListOf()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //creamos objetos para todos los Views
-        actvEntry = findViewById(R.id.actvEntry)
+        actvEntry = binding.actvEntry
         fillActvEntry()
-        btAddIngedient = findViewById(R.id.btAddIngredient)
-        btMyIngredients = findViewById(R.id.btMyIngredients)
-        cgIngredients = findViewById(R.id.cgIngredients)
-        btSearch =findViewById(R.id.btSearch)
-        sVegan=findViewById(R.id.sVegan)
-        tvResultados=findViewById(R.id.tvResultados)
+        btAddIngedient = binding.btAddIngredient
+        btMyIngredients = binding.btMyIngredients
+        cgIngredients = binding.cgIngredients
+        btSearch =binding.btSearch
+        sVegan=binding.sVegan
+        tvResultados=binding.tvResultados
+
+        getData()
 
 
-        val ingredients = IngredientProvider.ingredientList
+        /*val ingredients = IngredientProvider.ingredientList
 
-        var ingArrozHervido: ArrayList<Ingredient> = ArrayList<Ingredient>()
-        ingArrozHervido.add(ingredients[0])
+        var ingArrozHervido: ArrayList<String> = ArrayList<String>()
+        ingArrozHervido.add("arroz")
 
-        var ingArrozConTomate:ArrayList<Ingredient> = ArrayList<Ingredient>()
-        ingArrozConTomate.add(ingredients[0])
-        ingArrozConTomate.add(ingredients[2])
+        var ingArrozConTomate:ArrayList<String> = ArrayList<String>()
+        ingArrozConTomate.add("arroz")
+        ingArrozConTomate.add("tomate")
 
-        var ingPastaConTomate: ArrayList<Ingredient> = ArrayList<Ingredient>()
-        ingPastaConTomate.add(ingredients[1])
-        ingPastaConTomate.add(ingredients[2])
+        var ingPastaConTomate: ArrayList<String> = ArrayList<String>()
+        ingPastaConTomate.add("pasta")
+        ingPastaConTomate.add("tomate")
 
-        var ingArrozCubana: ArrayList<Ingredient> = ArrayList<Ingredient>()
-        ingArrozCubana.add(ingredients[0])
-        ingArrozCubana.add(ingredients[2])
-        ingArrozCubana.add(ingredients[4])
+        var ingArrozCubana: ArrayList<String> = ArrayList<String>()
+        ingArrozCubana.add("arroz")
+        ingArrozCubana.add("tomate")
+        ingArrozCubana.add("huevo")
 
         var arrozHevido:Recipie = Recipie(null,"arroz hervido", ingArrozHervido,true)
         var arrozConTomate:Recipie= Recipie(null,"arroz con tomate",ingArrozConTomate,true,)
@@ -67,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         listaRecipies.add(arrozConTomate)
         listaRecipies.add(arrozCubana)
         listaRecipies.add(arrozHevido)
-        listaRecipies.add(macarronesConTomate)
+        listaRecipies.add(macarronesConTomate)*/
 
 
         //hacemos que al clicar al boton añadir se cree un chip
@@ -86,12 +103,12 @@ class MainActivity : AppCompatActivity() {
 
         btSearch.setOnClickListener {
             var selectedIngr:ArrayList<String> = obtainSelectedIngredients()
-            var myRecipes = obtainRecipes()
+            var myRecipes = recipeList
             var resultRecipes = findSuitableRecipes(selectedIngr,myRecipes)
 
             if(checkVegan(sVegan)){
                 for(i in 0..resultRecipes.size-1){
-                    if(resultRecipes.get(i).vegan==false){
+                    if(resultRecipes.get(i).isVegan==false){
                         resultRecipes.remove(resultRecipes.get(i))
                     }
                 }
@@ -148,14 +165,6 @@ class MainActivity : AppCompatActivity() {
         return ingredientList
     }
 
-    /**
-     * Obtiene una lista de recetas del almacenamiento
-     *
-     * @return lista con las recetas del sistema
-     */
-    private fun obtainRecipes():ArrayList<Recipie>{
-        return listaRecipies
-    }
 
     /**
      * Compara la lista de recetas del sistema con la lista de ingredientes para ver cuales son las recetas adientes
@@ -164,7 +173,7 @@ class MainActivity : AppCompatActivity() {
      * @param recipes del sistema
      * @return lista con las recetas que cumplen los parametros
      */
-    private fun findSuitableRecipes(ingredients:ArrayList<String>, recipes:ArrayList<Recipie>):ArrayList<Recipie>{
+    private fun findSuitableRecipes(ingredients:ArrayList<String>, recipes:List<Recipie>):ArrayList<Recipie>{
         var correctRecipes:ArrayList<Recipie> = ArrayList<Recipie>()
         for(i in 0 until recipes.size){
             if(checkRecipe(recipes[i],ingredients)) correctRecipes.add(recipes[i])
@@ -180,14 +189,14 @@ class MainActivity : AppCompatActivity() {
      * @return true si la receta cumple los criterios o false si no
      */
     private fun checkRecipe(recipe:Recipie, selectedIngredients:ArrayList<String>):Boolean{
-        var count:Int=0
+        var count=0
         val ingredientNumber: Int =recipe.ingredients.size
         var ingredientInRecipe:String
         if(checkVegan(sVegan)){
-            if(!recipe.vegan)return false
+            if(!recipe.isVegan)return false
         }
         for(i in 0 until recipe.ingredients.size){
-            ingredientInRecipe= recipe.ingredients[i].toString()
+            ingredientInRecipe= recipe.ingredients[i]
             if(selectedIngredients.contains(ingredientInRecipe))count++
         }
         return count==ingredientNumber
@@ -199,10 +208,10 @@ class MainActivity : AppCompatActivity() {
      * @param recipes
      * @return String con la lista de recetas
      */
-    private fun printRecipes(recipes:ArrayList<Recipie>):String{
+    private fun printRecipes(recipes:List<Recipie>):String{
         var myList:String=""
-        for(i in 0 until recipes.size){
-            myList=myList+ recipes[i].toString()+" "
+        for(element in recipes){
+            myList= "$myList\n${element.recipieName} "
         }
         return myList
     }
@@ -213,7 +222,34 @@ class MainActivity : AppCompatActivity() {
      * @param sVegan
      * @return true si esta checked
      */
-    fun checkVegan(sVegan:Switch):Boolean{
+    private fun checkVegan(sVegan:Switch):Boolean{
         return sVegan.isChecked
+    }
+
+    private fun getRetrofit():Retrofit{
+        return Retrofit.Builder().baseUrl("https://api.npoint.io/281f74aeedbb04eb4d6b/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    private fun getData(){
+        CoroutineScope(Dispatchers.IO).launch {
+            val call: Response<RecipeResponse> = getRetrofit().create(APIService::class.java).getRecipes("")
+            val result: RecipeResponse? = call.body()
+            runOnUiThread {
+                if(call.isSuccessful){
+                    val recipies: List<Recipie> = result?.recipies ?: emptyList()
+                    recipeList.clear()
+                    recipeList.addAll(recipies)
+                    tvResultados.text = printRecipes(recipeList)
+                }else{
+                    showError()
+                }
+            }
+        }
+    }
+
+    private fun showError() {
+        Toast.makeText(this, "error",Toast.LENGTH_LONG).show()
     }
 }

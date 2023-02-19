@@ -29,6 +29,10 @@ class MyIngredients : AppCompatActivity() {
         getData()
         initRecycleView()
 
+        //dejamos pasar 0.2s para notificar los cambios de la base de datos
+        Thread.sleep(200)
+        adapter.notifyDataSetChanged()
+
         binding.btAddMyIngredient.setOnClickListener { addIngredient() }
         binding.btBack.setOnClickListener { finish() }
     }

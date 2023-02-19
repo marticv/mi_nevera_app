@@ -1,18 +1,15 @@
 package com.proyecto_linkia.mi_nevera_app
 
-import com.proyecto_linkia.mi_nevera_app.MyIngredients
-import com.proyecto_linkia.mi_nevera_app.R
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.view.isVisible
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.proyecto_linkia.mi_nevera_app.clases.Recipie
@@ -25,6 +22,8 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import com.proyecto_linkia.mi_nevera_app.clases.DbNevera
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -39,10 +38,15 @@ class MainActivity : AppCompatActivity() {
     val recipeList: MutableList<Recipie> = mutableListOf()
 
 
+    private lateinit var db: DbNevera
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Start DB configuration
+        db = DbNevera(this)
 
         //creamos objetos para todos los Views
         actvEntry = binding.actvEntry
@@ -55,37 +59,6 @@ class MainActivity : AppCompatActivity() {
         tvResultados=binding.tvResultados
 
         getData()
-
-
-        /*val ingredients = IngredientProvider.ingredientList
-
-        var ingArrozHervido: ArrayList<String> = ArrayList<String>()
-        ingArrozHervido.add("arroz")
-
-        var ingArrozConTomate:ArrayList<String> = ArrayList<String>()
-        ingArrozConTomate.add("arroz")
-        ingArrozConTomate.add("tomate")
-
-        var ingPastaConTomate: ArrayList<String> = ArrayList<String>()
-        ingPastaConTomate.add("pasta")
-        ingPastaConTomate.add("tomate")
-
-        var ingArrozCubana: ArrayList<String> = ArrayList<String>()
-        ingArrozCubana.add("arroz")
-        ingArrozCubana.add("tomate")
-        ingArrozCubana.add("huevo")
-
-        var arrozHevido:Recipie = Recipie(null,"arroz hervido", ingArrozHervido,true)
-        var arrozConTomate:Recipie= Recipie(null,"arroz con tomate",ingArrozConTomate,true,)
-        var macarronesConTomate:Recipie = Recipie(null,"macarrones con tomate", ingPastaConTomate,true)
-        var arrozCubana:Recipie = Recipie(null,"arroz a la cubana",ingArrozCubana,false)
-
-        listaRecipies = ArrayList<Recipie>()
-        listaRecipies.add(arrozConTomate)
-        listaRecipies.add(arrozCubana)
-        listaRecipies.add(arrozHevido)
-        listaRecipies.add(macarronesConTomate)*/
-
 
         //hacemos que al clicar al boton añadir se cree un chip
         btAddIngedient.setOnClickListener {

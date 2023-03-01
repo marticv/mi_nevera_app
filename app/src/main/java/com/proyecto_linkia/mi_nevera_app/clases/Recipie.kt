@@ -5,4 +5,4 @@ data class Recipie(
     val recipieName: String,
     val ingredients: ArrayList<String>,
     val isVegan: Boolean
-)
+):java.io.Serializable

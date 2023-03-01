@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvResultados: TextView
     private lateinit var sVegan:Switch
     private lateinit var binding:ActivityMainBinding
-    val recipeList: MutableList<Recipie> = mutableListOf()
+    var recipeList: MutableList<Recipie> = mutableListOf()
 
 
     private lateinit var db: DbNevera
@@ -58,7 +58,9 @@ class MainActivity : AppCompatActivity() {
         sVegan=binding.sVegan
         tvResultados=binding.tvResultados
 
-        getData()
+        //getData()
+        recipeList = intent.extras?.get("data") as MutableList<Recipie>
+        //tvResultados.text = printRecipes(recipeList)
 
         //hacemos que al clicar al boton añadir se cree un chip
         btAddIngedient.setOnClickListener {
@@ -197,32 +199,5 @@ class MainActivity : AppCompatActivity() {
      */
     private fun checkVegan(sVegan:Switch):Boolean{
         return sVegan.isChecked
-    }
-
-    private fun getRetrofit():Retrofit{
-        return Retrofit.Builder().baseUrl("https://api.npoint.io/281f74aeedbb04eb4d6b/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    private fun getData(){
-        CoroutineScope(Dispatchers.IO).launch {
-            val call: Response<RecipeResponse> = getRetrofit().create(APIService::class.java).getRecipes("")
-            val result: RecipeResponse? = call.body()
-            runOnUiThread {
-                if(call.isSuccessful){
-                    val recipies: List<Recipie> = result?.recipies ?: emptyList()
-                    recipeList.clear()
-                    recipeList.addAll(recipies)
-                    tvResultados.text = printRecipes(recipeList)
-                }else{
-                    showError()
-                }
-            }
-        }
-    }
-
-    private fun showError() {
-        Toast.makeText(this, "error",Toast.LENGTH_LONG).show()
     }
 }

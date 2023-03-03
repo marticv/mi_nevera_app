@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class IngredientEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id_ingredient")
-    val id_ingredient: Int,
+    val id_ingredient: Int?,
     @ColumnInfo(name = "ingredientName")
     val ingredientName: String
 )

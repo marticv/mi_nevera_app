@@ -9,8 +9,8 @@ interface IngredientDao {
     suspend fun getAllMyIngredients():List<IngredientEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertEmptyRecipe(ingredientEntity: IngredientEntity)
+    suspend fun insertIngredient(ingredientEntity: IngredientEntity)
 
     @Delete
-    suspend fun deleteEmptyRecipe(ingredientEntity: IngredientEntity)
+    suspend fun deleteIngredient(ingredientEntity: IngredientEntity)
 }

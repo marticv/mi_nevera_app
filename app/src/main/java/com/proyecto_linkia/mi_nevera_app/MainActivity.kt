@@ -2,28 +2,20 @@ package com.proyecto_linkia.mi_nevera_app
 
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.Button
-import android.widget.Switch
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.proyecto_linkia.mi_nevera_app.clases.Recipie
-import com.proyecto_linkia.mi_nevera_app.data.RecipeResponse
+import com.proyecto_linkia.mi_nevera_app.clases.DbNevera
+import com.proyecto_linkia.mi_nevera_app.clases.Recipe
+import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
+import com.proyecto_linkia.mi_nevera_app.data.db.entities.EmptyRecipeEntity
+import com.proyecto_linkia.mi_nevera_app.data.db.entities.IngredientEntity
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivityMainBinding
-import com.proyecto_linkia.mi_nevera_app.internet.APIService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import com.proyecto_linkia.mi_nevera_app.clases.DbNevera
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvResultados: TextView
     private lateinit var sVegan:Switch
     private lateinit var binding:ActivityMainBinding
-    var recipeList: MutableList<Recipie> = mutableListOf()
+    var recipeList: MutableList<Recipe> = mutableListOf()
 
 
     private lateinit var db: DbNevera
@@ -59,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         tvResultados=binding.tvResultados
 
         //getData()
-        recipeList = intent.extras?.get("data") as MutableList<Recipie>
+        recipeList = intent.extras?.get("data") as MutableList<Recipe>
         //tvResultados.text = printRecipes(recipeList)
 
         //hacemos que al clicar al boton añadir se cree un chip
@@ -92,6 +84,16 @@ class MainActivity : AppCompatActivity() {
 
             tvResultados.text=resultString
         }
+
+        val emptyRecipeEntity = EmptyRecipeEntity(null,"arroz con leche",false)
+        val ingredient1=IngredientEntity(null,"arroz")
+        val ingredient2=IngredientEntity(null,"leche")
+        var ingredientsList:ArrayList<IngredientEntity> = ArrayList<IngredientEntity>()
+
+        ingredientsList.add(ingredient1)
+        ingredientsList.add(ingredient2)
+
+        addtodb(ingredientsList, emptyRecipeEntity)
     }
 
     /**
@@ -148,8 +150,8 @@ class MainActivity : AppCompatActivity() {
      * @param recipes del sistema
      * @return lista con las recetas que cumplen los parametros
      */
-    private fun findSuitableRecipes(ingredients:ArrayList<String>, recipes:List<Recipie>):ArrayList<Recipie>{
-        var correctRecipes:ArrayList<Recipie> = ArrayList<Recipie>()
+    private fun findSuitableRecipes(ingredients:ArrayList<String>, recipes:List<Recipe>):ArrayList<Recipe>{
+        var correctRecipes:ArrayList<Recipe> = ArrayList<Recipe>()
         for(i in 0 until recipes.size){
             if(checkRecipe(recipes[i],ingredients)) correctRecipes.add(recipes[i])
         }
@@ -163,7 +165,7 @@ class MainActivity : AppCompatActivity() {
      * @param selectedIngredients ingredientes entrados por el usuario
      * @return true si la receta cumple los criterios o false si no
      */
-    private fun checkRecipe(recipe:Recipie, selectedIngredients:ArrayList<String>):Boolean{
+    private fun checkRecipe(recipe:Recipe, selectedIngredients:ArrayList<String>):Boolean{
         var count=0
         val ingredientNumber: Int =recipe.ingredients.size
         var ingredientInRecipe:String
@@ -183,10 +185,10 @@ class MainActivity : AppCompatActivity() {
      * @param recipes
      * @return String con la lista de recetas
      */
-    private fun printRecipes(recipes:List<Recipie>):String{
+    private fun printRecipes(recipes:List<Recipe>):String{
         var myList:String=""
         for(element in recipes){
-            myList= "$myList\n${element.recipieName} "
+            myList= "$myList\n${element.recipeName} "
         }
         return myList
     }
@@ -200,4 +202,16 @@ class MainActivity : AppCompatActivity() {
     private fun checkVegan(sVegan:Switch):Boolean{
         return sVegan.isChecked
     }
+
+    private fun addtodb(ingredients: ArrayList<IngredientEntity>,recipeEntity: EmptyRecipeEntity){
+        CoroutineScope(Dispatchers.IO).launch {
+            val db = DataBaseBuilder.getInstance(this@MainActivity)
+            val dao =db.getEmptyRecipeDao()
+            val dao2=db.getIngredientsDao()
+            dao.insertEmptyRecipe(recipeEntity)
+            for(ingredient in ingredients)
+            dao2.insertIngredient(ingredient)
+        }
+    }
+
 }

@@ -8,6 +8,8 @@
 
     <AutoCompleteTextView
         android:id="@+id/actvEntry"
+        android:singleLine="true"
+        android:maxLines="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"

@@ -8,10 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.proyecto_linkia.mi_nevera_app.clases.DbNevera
+import com.proyecto_linkia.mi_nevera_app.clases.Ingredient
 import com.proyecto_linkia.mi_nevera_app.clases.Recipe
 import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.EmptyRecipeEntity
+import com.proyecto_linkia.mi_nevera_app.data.db.entities.RecipeEntity
 import com.proyecto_linkia.mi_nevera_app.data.db.entities.IngredientEntity
+import com.proyecto_linkia.mi_nevera_app.data.db.entities.relations.RecipeIngredientCrossReference
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,7 +44,6 @@ class MainActivity : AppCompatActivity() {
 
         //creamos objetos para todos los Views
         actvEntry = binding.actvEntry
-        fillActvEntry()
         btAddIngedient = binding.btAddIngredient
         btMyIngredients = binding.btMyIngredients
         cgIngredients = binding.cgIngredients
@@ -52,7 +53,8 @@ class MainActivity : AppCompatActivity() {
 
         //getData()
         recipeList = intent.extras?.get("data") as MutableList<Recipe>
-        //tvResultados.text = printRecipes(recipeList)
+        fillActvEntry(recipeList)
+        tvResultados.text = printRecipes(recipeList)
 
         //hacemos que al clicar al boton añadir se cree un chip
         btAddIngedient.setOnClickListener {
@@ -63,7 +65,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         btMyIngredients.setOnClickListener {
-            startActivity(Intent(this,MyIngredients::class.java))
+            val intent = Intent(this, MyIngredients::class.java)
+            intent.putExtra("data",recipeList as java.io.Serializable)
+            startActivity(intent)
+            finish()
         }
 
 
@@ -85,7 +90,7 @@ class MainActivity : AppCompatActivity() {
             tvResultados.text=resultString
         }
 
-        val emptyRecipeEntity = EmptyRecipeEntity(null,"arroz con leche",false)
+        val emptyRecipeEntity = RecipeEntity(null,"arroz con leche",false)
         val ingredient1=IngredientEntity(null,"arroz")
         val ingredient2=IngredientEntity(null,"leche")
         var ingredientsList:ArrayList<IngredientEntity> = ArrayList<IngredientEntity>()
@@ -93,16 +98,31 @@ class MainActivity : AppCompatActivity() {
         ingredientsList.add(ingredient1)
         ingredientsList.add(ingredient2)
 
-        addtodb(ingredientsList, emptyRecipeEntity)
+        val recipeCrosRef = RecipeIngredientCrossReference(1,1)
+        val recipeCrosRef2 = RecipeIngredientCrossReference(1,2)
+
+        val recipeList: List<RecipeIngredientCrossReference> = listOf(recipeCrosRef,recipeCrosRef2)
+
+        addtodb(ingredientsList, emptyRecipeEntity,recipeList)
     }
+
+
 
     /**
      * Funcion que rellena el AutoCompleteTextView
      *
      */
-    private fun fillActvEntry(){
+    private fun fillActvEntry(recipeList: List<Recipe>){
+        var ingredientsList: ArrayList<String> = ArrayList<String>()
+        for(recipe in recipeList){
+            for(ingredient in recipe.ingredients){
+                if(!ingredientsList.contains(ingredient)){
+                    ingredientsList.add(ingredient)
+                }
+            }
+        }
         var systemIngredients : Array<String> = resources.getStringArray(R.array.sistemIngredients)
-        var adapter : ArrayAdapter<String> = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, systemIngredients)
+        var adapter : ArrayAdapter<String> = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, ingredientsList)
         actvEntry.setAdapter(adapter)
     }
 
@@ -203,14 +223,27 @@ class MainActivity : AppCompatActivity() {
         return sVegan.isChecked
     }
 
-    private fun addtodb(ingredients: ArrayList<IngredientEntity>,recipeEntity: EmptyRecipeEntity){
+    private fun addtodb(
+        ingredients: ArrayList<IngredientEntity>,
+        recipeEntity: RecipeEntity,
+        crosRefList: List<RecipeIngredientCrossReference>
+    ) {
         CoroutineScope(Dispatchers.IO).launch {
             val db = DataBaseBuilder.getInstance(this@MainActivity)
-            val dao =db.getEmptyRecipeDao()
-            val dao2=db.getIngredientsDao()
-            dao.insertEmptyRecipe(recipeEntity)
-            for(ingredient in ingredients)
-            dao2.insertIngredient(ingredient)
+            val dao = db.getRecipeDao()
+            val dao2 = db.getIngredientsDao()
+            dao.insertRecipe(recipeEntity)
+            for (ingredient in ingredients) {
+                dao2.insertIngredient(ingredient)
+            }
+            for (crosRef in crosRefList) {
+                dao.insertRecipeIngredientsCrossReference(crosRef)
+            }
+            val listRecipe = dao.getIngredientsOfRecipe(1)
+
+            runOnUiThread {
+                tvResultados.text=listRecipe[0].toString()
+            }
         }
     }
 

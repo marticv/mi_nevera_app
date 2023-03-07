@@ -5,7 +5,7 @@ import com.proyecto_linkia.mi_nevera_app.data.db.entities.IngredientEntity
 
 @Dao
 interface IngredientDao {
-    @Query("SELECT * FROM ingredients_table")
+    @Query("SELECT * FROM ingrediententity")
     suspend fun getAllMyIngredients():List<IngredientEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -1,11 +1,11 @@
 package com.proyecto_linkia.mi_nevera_app
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.proyecto_linkia.mi_nevera_app.clases.Recipie
+import com.proyecto_linkia.mi_nevera_app.clases.Recipe
 import com.proyecto_linkia.mi_nevera_app.data.RecipeResponse
 import com.proyecto_linkia.mi_nevera_app.internet.APIService
 import kotlinx.coroutines.CoroutineScope
@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class LoadingActivity : AppCompatActivity() {
 
-    private val recipeList: MutableList<Recipie> = mutableListOf()
+    private val recipeList: MutableList<Recipe> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val screenSplash = installSplashScreen()
@@ -28,9 +28,6 @@ class LoadingActivity : AppCompatActivity() {
 
         getData()
 
-        //val intent = Intent(this, MainActivity::class.java)
-        //startActivity(intent)
-        //finish()
     }
 
     private fun getRetrofit(): Retrofit {
@@ -45,9 +42,9 @@ class LoadingActivity : AppCompatActivity() {
             val result: RecipeResponse? = call.body()
             runOnUiThread {
                 if(call.isSuccessful){
-                    val recipies: List<Recipie> = result?.recipies ?: emptyList()
+                    val recipes: List<Recipe> = result?.recipes ?: emptyList()
                     recipeList.clear()
-                    recipeList.addAll(recipies)
+                    recipeList.addAll(recipes)
                     val intent = Intent(this@LoadingActivity, MainActivity::class.java)
                     intent.putExtra("data",recipeList as java.io.Serializable)
                     startActivity(intent)
@@ -60,6 +57,6 @@ class LoadingActivity : AppCompatActivity() {
     }
 
     private fun showError() {
-        Toast.makeText(this, "error", Toast.LENGTH_LONG).show()
+        Toast.makeText(this@LoadingActivity, "error", Toast.LENGTH_LONG).show()
     }
 }

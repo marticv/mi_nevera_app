@@ -2,9 +2,11 @@ package com.proyecto_linkia.mi_nevera_app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.proyecto_linkia.mi_nevera_app.adapter.MyIngredientAdapter
+import com.proyecto_linkia.mi_nevera_app.clases.Recipe
 import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
 import com.proyecto_linkia.mi_nevera_app.data.db.entities.MyIngredient
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivityMyIngredientsBinding
@@ -24,6 +26,10 @@ class MyIngredients : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMyIngredientsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //obtenemos datos de main
+        val recipeList = intent.extras?.get("data") as MutableList<Recipe>
+        fillActvEntry(recipeList)
 
         //obtenemos datos de la base de datos y lo pasamos al recyclerView
         getData()
@@ -120,6 +126,20 @@ class MyIngredients : AppCompatActivity() {
             }
 
         }
+    }
+
+    private fun fillActvEntry(recipeList: List<Recipe>){
+        val ingredientsList: ArrayList<String> = ArrayList()
+        for(recipe in recipeList){
+            for(ingredient in recipe.ingredients){
+                if(!ingredientsList.contains(ingredient)){
+                    ingredientsList.add(ingredient)
+                }
+            }
+        }
+        val adapter : ArrayAdapter<String> = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, ingredientsList)
+        binding.actvEntry.setAdapter(adapter)
+
     }
 
     /**

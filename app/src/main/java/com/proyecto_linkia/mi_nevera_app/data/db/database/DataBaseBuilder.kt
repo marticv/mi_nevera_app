@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 
 object DataBaseBuilder {
+
     private var INSTANCE:AppDB? = null
     fun getInstance(context:Context):AppDB{
         if(INSTANCE==null){

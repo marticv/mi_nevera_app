@@ -5,14 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.proyecto_linkia.mi_nevera_app.adapter.RecipeAdapter
 import com.proyecto_linkia.mi_nevera_app.clases.DbNevera
-import com.proyecto_linkia.mi_nevera_app.clases.Ingredient
 import com.proyecto_linkia.mi_nevera_app.clases.Recipe
 import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.RecipeEntity
 import com.proyecto_linkia.mi_nevera_app.data.db.entities.IngredientEntity
+import com.proyecto_linkia.mi_nevera_app.data.db.entities.RecipeEntity
 import com.proyecto_linkia.mi_nevera_app.data.db.entities.relations.RecipeIngredientCrossReference
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sVegan:Switch
     private lateinit var binding:ActivityMainBinding
     var recipeList: MutableList<Recipe> = mutableListOf()
+    private lateinit var adapter: RecipeAdapter
+    private val llManager = LinearLayoutManager(this)
 
 
     private lateinit var db: DbNevera
@@ -89,6 +92,8 @@ class MainActivity : AppCompatActivity() {
 
             tvResultados.text=resultString
         }
+
+        initRecycleView()
 
         val emptyRecipeEntity = RecipeEntity(null,"arroz con leche",false)
         val ingredient1=IngredientEntity(null,"arroz")
@@ -245,6 +250,28 @@ class MainActivity : AppCompatActivity() {
                 tvResultados.text=listRecipe[0].toString()
             }
         }
+    }
+
+    private fun initRecycleView(){
+        //creamos el adapter y lo pasamos al recyclerview para que se renderice
+        val recyclerView=binding.rvRecipe
+        adapter = RecipeAdapter(recipeList = recipeList,
+            onClickListener = {position ->
+                onDeletedItem(position)
+            })
+        recyclerView.layoutManager = llManager
+        recyclerView.adapter = adapter
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun onDeletedItem(position:Int){
+        //Obtenemos el ingrediente a eliminar de la lista y lo pasamos a una corrutina
+        //para eliminarlo tambien de la base de datos
+        val recipe = recipeList[position]
+
+        //eliminamos el item del recyclerView y avisamos al adaptador
+        recipeList.removeAt(position)
+        adapter.notifyItemRemoved(position)
     }
 
 }

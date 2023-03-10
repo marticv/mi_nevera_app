@@ -3,6 +3,7 @@ package com.proyecto_linkia.mi_nevera_app
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -57,7 +58,8 @@ class MainActivity : AppCompatActivity() {
         //getData()
         recipeList = intent.extras?.get("data") as MutableList<Recipe>
         fillActvEntry(recipeList)
-        tvResultados.text = printRecipes(recipeList)
+        initRecycleView()
+        //tvResultados.text = printRecipes(recipeList)
 
         //hacemos que al clicar al boton añadir se cree un chip
         btAddIngedient.setOnClickListener {
@@ -71,7 +73,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, MyIngredients::class.java)
             intent.putExtra("data",recipeList as java.io.Serializable)
             startActivity(intent)
-            finish()
         }
 
 
@@ -90,11 +91,15 @@ class MainActivity : AppCompatActivity() {
             }
             var resultString =printRecipes(resultRecipes)
 
+
+            binding.rvRecipe.visibility = View.VISIBLE
+
             tvResultados.text=resultString
         }
 
-        initRecycleView()
 
+
+        /*
         val emptyRecipeEntity = RecipeEntity(null,"arroz con leche",false)
         val ingredient1=IngredientEntity(null,"arroz")
         val ingredient2=IngredientEntity(null,"leche")
@@ -108,7 +113,7 @@ class MainActivity : AppCompatActivity() {
 
         val recipeList: List<RecipeIngredientCrossReference> = listOf(recipeCrosRef,recipeCrosRef2)
 
-        addtodb(ingredientsList, emptyRecipeEntity,recipeList)
+        addtodb(ingredientsList, emptyRecipeEntity,recipeList)*/
     }
 
 
@@ -257,7 +262,7 @@ class MainActivity : AppCompatActivity() {
         val recyclerView=binding.rvRecipe
         adapter = RecipeAdapter(recipeList = recipeList,
             onClickListener = {position ->
-                onDeletedItem(position)
+                showRecipe(position)
             })
         recyclerView.layoutManager = llManager
         recyclerView.adapter = adapter
@@ -277,11 +282,9 @@ class MainActivity : AppCompatActivity() {
     private fun showRecipe(position:Int){
         val recipe =recipeList[position]
 
-        val intent = Intent(this, MyIngredients::class.java)
+        val intent = Intent(this, RecipeInformation::class.java)
         intent.putExtra("recipe",recipe as java.io.Serializable)
         startActivity(intent)
         finish()
     }
-
-
 }

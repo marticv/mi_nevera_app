@@ -274,4 +274,14 @@ class MainActivity : AppCompatActivity() {
         adapter.notifyItemRemoved(position)
     }
 
+    private fun showRecipe(position:Int){
+        val recipe =recipeList[position]
+
+        val intent = Intent(this, MyIngredients::class.java)
+        intent.putExtra("recipe",recipe as java.io.Serializable)
+        startActivity(intent)
+        finish()
+    }
+
+
 }

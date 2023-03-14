@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sVegan:Switch
     private lateinit var binding:ActivityMainBinding
     var recipeList: MutableList<Recipe> = mutableListOf()
+    var correctRecipes: MutableList<Recipe> = mutableListOf()
     private lateinit var adapter: RecipeAdapter
     private val llManager = LinearLayoutManager(this)
 
@@ -78,7 +79,8 @@ class MainActivity : AppCompatActivity() {
 
 
         btSearch.setOnClickListener {
-            var selectedIngr:ArrayList<String> = obtainSelectedIngredients()
+            correctRecipes.clear()
+            val selectedIngr:ArrayList<String> = obtainSelectedIngredients()
             var myRecipes = recipeList
             var resultRecipes = findSuitableRecipes(selectedIngr,myRecipes)
 
@@ -89,12 +91,13 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-            var resultString =printRecipes(resultRecipes)
 
+            for (recipe in resultRecipes){
+                correctRecipes.add((recipe))
+                adapter.notifyDataSetChanged()
+            }
 
             binding.rvRecipe.visibility = View.VISIBLE
-
-            tvResultados.text=resultString
         }
 
 
@@ -260,7 +263,7 @@ class MainActivity : AppCompatActivity() {
     private fun initRecycleView(){
         //creamos el adapter y lo pasamos al recyclerview para que se renderice
         val recyclerView=binding.rvRecipe
-        adapter = RecipeAdapter(recipeList = recipeList,
+        adapter = RecipeAdapter(recipeList = correctRecipes,
             onClickListener = {position ->
                 showRecipe(position)
             })

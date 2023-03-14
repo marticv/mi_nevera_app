@@ -5,6 +5,7 @@ import android.util.DisplayMetrics
 import androidx.appcompat.app.AppCompatActivity
 import com.proyecto_linkia.mi_nevera_app.clases.Recipe
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivityRecipeInformationBinding
+import com.squareup.picasso.Picasso
 
 class RecipeInformation : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +21,7 @@ class RecipeInformation : AppCompatActivity() {
         windowManager.defaultDisplay.getMetrics(metrics)
         val width = metrics.widthPixels
         val height = metrics.heightPixels
-        window.setLayout((width*0.85).toInt(),(height*0.5).toInt())
+        window.setLayout((width*0.85).toInt(),(height*0.85).toInt())
 
         binding.tvRecipeName.text = recipe.recipeName
 
@@ -33,6 +34,9 @@ class RecipeInformation : AppCompatActivity() {
         if(recipe.isVegan){
             binding.tvVegan.text = "Vegana"
         }
+
+        val image ="https://www.cocinacaserayfacil.net/wp-content/uploads/2020/03/Recetas-faciles-de-cocinar-y-sobrevivir-en-casa-al-coronavirus_2.jpg"
+        Picasso.get().load(image).into(binding.ivRecipe)
 
         binding.btFinish.setOnClickListener {
             finish()

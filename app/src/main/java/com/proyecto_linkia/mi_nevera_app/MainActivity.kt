@@ -288,6 +288,5 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, RecipeInformation::class.java)
         intent.putExtra("recipe",recipe as java.io.Serializable)
         startActivity(intent)
-        finish()
     }
 }

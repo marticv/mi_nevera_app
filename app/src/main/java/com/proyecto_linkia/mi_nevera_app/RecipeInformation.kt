@@ -16,12 +16,12 @@ class RecipeInformation : AppCompatActivity() {
 
         val recipe =intent.extras?.get("recipe") as Recipe
 
-        var metrics = DisplayMetrics()
+        /*var metrics = DisplayMetrics()
         //val display = Context.getDisplay()
         windowManager.defaultDisplay.getMetrics(metrics)
         val width = metrics.widthPixels
         val height = metrics.heightPixels
-        window.setLayout((width*0.85).toInt(),(height*0.85).toInt())
+        window.setLayout((width*0.85).toInt(),(height*0.85).toInt())*/
 
         binding.tvRecipeName.text = recipe.recipeName
 
@@ -38,7 +38,7 @@ class RecipeInformation : AppCompatActivity() {
         val image ="https://www.cocinacaserayfacil.net/wp-content/uploads/2020/03/Recetas-faciles-de-cocinar-y-sobrevivir-en-casa-al-coronavirus_2.jpg"
         Picasso.get().load(image).into(binding.ivRecipe)
 
-        binding.btFinish.setOnClickListener {
+        binding.btClose.setOnClickListener {
             finish()
         }
     }

@@ -1,11 +1,15 @@
 package com.proyecto_linkia.mi_nevera_app
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.view.get
 import androidx.recyclerview.widget.GridLayoutManager
 import com.proyecto_linkia.mi_nevera_app.adapter.MyIngredientAdapter
+import com.proyecto_linkia.mi_nevera_app.adapter.MyIngredientViewHolder
 import com.proyecto_linkia.mi_nevera_app.clases.Recipe
 import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
 import com.proyecto_linkia.mi_nevera_app.data.db.entities.MyIngredient
@@ -78,7 +82,7 @@ class MyIngredients : AppCompatActivity() {
         //creamos el adapter y lo pasamos al recyclerview para que se renderice
         val recyclerView=binding.rvIngredients
         adapter = MyIngredientAdapter(myIngredientList = ingredientsMutableList,
-            onClickListener = {position ->
+            onClickListener =  {position ->
                 onDeletedItem(position)
             })
         recyclerView.layoutManager = glManager
@@ -104,6 +108,7 @@ class MyIngredients : AppCompatActivity() {
         ingredientsMutableList.removeAt(position)
         adapter.notifyItemRemoved(position)
     }
+
 
     /**
      * obtenemos todos los registros de la tabla my_ingredients_table

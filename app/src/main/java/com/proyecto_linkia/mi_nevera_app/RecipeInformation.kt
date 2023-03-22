@@ -16,12 +16,12 @@ class RecipeInformation : AppCompatActivity() {
 
         val recipe =intent.extras?.get("recipe") as Recipe
 
-        /*var metrics = DisplayMetrics()
+        var metrics = DisplayMetrics()
         //val display = Context.getDisplay()
         windowManager.defaultDisplay.getMetrics(metrics)
         val width = metrics.widthPixels
         val height = metrics.heightPixels
-        window.setLayout((width*0.85).toInt(),(height*0.85).toInt())*/
+        window.setLayout((width*0.85).toInt(),(height*0.7).toInt())
 
         binding.tvRecipeName.text = recipe.recipeName
 

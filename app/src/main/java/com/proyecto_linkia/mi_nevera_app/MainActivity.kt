@@ -60,7 +60,6 @@ class MainActivity : AppCompatActivity() {
         recipeList = intent.extras?.get("data") as MutableList<Recipe>
         fillActvEntry(recipeList)
         initRecycleView()
-        //tvResultados.text = printRecipes(recipeList)
 
         //hacemos que al clicar al boton añadir se cree un chip
         btAddIngedient.setOnClickListener {
@@ -74,6 +73,16 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, MyIngredients::class.java)
             intent.putExtra("data",recipeList as java.io.Serializable)
             startActivity(intent)
+        }
+
+        btMyIngredients.setOnClickListener {
+            val intent = Intent(this, MyIngredients::class.java)
+            intent.putExtra("data",recipeList as java.io.Serializable)
+            startActivity(intent)
+        }
+
+        binding.btShopingList.setOnClickListener {
+            startActivity(Intent(this, Shoping::class.java))
         }
 
 
@@ -100,23 +109,6 @@ class MainActivity : AppCompatActivity() {
             binding.rvRecipe.visibility = View.VISIBLE
         }
 
-
-
-        /*
-        val emptyRecipeEntity = RecipeEntity(null,"arroz con leche",false)
-        val ingredient1=IngredientEntity(null,"arroz")
-        val ingredient2=IngredientEntity(null,"leche")
-        var ingredientsList:ArrayList<IngredientEntity> = ArrayList<IngredientEntity>()
-
-        ingredientsList.add(ingredient1)
-        ingredientsList.add(ingredient2)
-
-        val recipeCrosRef = RecipeIngredientCrossReference(1,1)
-        val recipeCrosRef2 = RecipeIngredientCrossReference(1,2)
-
-        val recipeList: List<RecipeIngredientCrossReference> = listOf(recipeCrosRef,recipeCrosRef2)
-
-        addtodb(ingredientsList, emptyRecipeEntity,recipeList)*/
     }
 
 

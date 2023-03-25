@@ -227,7 +227,7 @@ class MainActivity : AppCompatActivity() {
     private fun checkVegan(sVegan:Switch):Boolean{
         return sVegan.isChecked
     }
-
+/*
     private fun addtodb(
         ingredients: ArrayList<IngredientEntity>,
         recipeEntity: RecipeEntity,
@@ -250,7 +250,7 @@ class MainActivity : AppCompatActivity() {
                 tvResultados.text=listRecipe[0].toString()
             }
         }
-    }
+    }*/
 
     private fun initRecycleView(){
         //creamos el adapter y lo pasamos al recyclerview para que se renderice

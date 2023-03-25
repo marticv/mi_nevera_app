@@ -4,10 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.proyecto_linkia.mi_nevera_app.R
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.MyIngredient
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.ToBuyIngredient
+import com.proyecto_linkia.mi_nevera_app.data.db.entities.ShoppingIngredient
 
-class ToBuyIngredientAdapter(private val myIngredientList: List<ToBuyIngredient>,
+class ToBuyIngredientAdapter(private val myIngredientList: List<ShoppingIngredient>,
                              private val onClickListener:(Int)->Unit)
     : RecyclerView.Adapter<ToBuyIngredientViewHolder>(){
 

@@ -17,8 +17,8 @@ interface ShoppingItemDao {
     suspend fun insertToBuyIngredient(toBuyIngredient: ShoppingIngredient)
 
     @Update
-    suspend fun updateShopingIngredient(shoppingIngredient: ShoppingIngredient)
+    suspend fun updateShoppingIngredient(shoppingIngredient: ShoppingIngredient)
 
     @Delete
-    suspend fun deleteShopingIngredient(shoppingIngredient: ShoppingIngredient)
+    suspend fun deleteShoppingIngredient(shoppingIngredient: ShoppingIngredient)
 }

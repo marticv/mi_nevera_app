@@ -13,65 +13,78 @@
         app:cardCornerRadius="20dp"
         tools:layout_editor_absoluteX="10dp"
         tools:layout_editor_absoluteY="10dp">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tvRecipeName"
-            android:layout_width="218dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="recipe name" />
+            <TextView
+                android:id="@+id/tvRecipeName"
+                android:layout_width="218dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="recipe name" />
 
-        <ImageView
-            android:id="@+id/ivRecipe"
-            android:layout_width="340dp"
-            android:layout_height="131dp"
-            android:layout_margin="8dp"
-            android:background="@color/cardview_dark_background"
-            android:contentDescription="image of the recipe"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvRecipeName" />
+            <ImageView
+                android:id="@+id/ivRecipe"
+                android:layout_width="340dp"
+                android:layout_height="131dp"
+                android:layout_margin="8dp"
+                android:background="@color/cardview_dark_background"
+                android:contentDescription="image of the recipe"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvRecipeName" />
 
-        <TextView
-            android:id="@+id/tvIngredients"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivRecipe"
-            tools:text="Ingredient\nIngredient\nIngredient\nIngredient" />
+            <TextView
+                android:id="@+id/tvIngredients"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivRecipe"
+                tools:text="Ingredient\nIngredient\nIngredient\nIngredient" />
 
-        <TextView
-            android:id="@+id/tvVegan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="76dp"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvIngredients"
-            tools:text="Vegano" />
+            <TextView
+                android:id="@+id/tvVegan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="76dp"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvIngredients"
+                tools:text="Vegano" />
 
-        <Button
-            android:id="@+id/btClose"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="cerrar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvVegan" />
+            <Button
+                android:id="@+id/btClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="cerrar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvVegan" />
+
+            <Button
+                android:id="@+id/btShare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="104dp"
+                android:layout_marginEnd="12dp"
+                android:text="Share"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btClose" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

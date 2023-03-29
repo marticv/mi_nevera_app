@@ -12,14 +12,7 @@ import com.google.android.material.chip.ChipGroup
 import com.proyecto_linkia.mi_nevera_app.adapter.RecipeAdapter
 import com.proyecto_linkia.mi_nevera_app.clases.DbNevera
 import com.proyecto_linkia.mi_nevera_app.clases.Recipe
-import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.IngredientEntity
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.RecipeEntity
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.relations.RecipeIngredientCrossReference
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivityMainBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -75,19 +68,15 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        btMyIngredients.setOnClickListener {
-            val intent = Intent(this, MyIngredients::class.java)
-            intent.putExtra("data",recipeList as java.io.Serializable)
-            startActivity(intent)
-        }
-
         binding.btShopingList.setOnClickListener {
-            startActivity(Intent(this, Shoping::class.java))
+            startActivity(Intent(this, Shopping::class.java))
         }
-
 
 
         btSearch.setOnClickListener {
+            if(recipeList.isEmpty()){
+                tvResultados.text = "sin resultados"
+            }
             correctRecipes.clear()
             val selectedIngr:ArrayList<String> = obtainSelectedIngredients()
             var myRecipes = recipeList
@@ -100,6 +89,8 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+
+            if(correctRecipes.isEmpty()) tvResultados.text = "sin resultados"
 
             for (recipe in resultRecipes){
                 correctRecipes.add((recipe))
@@ -141,7 +132,7 @@ class MainActivity : AppCompatActivity() {
         val chip =Chip(this)
 
         //pasamos el texto al chip y definimos su comportamiento
-        chip.text =text
+        chip.text =text.trim().lowercase()
         chip.isCloseIconVisible = true
         cgIngredients.addView(chip)
         chip.setOnCloseIconClickListener {
@@ -275,7 +266,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showRecipe(position:Int){
-        val recipe =recipeList[position]
+        val recipe =correctRecipes[position]
 
         val intent = Intent(this, RecipeInformation::class.java)
         intent.putExtra("recipe",recipe as java.io.Serializable)

@@ -7,7 +7,6 @@ import androidx.room.PrimaryKey
 @Entity
 data class ShoppingIngredient(
     @PrimaryKey(autoGenerate = false)
-    @ColumnInfo(name = "ingredientName")
     val ingredientName: String,
     var toBuy: Int = 1,
     var bought: Int = 0

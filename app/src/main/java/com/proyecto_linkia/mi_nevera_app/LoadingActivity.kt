@@ -38,20 +38,34 @@ class LoadingActivity : AppCompatActivity() {
 
     private fun getData(){
         CoroutineScope(Dispatchers.IO).launch {
-            val call: Response<RecipeResponse> = getRetrofit().create(APIService::class.java).getRecipes("")
-            val result: RecipeResponse? = call.body()
-            runOnUiThread {
-                if(call.isSuccessful){
-                    val recipes: List<Recipe> = result?.recipes ?: emptyList()
-                    recipeList.clear()
-                    recipeList.addAll(recipes)
-                    val intent = Intent(this@LoadingActivity, MainActivity::class.java)
-                    intent.putExtra("data",recipeList as java.io.Serializable)
-                    startActivity(intent)
-                    finish()
-                }else{
-                    showError()
+            try {
+                val call: Response<RecipeResponse> =
+                    getRetrofit().create(APIService::class.java).getRecipes("")
+                val result: RecipeResponse? = call.body()
+                runOnUiThread {
+                    if (call.isSuccessful) {
+                        val recipes: List<Recipe> = result?.recipes ?: emptyList()
+                        recipeList.clear()
+                        recipeList.addAll(recipes)
+                        val intent = Intent(this@LoadingActivity, MainActivity::class.java)
+                        intent.putExtra("data", recipeList as java.io.Serializable)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        showError()
+                        val recipes: List<Recipe> = emptyList()
+                        val intent = Intent(this@LoadingActivity, MainActivity::class.java)
+                        intent.putExtra("data", recipes as java.io.Serializable)
+                        startActivity(intent)
+                        finish()
+                    }
                 }
+            }catch (e:Exception){
+                val recipes: List<Recipe> = emptyList()
+                val intent = Intent(this@LoadingActivity, MainActivity::class.java)
+                intent.putExtra("data", recipes as java.io.Serializable)
+                startActivity(intent)
+                finish()
             }
         }
     }

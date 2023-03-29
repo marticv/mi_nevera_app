@@ -8,14 +8,14 @@ import com.proyecto_linkia.mi_nevera_app.adapter.BoughtIngredientAdapter
 import com.proyecto_linkia.mi_nevera_app.adapter.ToBuyIngredientAdapter
 import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
 import com.proyecto_linkia.mi_nevera_app.data.db.entities.ShoppingIngredient
-import com.proyecto_linkia.mi_nevera_app.databinding.ActivityShopingBinding
+import com.proyecto_linkia.mi_nevera_app.databinding.ActivityShoppingBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class Shoping : AppCompatActivity() {
+class Shopping : AppCompatActivity() {
 
-    private lateinit var binding: ActivityShopingBinding
+    private lateinit var binding: ActivityShoppingBinding
     private lateinit var toBuyAdapter: ToBuyIngredientAdapter
     private lateinit var boughtAdapter: BoughtIngredientAdapter
     private val glManagerToBuy = GridLayoutManager(this,2)
@@ -25,7 +25,7 @@ class Shoping : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityShopingBinding.inflate(layoutInflater)
+        binding = ActivityShoppingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         getData()
@@ -42,6 +42,7 @@ class Shoping : AppCompatActivity() {
         val ingredient= ShoppingIngredient(binding.actvEntry.text.toString())
         binding.textView2.text = ingredient.toBuy.toString()
         binding.textView3.text = ingredient.bought.toString()
+        //binding.textView4.text = ingredient.id.toString()
 
         //comprobamos si el ingrediente esta ya en la lista
         if(!toBuyList.contains(ingredient)) {
@@ -54,7 +55,7 @@ class Shoping : AppCompatActivity() {
 
             //guardamos el item en la base de datos
             CoroutineScope(Dispatchers.IO).launch {
-                val db = DataBaseBuilder.getInstance(this@Shoping)
+                val db = DataBaseBuilder.getInstance(this@Shopping)
                 val dao = db.getShoppingIngredientDao()
                 dao.insertToBuyIngredient(ingredient)
             }
@@ -68,19 +69,20 @@ class Shoping : AppCompatActivity() {
     }
 
     private fun addFromToBuyList(position: Int){
-        val ingredient=ShoppingIngredient(toBuyList[position].ingredientName)
+        val ingredient=ShoppingIngredient( toBuyList[position].ingredientName)
         ingredient.apply {
             toBuy=0
             bought = 1
         }
         CoroutineScope(Dispatchers.IO).launch {
-            val db = DataBaseBuilder.getInstance(this@Shoping)
+            val db = DataBaseBuilder.getInstance(this@Shopping)
             val dao = db.getShoppingIngredientDao()
-            dao.updateShopingIngredient(ingredient)
+            dao.updateShoppingIngredient(ingredient)
         }
 
         binding.textView2.text = ingredient.toBuy.toString()
         binding.textView3.text = ingredient.bought.toString()
+        //binding.textView4.text = ingredient.id.toString()
         boughtList.add(0,ingredient)
         boughtAdapter.notifyItemInserted(0)
     }
@@ -92,12 +94,13 @@ class Shoping : AppCompatActivity() {
             bought = 0
         }
         CoroutineScope(Dispatchers.IO).launch {
-            val db = DataBaseBuilder.getInstance(this@Shoping)
+            val db = DataBaseBuilder.getInstance(this@Shopping)
             val dao = db.getShoppingIngredientDao()
-            dao.updateShopingIngredient(ingredient)
+            dao.updateShoppingIngredient(ingredient)
         }
         binding.textView2.text = ingredient.toBuy.toString()
         binding.textView3.text = ingredient.bought.toString()
+        //binding.textView4.text = ingredient.id.toString()
         toBuyList.add(0,ingredient)
         toBuyAdapter.notifyItemInserted(0)
     }
@@ -153,22 +156,41 @@ class Shoping : AppCompatActivity() {
     private fun getData(){
         //iniciamos corrutina para obtener datos
         CoroutineScope(Dispatchers.IO).launch {
-            val db = DataBaseBuilder.getInstance(this@Shoping)
-            val dao=db.getShoppingIngredientDao()
-            val toBuyIngredientsList = dao.getAllToBuyIngredients()
-            for(item in toBuyIngredientsList){
-                toBuyList.add(item)
+            try {
+                val db = DataBaseBuilder.getInstance(this@Shopping)
+                val dao = db.getShoppingIngredientDao()
+
+
+                val toBuyIngredientsList = dao.getAllToBuyIngredients()
+                for (item in toBuyIngredientsList) {
+                    toBuyList.add(item)
+                }
+
+                val boughtIngredientsList = dao.getAllBoughtIngredients()
+                for (item in boughtIngredientsList) {
+                    boughtList.add(item)
+                }
+                runOnUiThread {
+                    toBuyAdapter.notifyDataSetChanged()
+                    boughtAdapter.notifyDataSetChanged()
+                }
+
+            }catch (e:Exception){
+                showError()
             }
 
-            val boughtIngredientsList = dao.getAllBoughtIngredients()
-            for(item in boughtIngredientsList){
-                boughtList.add(item)
-            }
 
-            runOnUiThread {
-                toBuyAdapter.notifyDataSetChanged()
-                boughtAdapter.notifyDataSetChanged()
-            }
+        }
+    }
+
+    private fun showError() {
+        Toast.makeText(this@Shopping, "error", Toast.LENGTH_LONG).show()
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        CoroutineScope(Dispatchers.IO).launch {
+            val db = DataBaseBuilder.getInstance(this@Shopping)
+            db.close()
         }
     }
 }

@@ -1,15 +1,11 @@
 package com.proyecto_linkia.mi_nevera_app
 
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.core.view.get
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.proyecto_linkia.mi_nevera_app.adapter.MyIngredientAdapter
-import com.proyecto_linkia.mi_nevera_app.adapter.MyIngredientViewHolder
 import com.proyecto_linkia.mi_nevera_app.clases.Recipe
 import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
 import com.proyecto_linkia.mi_nevera_app.data.db.entities.MyIngredient
@@ -117,17 +113,21 @@ class MyIngredients : AppCompatActivity() {
     private fun getData(){
         //iniciamos corrutina para obtener datos
         CoroutineScope(Dispatchers.IO).launch {
-            val db = DataBaseBuilder.getInstance(this@MyIngredients)
-            val dao=db.getMyIngredientDao()
-            val myIngredientsList=dao.getAllMyIngredients()
-            //pasamos la lista a mutablelist
-            //val list=myIngredientsList.toMutableList()
-            for(item in myIngredientsList){
-                ingredientsMutableList.add(item)
-            }
+            try {
+                val db = DataBaseBuilder.getInstance(this@MyIngredients)
+                val dao = db.getMyIngredientDao()
+                val myIngredientsList = dao.getAllMyIngredients()
+                //pasamos la lista a mutablelist
+                //val list=myIngredientsList.toMutableList()
+                for (item in myIngredientsList) {
+                    ingredientsMutableList.add(item)
+                }
 
-            runOnUiThread {
-                adapter.notifyDataSetChanged()
+                runOnUiThread {
+                    adapter.notifyDataSetChanged()
+                }
+            }catch (e:Exception){
+                showError()
             }
 
         }
@@ -145,6 +145,10 @@ class MyIngredients : AppCompatActivity() {
         val adapter : ArrayAdapter<String> = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, ingredientsList)
         binding.actvEntry.setAdapter(adapter)
 
+    }
+
+    private fun showError() {
+        Toast.makeText(this@MyIngredients, "error", Toast.LENGTH_LONG).show()
     }
 
     /**

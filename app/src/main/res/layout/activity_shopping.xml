@@ -67,5 +67,13 @@
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvBought" />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fcMenu"
+        android:name="com.proyecto_linkia.mi_nevera_app.MenuFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout="@layout/fragment_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

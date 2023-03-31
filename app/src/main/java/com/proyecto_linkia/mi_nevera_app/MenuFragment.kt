@@ -1,5 +1,6 @@
 package com.proyecto_linkia.mi_nevera_app
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -55,7 +56,7 @@ class MenuFragment : Fragment() {
             Toast.makeText(activity,"click",Toast.LENGTH_LONG).show()
         }
         binding.ibShopingList.setOnClickListener {
-            Toast.makeText(activity,"click",Toast.LENGTH_LONG).show()
+            startActivity(Intent(context, Shopping::class.java))
         }
     }
 

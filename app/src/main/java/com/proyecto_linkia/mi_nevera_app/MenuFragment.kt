@@ -1,10 +1,12 @@
 package com.proyecto_linkia.mi_nevera_app
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.proyecto_linkia.mi_nevera_app.databinding.FragmentMenuBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,6 +19,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class MenuFragment : Fragment() {
+    private var _binding: FragmentMenuBinding? = null
+    private val binding get() = _binding!!
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -34,7 +39,24 @@ class MenuFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_menu, container, false)
+        _binding = FragmentMenuBinding.inflate(inflater,container,false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.ibEnterRecipe.setOnClickListener {
+            Toast.makeText(activity,"click",Toast.LENGTH_LONG).show()
+        }
+        binding.ibSearch.setOnClickListener {
+            Toast.makeText(activity,"click",Toast.LENGTH_LONG).show()
+        }
+        binding.ibMyIngredients.setOnClickListener {
+            Toast.makeText(activity,"click",Toast.LENGTH_LONG).show()
+        }
+        binding.ibShopingList.setOnClickListener {
+            Toast.makeText(activity,"click",Toast.LENGTH_LONG).show()
+        }
     }
 
     companion object {

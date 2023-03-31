@@ -28,9 +28,8 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/actvEntry"
-        app:layout_constraintVertical_bias="0.089">
+        app:layout_constraintVertical_bias="0.089"/>
 
-    </com.google.android.material.chip.ChipGroup>
 
     <Button
         android:id="@+id/btSearch"
@@ -113,5 +112,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btMyIngredients" />
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/f"
+        android:layout_width=""
+        android:layout_height=""
+    <fragment
+        android:name="com.proyecto_linkia.mi_nevera_app.MenuFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/frMenu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

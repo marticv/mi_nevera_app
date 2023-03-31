@@ -19,6 +19,7 @@
 
         <activity
             android:name=".LoadingActivity"
+            android:screenOrientation="portrait"
             android:exported="true"
             android:theme="@style/Theme.App.Starting">
             <intent-filter>
@@ -29,6 +30,7 @@
         </activity>
         <activity
             android:name=".MyIngredients"
+            android:screenOrientation="portrait"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -36,6 +38,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -43,6 +46,7 @@
         </activity>
         <activity
             android:name=".RecipeInformation"
+            android:screenOrientation="portrait"
             android:exported="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -50,6 +54,7 @@
         </activity>
         <activity
             android:name=".Shopping"
+            android:screenOrientation="portrait"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

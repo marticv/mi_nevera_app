@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/menu_background"
     tools:context=".MenuFragment">
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -11,25 +12,29 @@
         android:weightSum="4">
         <ImageButton
             android:id="@+id/ibMyIngredients"
-            android:backgroundTint="@color/cardview_dark_background"
+            android:backgroundTint="@color/menu_background"
+            android:src="@drawable/ic_minus"
             android:layout_weight="1"
             android:layout_height="75dp"
             android:layout_width="75dp"/>
         <ImageButton
             android:id="@+id/ibSearch"
-            android:backgroundTint="@color/cardview_dark_background"
+            android:backgroundTint="@color/menu_background"
+            android:src="@drawable/ic_minus"
             android:layout_weight="1"
             android:layout_width="75dp"
             android:layout_height="75dp"/>
         <ImageButton
             android:id="@+id/ibShopingList"
-            android:backgroundTint="@color/itemBought"
+            android:backgroundTint="@color/menu_background"
+            android:src="@drawable/ic_add"
             android:layout_weight="1"
             android:layout_width="75dp"
             android:layout_height="75dp"/>
         <ImageButton
             android:id="@+id/ibEnterRecipe"
-            android:backgroundTint="@color/cardview_dark_background"
+            android:backgroundTint="@color/menu_background"
+            android:src="@drawable/ic_minus"
             android:layout_weight="1"
             android:layout_width="75dp"
             android:layout_height="75dp"/>

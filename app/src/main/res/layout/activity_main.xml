@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".MainActivity">
 
     <AutoCompleteTextView
@@ -36,6 +37,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Buscar"
+        android:backgroundTint="@color/button"
+        android:textColor="@color/clickable_types"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +51,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:text="Añadir"
+        android:backgroundTint="@color/button"
+        android:textColor="@color/clickable_types"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/actvEntry" />
 
@@ -77,7 +82,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="76dp"
         android:text="Solo recetas veganas"
+        android:textStyle="bold"
+        android:textColor="@color/no_clickable_types"
         app:layout_constraintStart_toEndOf="@+id/btSearch"
         app:layout_constraintTop_toTopOf="@+id/btSearch" />
 
@@ -86,6 +94,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Button"
+        android:textColor="@color/clickable_types"
+        android:backgroundTint="@color/button"
         app:layout_constraintEnd_toStartOf="@+id/btSearch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btSearch" />
@@ -94,10 +104,12 @@
         android:id="@+id/btShopingList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="320dp"
+        android:layout_marginTop="264dp"
+        android:backgroundTint="@color/button"
         android:text="Shopinglist"
+        android:textColor="@color/clickable_types"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.887"
+        app:layout_constraintHorizontal_bias="0.913"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

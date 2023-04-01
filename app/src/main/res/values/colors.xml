@@ -9,4 +9,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="itemToBuy">#EA5454</color>
     <color name="itemBought">#7ED647</color>
+    <color name="menu_background">#ABE6B3</color>
+    <color name="background">#D5FADA</color>
+    <color name="button">#A9D8B8</color>
+    <color name="clickable_types">#090909</color>
+    <color name="no_clickable_types">#333333</color>
+    <color name="menu_unselected_types">#5E5D5D</color>
+    <color name="menu_selected_types">#DC6161</color>
 </resources>

@@ -5,9 +5,12 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.DisplayMetrics
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.internal.bind.util.ISO8601Utils.format
 import com.proyecto_linkia.mi_nevera_app.clases.Recipe
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivityRecipeInformationBinding
 import com.squareup.picasso.Picasso
+import java.text.DateFormat
+import java.util.*
 
 
 class RecipeInformation : AppCompatActivity() {
@@ -36,7 +39,7 @@ class RecipeInformation : AppCompatActivity() {
 
         var ingredients =""
         for (ingredient in recipe.ingredients){
-            ingredients+=ingredient+"\n"
+            ingredients+=ingredient
         }
         binding.tvIngredients.text = ingredients
 

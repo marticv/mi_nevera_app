@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".Shopping">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -28,10 +29,10 @@
         android:id="@+id/actvEntry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="16dp"
         android:hint="Que hay que comprar?"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvBought" />
 
@@ -39,6 +40,8 @@
         android:id="@+id/btAddToShopingList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/button"
+        android:textColor="@color/clickable_types"
         android:layout_marginEnd="4dp"
         android:text="Añadir"
         app:layout_constraintEnd_toEndOf="parent"

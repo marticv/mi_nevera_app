@@ -1,16 +1,21 @@
 ## Funcionalidades a añadir
-* Conectar Base de datos
-* Añadir publicidad
 * Añadir persistencia de Ingredientes
   * Añadir modificador de cantidad de ingredientes
 * Añadir creación de recetas
 * crear receras desde backend
-* compartir recetas
 * añadir idiomas
 * crear setings
 * añadir testing
-* añadir splash art al principio
 
 
-## Ideas
-* Diferenciar recetas originales vs creadas mediante id (A0000 nuestras B0000 propias de usuario C0000 compartidas
+## Pendiente
+* modo noche
+* idiomas
+* base de datos
+* imagenes de comida
+* añadir dificultad y tiempo
+* buscar iconos del menu
+  * lista de la compra
+  * mi nevera
+  * buscar random
+  * crear recetas

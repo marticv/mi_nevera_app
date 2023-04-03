@@ -9,7 +9,8 @@
       ],
       "isVegan": true,
       "time": 20,
-      "difficulty" : "easy"
+      "difficulty" : "easy",
+      "image": "https://i.blogs.es/a75550/nuevo_arroz_blanco/1366_2000.jpg"
     },
     {
       "recipeId": "A1",
@@ -21,7 +22,8 @@
       ],
       "isVegan": true,
       "time": 21,
-      "difficulty" : "easy"
+      "difficulty" : "easy",
+      "image": "https://cocinandocongoizalde.wordpress.com/2010/06/14/arroz-con-tomate/arroz-con-tomate-1/"
     },
     {
       "recipeId": "A2",
@@ -34,7 +36,8 @@
       ],
       "isVegan": false,
       "time": 25,
-      "difficulty" : "medium"
+      "difficulty" : "medium",
+      "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.recetasgratis.net%2Freceta-de-arroz-a-la-cubana-facil-y-rapido-72089.html&psig=AOvVaw1wQsbXXhsuNvySdZar13Ey&ust=1680617393144000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCPiI7enxjf4CFQAAAAAdAAAAABAE"
     },
         {
       "recipeId": "A3",
@@ -46,7 +49,8 @@
       ],
       "isVegan": false,
       "time": 12,
-      "difficulty" : "easy"
+      "difficulty" : "easy",
+      "image" : "https://unareceta.com/wp-content/uploads/2015/01/macarrones-con-tomate--640x427.jpg"
     }      
   ],
   "ingredients": [

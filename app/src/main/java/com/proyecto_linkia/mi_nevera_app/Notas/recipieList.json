@@ -1,53 +1,75 @@
 {
-    "recipes": [
-      {
-        "recipeId": "A0",
-        "recipeName": "Arroz Hervido",
-        "recipeNameEnglish":"Boiled rice",
-        "ingredients": [
-          1
-        ],
-        "isVegan": true,
-        "time": 20,
-        "difficulty" : "easy"
-      },
-      {
-        "recipeId": "A1",
-        "recipeName": "Arroz con tomate",
-        "recipeNameEnglish":"Rice with tomato sauce",
-        "ingredients": [
-          1,
-          2
-        ],
-        "isVegan": true,
-        "time": 21,
-        "difficulty" : "easy"
-      },
-      {
-        "recipeId": "A2",
-        "recipeName": "Arroz a la cubana",
-        "recipeNameEnglish":"Rice with tomato and egg",
-        "ingredients": [
-          1,
-          2,
-          3
-        ],
-        "isVegan": false,
-        "time": 25,
-        "difficulty" : "medium"
-      },
-          {
-        "recipeId": "A3",
-        "recipeName": "pasta con tomate",
-        "recipeNameEnglish":"Pasta with tomato",
-        "ingredients": [
-          4,
-          2
-        ],
-        "isVegan": false,
-        "time": 12,
-        "difficulty" : "easy"
-      }      
-    ],
-    "succes":true
-  }
+  "recipes": [
+    {
+      "recipeId": "A0",
+      "recipeName": "Arroz Hervido",
+      "recipeNameEnglish":"Boiled rice",
+      "ingredients": [
+        1
+      ],
+      "isVegan": true,
+      "time": 20,
+      "difficulty" : "easy"
+    },
+    {
+      "recipeId": "A1",
+      "recipeName": "Arroz con tomate",
+      "recipeNameEnglish":"Rice with tomato sauce",
+      "ingredients": [
+        1,
+        2
+      ],
+      "isVegan": true,
+      "time": 21,
+      "difficulty" : "easy"
+    },
+    {
+      "recipeId": "A2",
+      "recipeName": "Arroz a la cubana",
+      "recipeNameEnglish":"Rice with tomato and egg",
+      "ingredients": [
+        1,
+        2,
+        3
+      ],
+      "isVegan": false,
+      "time": 25,
+      "difficulty" : "medium"
+    },
+        {
+      "recipeId": "A3",
+      "recipeName": "pasta con tomate",
+      "recipeNameEnglish":"Pasta with tomato",
+      "ingredients": [
+        4,
+        2
+      ],
+      "isVegan": false,
+      "time": 12,
+      "difficulty" : "easy"
+    }      
+  ],
+  "ingredients": [
+    {
+      "inrgedientId": 1,
+      "ingredientName": "arroz",
+      "ingredientNameEnglish":"rice"
+    },
+    {
+      "inrgedient": 2,
+      "ingredientName": "tomate",
+      "ingredientNameEnglish":"tomato"
+    },
+    {
+      "inrgedient": 3,
+      "ingredientName": "huevo",
+      "ingredientNameEnglish":"egg"
+    },   
+    {
+      "inrgedient": 4,
+      "ingredientName": "pasta",
+      "ingredientNameEnglish":"pasta"
+    }    
+  ],
+  "succes":true
+}

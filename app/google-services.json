@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "204050007918",
+    "project_id": "mineveraapp-linkiafp",
+    "storage_bucket": "mineveraapp-linkiafp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:204050007918:android:be4e0dc83d284135e0e37f",
+        "android_client_info": {
+          "package_name": "com.proyecto_linkia.mi_nevera_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "204050007918-hmec4ehoj5mr99n18od2gigo65qap2aa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClZhkAcedOJLEjTOU6VAL0Jeuwx6TA-6A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "204050007918-hmec4ehoj5mr99n18od2gigo65qap2aa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

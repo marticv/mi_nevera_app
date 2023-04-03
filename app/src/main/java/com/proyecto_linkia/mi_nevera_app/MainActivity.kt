@@ -6,9 +6,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.proyecto_linkia.mi_nevera_app.adapter.RecipeAdapter
 import com.proyecto_linkia.mi_nevera_app.clases.DbNevera
 import com.proyecto_linkia.mi_nevera_app.clases.Recipe
@@ -22,7 +26,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cgIngredients : ChipGroup
     private lateinit var btSearch : Button
     private lateinit var tvResultados: TextView
-    private lateinit var sVegan:Switch
+    private lateinit var sVegan:SwitchMaterial
+    private lateinit var swDatkMode:SwitchMaterial
+    private lateinit var swLanguage:SwitchMaterial
     private lateinit var binding:ActivityMainBinding
     var recipeList: MutableList<Recipe> = mutableListOf()
     var correctRecipes: MutableList<Recipe> = mutableListOf()
@@ -47,7 +53,10 @@ class MainActivity : AppCompatActivity() {
         cgIngredients = binding.cgIngredients
         btSearch =binding.btSearch
         sVegan=binding.sVegan
+        swDatkMode = binding.swColorMode
+        swLanguage = binding.swLanguage
         tvResultados=binding.tvResultados
+        
 
         //getData()
         recipeList = intent.extras?.get("data") as MutableList<Recipe>
@@ -99,10 +108,39 @@ class MainActivity : AppCompatActivity() {
 
             binding.rvRecipe.visibility = View.VISIBLE
         }
+        
+        swDatkMode.setOnCheckedChangeListener { _, isSelected ->
+            if(isSelected){
+                enableDarkMode()
+            }else{
+                disableDarkMode()
+            }
+        }
+
+        swLanguage.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                getEnglishTexts()
+            }else{
+                getSpanishTexts()
+            }
+        }
 
     }
 
+    private fun getEnglishTexts(){
+        
+    }
+    private fun getSpanishTexts(){}
 
+    private fun enableDarkMode(){
+        AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
+        delegate.applyDayNight()
+    }
+
+    private fun disableDarkMode(){
+        AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
+        delegate.applyDayNight()
+    }
 
     /**
      * Funcion que rellena el AutoCompleteTextView
@@ -215,7 +253,7 @@ class MainActivity : AppCompatActivity() {
      * @param sVegan
      * @return true si esta checked
      */
-    private fun checkVegan(sVegan:Switch):Boolean{
+    private fun checkVegan(sVegan:SwitchMaterial):Boolean{
         return sVegan.isChecked
     }
 /*

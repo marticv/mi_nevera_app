@@ -9,16 +9,17 @@
 
     <AutoCompleteTextView
         android:id="@+id/actvEntry"
-        android:singleLine="true"
-        android:maxLines="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="20dp"
         android:hint="Introduce ingredientes"
+        android:maxLines="1"
+        android:singleLine="true"
         app:layout_constraintEnd_toStartOf="@+id/btAddIngredient"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/cgIngredients"
@@ -26,18 +27,17 @@
         android:layout_height="52dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.038"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/actvEntry"
-        app:layout_constraintVertical_bias="0.089"/>
-
+        app:layout_constraintVertical_bias="0.085" />
 
     <Button
         android:id="@+id/btSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Buscar"
         android:backgroundTint="@color/button"
+        android:text="@string/bt_search"
         android:textColor="@color/clickable_types"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,13 +50,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
-        android:text="Añadir"
         android:backgroundTint="@color/button"
+        android:text="Añadir"
         android:textColor="@color/clickable_types"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/actvEntry" />
 
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/sVegan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -83,9 +83,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="76dp"
-        android:text="Solo recetas veganas"
-        android:textStyle="bold"
+        android:text="@string/swVegan"
         android:textColor="@color/no_clickable_types"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/btSearch"
         app:layout_constraintTop_toTopOf="@+id/btSearch" />
 
@@ -93,9 +93,9 @@
         android:id="@+id/btMyIngredients"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/button"
         android:text="Button"
         android:textColor="@color/clickable_types"
-        android:backgroundTint="@color/button"
         app:layout_constraintEnd_toStartOf="@+id/btSearch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btSearch" />
@@ -118,9 +118,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:layout_marginTop="8dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btMyIngredients" />
 
@@ -133,4 +134,20 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:layout="@layout/fragment_menu" />
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/swColorMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Switch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btMyIngredients" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/swLanguage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Switch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/swColorMode" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,20 @@
+{
+    "ingredients": [
+      {
+        "inrgedientId": 1,
+        "ingredientName": "arroz",
+        "ingredientNameEnglish":"rice"
+      },
+      {
+        "inrgedient": 2,
+        "ingredientName": "tomate",
+        "ingredientNameEnglish":"tomato"
+      },
+      {
+        "inrgedient": 3,
+        "ingredientName": "huevo",
+        "ingredientNameEnglish":"egg"
+      }      
+    ],
+    "succes":true
+  }

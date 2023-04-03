@@ -1,31 +1,53 @@
 {
-    "recipiees":[
-        {
-            "id_recipie":1,
-            "recipieName": "Arroz Hervido",
-            "ingredients":[
-                "Arroz"
-            ],
-            "isVegan":true
-        },
-        {
-            "id_recipie":2,
-            "recipieName": "Arroz con tomate",
-            "ingredients":[
-                "Arroz",
-                "Tomate"
-            ],
-            "isVegan":true
-        },
-                {
-            "id_recipie":3,
-            "recipieName": "Arroz a la cubana",
-            "ingredients":[
-                "Arroz",
-                "Tomate",
-                "huevo"
-            ],
-            "isVegan":false
-        }
-    ]
-}
+    "recipes": [
+      {
+        "recipeId": "A0",
+        "recipeName": "Arroz Hervido",
+        "recipeNameEnglish":"Boiled rice",
+        "ingredients": [
+          1
+        ],
+        "isVegan": true,
+        "time": 20,
+        "difficulty" : "easy"
+      },
+      {
+        "recipeId": "A1",
+        "recipeName": "Arroz con tomate",
+        "recipeNameEnglish":"Rice with tomato sauce",
+        "ingredients": [
+          1,
+          2
+        ],
+        "isVegan": true,
+        "time": 21,
+        "difficulty" : "easy"
+      },
+      {
+        "recipeId": "A2",
+        "recipeName": "Arroz a la cubana",
+        "recipeNameEnglish":"Rice with tomato and egg",
+        "ingredients": [
+          1,
+          2,
+          3
+        ],
+        "isVegan": false,
+        "time": 25,
+        "difficulty" : "medium"
+      },
+          {
+        "recipeId": "A3",
+        "recipeName": "pasta con tomate",
+        "recipeNameEnglish":"Pasta with tomato",
+        "ingredients": [
+          4,
+          2
+        ],
+        "isVegan": false,
+        "time": 12,
+        "difficulty" : "easy"
+      }      
+    ],
+    "succes":true
+  }

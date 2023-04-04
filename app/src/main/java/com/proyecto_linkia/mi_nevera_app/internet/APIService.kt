@@ -1,5 +1,6 @@
 package com.proyecto_linkia.mi_nevera_app.internet
 
+import com.proyecto_linkia.mi_nevera_app.data.IngredientsResponse
 import com.proyecto_linkia.mi_nevera_app.data.RecipeResponse
 import com.proyecto_linkia.mi_nevera_app.data.RecipesWithoutIngredientsResponse
 import retrofit2.Response
@@ -12,4 +13,7 @@ interface APIService {
 
     @GET
     suspend fun getRecipesWithoutIngredients(@Url url:String):Response<RecipesWithoutIngredientsResponse>
+
+    @GET
+    suspend fun getIngredients(@Url url: String):Response<IngredientsResponse>
 }

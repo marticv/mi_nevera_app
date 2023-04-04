@@ -6,7 +6,7 @@
         "recipeName": "Arroz Hervido",
         "recipeNameEnglish": "Boiled rice",
         "ingredients": [
-          1
+          "A1"
         ],
         "isVegan": true,
         "time": 20,
@@ -18,8 +18,8 @@
         "recipeName": "Arroz con tomate",
         "recipeNameEnglish": "Rice with tomato sauce",
         "ingredients": [
-          1,
-          2
+          "A1",
+          "A2"
         ],
         "isVegan": true,
         "time": 21,
@@ -31,9 +31,9 @@
         "recipeName": "Arroz a la cubana",
         "recipeNameEnglish": "Rice with tomato and egg",
         "ingredients": [
-          1,
-          2,
-          3
+          "A1",
+          "A2",
+          "A3"
         ],
         "isVegan": false,
         "time": 25,
@@ -45,8 +45,8 @@
         "recipeName": "pasta con tomate",
         "recipeNameEnglish": "Pasta with tomato",
         "ingredients": [
-          4,
-          2
+          "A4",
+          "A2"
         ],
         "isVegan": false,
         "time": 12,
@@ -58,26 +58,26 @@
   "myingredients": {
     "ingredients": [
       {
-        "inrgedientId": 1,
+        "ingredient": "A1",
         "ingredientName": "arroz",
         "ingredientNameEnglish": "rice"
       },
       {
-        "inrgedient": 2,
+        "ingredient": "A2",
         "ingredientName": "tomate",
         "ingredientNameEnglish": "tomato"
       },
       {
-        "inrgedient": 3,
+        "ingredient": "A3",
         "ingredientName": "huevo",
         "ingredientNameEnglish": "egg"
       },
       {
-        "inrgedient": 4,
+        "ingredient": "A4",
         "ingredientName": "pasta",
         "ingredientNameEnglish": "pasta"
       }
     ]
   },
-  "succes": true
+  "success": true
 }

@@ -7,8 +7,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.firebase.firestore.FirebaseFirestore
+import com.proyecto_linkia.mi_nevera_app.clases.IngredientExternal
 import com.proyecto_linkia.mi_nevera_app.clases.Recipe
 import com.proyecto_linkia.mi_nevera_app.clases.RecipeComplete
+import com.proyecto_linkia.mi_nevera_app.data.IngredientsResponse
 import com.proyecto_linkia.mi_nevera_app.data.RecipeResponse
 import com.proyecto_linkia.mi_nevera_app.data.RecipesWithoutIngredientsResponse
 import com.proyecto_linkia.mi_nevera_app.internet.APIService
@@ -23,6 +25,7 @@ class LoadingActivity : AppCompatActivity() {
 
     private val recipeList: MutableList<Recipe> = mutableListOf()
     private val recipeListFirebase: MutableList<RecipeComplete> = mutableListOf()
+    private val ingredientListFirebase: MutableList<IngredientExternal> = mutableListOf()
     private val db = FirebaseFirestore.getInstance()
     private lateinit var textView:TextView
 
@@ -35,6 +38,7 @@ class LoadingActivity : AppCompatActivity() {
 
         screenSplash.setKeepOnScreenCondition { true }
 
+        getIngredientsFromFirebase()
         getRecipesFromFirebase()
         getData()
 
@@ -58,6 +62,31 @@ class LoadingActivity : AppCompatActivity() {
                     var list =""
                     for(recipe in recipeListFirebase){
                         list+="${recipe.recipeName} id:${recipe.difficulty}\n"
+                    }
+                    runOnUiThread {
+                        textView.text = list
+                    }
+                }
+            }catch (e:Exception){
+                runOnUiThread {
+                    textView.text = "emosido engañaos"
+                }
+            }
+        }
+    }
+
+    private fun getIngredientsFromFirebase(){
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val call:Response<IngredientsResponse> =
+                    getFirebaseData().create(APIService::class.java).getIngredients("myingredients.json")
+                val result:IngredientsResponse? = call.body()
+                if(call.isSuccessful){
+                    val ingredients:List<IngredientExternal> = result?.ingredients ?: emptyList()
+                    ingredientListFirebase.addAll(ingredients)
+                    var list =""
+                    for(ingredient in ingredientListFirebase){
+                        list+="${ingredient.ingredientName}-${ingredient.ingredientNameEnglish}\n"
                     }
                     runOnUiThread {
                         textView.text = list

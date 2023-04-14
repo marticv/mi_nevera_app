@@ -1,8 +1,8 @@
-package com.proyecto_linkia.mi_nevera_app.clases
+package com.proyecto_linkia.mi_nevera_app.internet
 
 import java.io.Serializable
 
-data class RecipeComplete(
+data class RecipeExternal(
     val recipeId: String,
     val recipeName: String,
     val recipeNameEnglish: String,

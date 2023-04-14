@@ -2,6 +2,7 @@ package com.proyecto_linkia.mi_nevera_app.data.db.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.proyecto_linkia.mi_nevera_app.data.db.dao.IngredientDao
 import com.proyecto_linkia.mi_nevera_app.data.db.dao.MyIngredientDao
 import com.proyecto_linkia.mi_nevera_app.data.db.dao.RecipeDao
 import com.proyecto_linkia.mi_nevera_app.data.db.dao.ShoppingItemDao
@@ -22,4 +23,5 @@ abstract class AppDB : RoomDatabase() {
     abstract fun getMyIngredientDao(): MyIngredientDao
     abstract fun getRecipeDao(): RecipeDao
     abstract fun getShoppingIngredientDao(): ShoppingItemDao
+    abstract fun getIngredientsDao():IngredientDao
 }

@@ -1,8 +1,9 @@
 package com.proyecto_linkia.mi_nevera_app
 
-
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +17,11 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 import com.proyecto_linkia.mi_nevera_app.adapter.RecipeAdapter
 import com.proyecto_linkia.mi_nevera_app.clases.DbNevera
 import com.proyecto_linkia.mi_nevera_app.clases.Recipe
+import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivityMainBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,16 +40,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: RecipeAdapter
     private val llManager = LinearLayoutManager(this)
 
-
-    private lateinit var db: DbNevera
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        //creamos el binding no tener que hacer el findviewbyid
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Start DB configuration
-        db = DbNevera(this)
 
         //creamos objetos para todos los Views
         actvEntry = binding.actvEntry
@@ -58,8 +59,7 @@ class MainActivity : AppCompatActivity() {
         tvResultados=binding.tvResultados
         
 
-        //getData()
-        recipeList = intent.extras?.get("data") as MutableList<Recipe>
+        setUp()
         fillActvEntry(recipeList)
         initRecycleView()
 
@@ -117,20 +117,23 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        swLanguage.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked){
-                getEnglishTexts()
-            }else{
-                getSpanishTexts()
+
+    }
+
+    private fun setUp() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val db = DataBaseBuilder.getInstance(this@MainActivity)
+                val dao = db.getRecipeDao()
+
+                TODO()
+            }catch (e:Exception){
+                Log.d(TAG,"error al obtener recetas")
             }
         }
-
     }
 
-    private fun getEnglishTexts(){
-        
-    }
-    private fun getSpanishTexts(){}
+
 
     private fun enableDarkMode(){
         AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)

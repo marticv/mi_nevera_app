@@ -6,7 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(indices = [Index(value = ["ingredientName"], unique = true)])
 data class IngredientEntity(
-    @PrimaryKey(autoGenerate = true)
-    val ingredientId: Int?,
-    val ingredientName: String
+    @PrimaryKey(autoGenerate = false)
+    val ingredientId: String,
+    val ingredientName: String,
+    val ingredientNameEnglish: String
 )

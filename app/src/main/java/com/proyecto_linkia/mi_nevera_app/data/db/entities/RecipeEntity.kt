@@ -5,8 +5,12 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class RecipeEntity(
-    @PrimaryKey(autoGenerate = true)
-    val recipeId: Int?,
+    @PrimaryKey(autoGenerate = false)
+    val recipeId: String,
     val recipeName: String,
-    val isVegan: Boolean
+    val recipeNameEnglish: String,
+    val isVegan: Int,
+    val difficulty: String,
+    val time: Int,
+    val image: String
 )

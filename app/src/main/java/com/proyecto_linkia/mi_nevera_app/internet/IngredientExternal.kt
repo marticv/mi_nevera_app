@@ -1,7 +1,7 @@
-package com.proyecto_linkia.mi_nevera_app.clases
+package com.proyecto_linkia.mi_nevera_app.internet
 
 data class IngredientExternal(
-    val ingredientId: String,
+    val ingredient: String,
     val ingredientName: String,
     val ingredientNameEnglish: String
-)
+):java.io.Serializable

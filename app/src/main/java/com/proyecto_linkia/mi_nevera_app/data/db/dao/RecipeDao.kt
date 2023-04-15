@@ -21,5 +21,5 @@ interface RecipeDao {
 
     @Transaction
     @Query("SELECT * FROM recipeentity WHERE recipeId = :recipeId")
-    suspend fun getIngredientsOfRecipe(recipeId:Int):List<RecipeWithIngredients>
+    suspend fun getIngredientsOfRecipe(recipeId:String):RecipeWithIngredients
 }

@@ -50,13 +50,15 @@ class MenuFragment : Fragment() {
             Toast.makeText(activity,"click",Toast.LENGTH_LONG).show()
         }
         binding.ibSearch.setOnClickListener {
-            Toast.makeText(activity,"click",Toast.LENGTH_LONG).show()
+            startActivity((Intent(context,MainActivity::class.java)))
+            activity?.finish()
         }
         binding.ibMyIngredients.setOnClickListener {
             Toast.makeText(activity,"click",Toast.LENGTH_LONG).show()
         }
         binding.ibShopingList.setOnClickListener {
             startActivity(Intent(context, Shopping::class.java))
+            activity?.finish()
         }
     }
 

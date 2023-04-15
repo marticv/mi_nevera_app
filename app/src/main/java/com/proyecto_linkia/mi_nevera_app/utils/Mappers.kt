@@ -1,7 +1,9 @@
 package com.proyecto_linkia.mi_nevera_app.utils
 
+import com.proyecto_linkia.mi_nevera_app.clases.Recipe
 import com.proyecto_linkia.mi_nevera_app.data.db.entities.IngredientEntity
 import com.proyecto_linkia.mi_nevera_app.data.db.entities.RecipeEntity
+import com.proyecto_linkia.mi_nevera_app.data.db.entities.relations.RecipeWithIngredients
 import com.proyecto_linkia.mi_nevera_app.internet.IngredientExternal
 import com.proyecto_linkia.mi_nevera_app.internet.RecipeExternal
 
@@ -22,5 +24,21 @@ fun RecipeExternal.toEmptyRecipeEntity(): RecipeEntity {
         this.difficulty,
         this.time,
         this.image
+    )
+}
+
+fun RecipeWithIngredients.toRecipe(): Recipe {
+    val ingredientsArray: ArrayList<String> = arrayListOf()
+    for (ingredient in this.ingredients) {
+        ingredientsArray.add(ingredient.ingredientName)
+    }
+
+    return Recipe(
+        recipeEntity.recipeName,
+        ingredientsArray,
+        recipeEntity.isVegan == 1,
+        recipeEntity.difficulty,
+        recipeEntity.time,
+        recipeEntity.image
     )
 }

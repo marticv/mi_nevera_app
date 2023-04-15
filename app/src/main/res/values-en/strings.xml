@@ -11,6 +11,15 @@
     </string-array>
     <string name="bt_search">Search</string>
     <string name="swVegan">Only vegan recipes</string>
+    <!--Strings from insert recipe activity -->
+    <string name="tvInsertName">Insertar nombre de receta</string>
+    <string name="tvInsertIngeredients">Que ingredientes necesita?</string>
+    <string name="tvIsVegan">Es vegana?</string>
+    <string name="tvDifficulty">Elige dificultad</string>
+    <string name="tvTime">Introduce la duración</string>
+    <string name="etRecipeName">tu receta</string>
+    <string name="actvEntry">Ingredientes</string>
+    <string name="btAdd">Añadir</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".InsertRecipeActivity">
+
+    <TextView
+        android:id="@+id/tvRecipeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/tvInsertName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etRecipeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/etRecipeName"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvRecipeName" />
+
+    <Button
+        android:id="@+id/btAddIngredient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:backgroundTint="@color/button"
+        android:text="@string/btAdd"
+        android:textColor="@color/clickable_types"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/actvEntry" />
+
+    <TextView
+        android:id="@+id/tvRecipeIngredients"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/tvInsertIngeredients"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etRecipeName" />
+
+    <AutoCompleteTextView
+        android:id="@+id/actvEntry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/actvEntry"
+        android:maxLines="1"
+        android:singleLine="true"
+        app:layout_constraintEnd_toStartOf="@+id/btAddIngredient"
+        app:layout_constraintHorizontal_bias="0.021"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvRecipeIngredients" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cgIngredients"
+        android:layout_width="wrap_content"
+        android:layout_height="52dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.038"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/actvEntry"
+        app:layout_constraintVertical_bias="0.029" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fcMenu"
+        android:name="com.proyecto_linkia.mi_nevera_app.MenuFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout="@layout/fragment_menu" />
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

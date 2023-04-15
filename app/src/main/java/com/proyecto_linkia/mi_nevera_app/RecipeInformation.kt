@@ -47,7 +47,7 @@ class RecipeInformation : AppCompatActivity() {
             binding.tvVegan.text = "Vegana"
         }
 
-        val image ="https://www.cocinacaserayfacil.net/wp-content/uploads/2020/03/Recetas-faciles-de-cocinar-y-sobrevivir-en-casa-al-coronavirus_2.jpg"
+        val image =recipe.image
         Picasso.get().load(image).into(binding.ivRecipe)
 
         binding.btClose.setOnClickListener {

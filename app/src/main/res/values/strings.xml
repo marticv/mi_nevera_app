@@ -19,6 +19,12 @@
     <string name="etRecipeName">tu receta</string>
     <string name="actvEntry">Ingredientes</string>
     <string name="btAdd">Añadir</string>
+    <string name="btAddRecipe">Añadir receta</string>
+    <string-array name="difficultyItems">
+        <item>fácil</item>
+        <item>media</item>
+        <item>dificil</item>
+    </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

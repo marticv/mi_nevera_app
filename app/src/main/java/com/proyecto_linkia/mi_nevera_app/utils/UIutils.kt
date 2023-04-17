@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Spinner
 import com.proyecto_linkia.mi_nevera_app.clases.Recipe
 import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
 import com.proyecto_linkia.mi_nevera_app.data.db.entities.IngredientEntity
@@ -66,6 +67,22 @@ fun fillActvEntry(actvEntry: AutoCompleteTextView) {
         ingredientsList
     )
     actvEntry.setAdapter(adapter)
+}
+
+/**
+ * Funcion que rellena las opciones de un spinner con el array de strings entrado por parametro
+ *
+ * @param spinner
+ * @param items
+ */
+fun fillSpinner(spinner: Spinner, items: Array<String>) {
+    var options: Array<String> = items
+    val adapter = ArrayAdapter(
+        spinner.context,
+        com.google.android.material.R.layout.support_simple_spinner_dropdown_item,
+        options
+    )
+    spinner.adapter = adapter
 }
 
 

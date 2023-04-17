@@ -42,3 +42,13 @@ fun RecipeWithIngredients.toRecipe(): Recipe {
         recipeEntity.image
     )
 }
+
+fun Recipe.toEntity(id: String): RecipeEntity {
+    return RecipeEntity(
+        id, this.recipeName, "nullfromUser", if (this.isVegan) {
+            1
+        } else {
+            0
+        }, this.difficulty, this.time, this.image
+    )
+}

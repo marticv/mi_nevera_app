@@ -78,9 +78,72 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:layout="@layout/fragment_menu" />
 
+    <TextView
+        android:id="@+id/tvDifficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="332dp"
+        android:text="@string/tvDifficulty"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <Spinner
+        android:id="@+id/spDifficulty"
+        android:layout_width="158dp"
+        android:layout_height="37dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDifficulty" />
 
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="128dp"
+        android:text="@string/tvTime"
+        app:layout_constraintStart_toEndOf="@+id/tvDifficulty"
+        app:layout_constraintTop_toTopOf="@+id/tvDifficulty" />
 
+    <EditText
+        android:id="@+id/editTextNumber"
+        android:layout_width="137dp"
+        android:layout_height="52dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/tvTime"
+        app:layout_constraintTop_toBottomOf="@+id/tvTime" />
+
+    <TextView
+        android:id="@+id/tvIsVegan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="472dp"
+        android:text="@string/tvIsVegan"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/swIsVegan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/tvIsVegan"
+        app:layout_constraintTop_toTopOf="@+id/tvIsVegan" />
+
+    <Button
+        android:id="@+id/btAddRecipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="76dp"
+        android:backgroundTint="@color/button"
+        android:text="Button"
+        android:textColor="@color/clickable_types"
+        app:layout_constraintBottom_toTopOf="@+id/fcMenu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,8 @@ import com.proyecto_linkia.mi_nevera_app.clases.Recipe
 import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
 import com.proyecto_linkia.mi_nevera_app.data.db.entities.MyIngredient
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivityMyIngredientsBinding
+import com.proyecto_linkia.mi_nevera_app.utils.fillActvEntry
+import com.proyecto_linkia.mi_nevera_app.utils.getRecipesList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,6 +22,7 @@ class MyIngredients : AppCompatActivity() {
     private var ingredientsMutableList:MutableList<MyIngredient> = mutableListOf()
     private lateinit var adapter: MyIngredientAdapter
     private val glManager =GridLayoutManager(this,2)
+    var recipeList: MutableList<Recipe> = mutableListOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,16 +30,17 @@ class MyIngredients : AppCompatActivity() {
         binding = ActivityMyIngredientsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //obtenemos datos de main
-        val recipeList = intent.extras?.get("data") as MutableList<Recipe>
-        fillActvEntry(recipeList)
-
-        //obtenemos datos de la base de datos y lo pasamos al recyclerView
-        getData()
-        initRecycleView()
+        setUp()
 
         binding.btAddMyIngredient.setOnClickListener { addIngredient() }
         binding.btBack.setOnClickListener { finish() }
+    }
+
+    private fun setUp() {
+        recipeList = getRecipesList(this@MyIngredients)
+        fillActvEntry(binding.actvEntry)
+        initRecycleView()
+        getData()
     }
 
     /**
@@ -131,20 +135,6 @@ class MyIngredients : AppCompatActivity() {
             }
 
         }
-    }
-
-    private fun fillActvEntry(recipeList: List<Recipe>){
-        val ingredientsList: ArrayList<String> = ArrayList()
-        for(recipe in recipeList){
-            for(ingredient in recipe.ingredients){
-                if(!ingredientsList.contains(ingredient)){
-                    ingredientsList.add(ingredient)
-                }
-            }
-        }
-        val adapter : ArrayAdapter<String> = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, ingredientsList)
-        binding.actvEntry.setAdapter(adapter)
-
     }
 
     private fun showError() {

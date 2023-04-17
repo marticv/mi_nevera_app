@@ -10,6 +10,9 @@ interface RecipeDao {
     @Query("SELECT * FROM recipeentity")
     suspend fun getAllRecipe():List<RecipeEntity>
 
+    @Query("SELECT COUNT(recipeId) FROM recipeentity WHERE recipeId LIKE 'B%'")
+    suspend fun getUserRecipeNumber():Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecipe(emptyRecipeEntity: RecipeEntity)
 

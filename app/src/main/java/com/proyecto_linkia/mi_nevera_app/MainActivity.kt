@@ -4,13 +4,14 @@ package com.proyecto_linkia.mi_nevera_app
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.*
+import android.widget.AutoCompleteTextView
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.proyecto_linkia.mi_nevera_app.adapter.RecipeAdapter
@@ -65,7 +66,6 @@ class MainActivity : AppCompatActivity() {
 
         btMyIngredients.setOnClickListener {
             val intent = Intent(this, MyIngredients::class.java)
-            intent.putExtra("data", recipeList as java.io.Serializable)
             startActivity(intent)
         }
 

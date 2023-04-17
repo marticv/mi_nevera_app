@@ -47,14 +47,16 @@ class MenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.ibEnterRecipe.setOnClickListener {
-            Toast.makeText(activity,"click",Toast.LENGTH_LONG).show()
+            startActivity((Intent(context,InsertRecipeActivity::class.java)))
+            activity?.finish()
         }
         binding.ibSearch.setOnClickListener {
             startActivity((Intent(context,MainActivity::class.java)))
             activity?.finish()
         }
         binding.ibMyIngredients.setOnClickListener {
-            Toast.makeText(activity,"click",Toast.LENGTH_LONG).show()
+            startActivity((Intent(context,MyIngredients::class.java)))
+            activity?.finish()
         }
         binding.ibShopingList.setOnClickListener {
             startActivity(Intent(context, Shopping::class.java))

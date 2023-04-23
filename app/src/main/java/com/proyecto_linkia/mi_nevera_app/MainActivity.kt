@@ -1,8 +1,11 @@
 package com.proyecto_linkia.mi_nevera_app
 
 
+import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AutoCompleteTextView
 import android.widget.Button
@@ -16,11 +19,13 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.proyecto_linkia.mi_nevera_app.adapter.RecipeAdapter
 import com.proyecto_linkia.mi_nevera_app.clases.Recipe
+import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
+import com.proyecto_linkia.mi_nevera_app.data.db.entities.relations.RecipeWithIngredients
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivityMainBinding
-import com.proyecto_linkia.mi_nevera_app.utils.addChip
-import com.proyecto_linkia.mi_nevera_app.utils.fillActvEntry
-import com.proyecto_linkia.mi_nevera_app.utils.getRecipesList
-import com.proyecto_linkia.mi_nevera_app.utils.obtainSelectedIngredients
+import com.proyecto_linkia.mi_nevera_app.utils.*
+import kotlinx.coroutines.*
+
+//import com.proyecto_linkia.mi_nevera_app.utils.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -61,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 
         //damos funcionalidad a los botones
         btAddIngedient.setOnClickListener {
-            addChipIfTextIsNotEmpty()
+            addChipIfTextIsNotEmpty(actvEntry,cgIngredients)
         }
 
         btMyIngredients.setOnClickListener {
@@ -86,10 +91,35 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun addChipIfTextIsNotEmpty() {
-        if (actvEntry.text.toString().isNotEmpty()) {
-            addChip(actvEntry.text.toString(), cgIngredients)
-            actvEntry.setText("")
+    private fun getRecipesList() {
+        //creamos variables y conexion a la base de datso
+        //val recipeList: MutableList<Recipe> = mutableListOf()
+        val db = DataBaseBuilder.getInstance(this@MainActivity)
+        val recipeDao = db.getRecipeDao()
+
+        //iniciamos coroutina para trabajar con la bd
+        CoroutineScope(Dispatchers.IO).launch {
+            //intentamos obtenes la lista de recetas o devolvemos una vacia para evitar errores
+            //y cerramos la base de datos
+            try {
+                //obtenemos la lista de recetas
+                val recipes = recipeDao.getAllRecipe()
+                val list: MutableList<RecipeWithIngredients> = mutableListOf()
+
+                //obtenemos la lista de ingredientes para cada receta
+                for (recipe in recipes) {
+                    list.add(recipeDao.getIngredientsOfRecipe(recipe.recipeId))
+                }
+
+                //creamos una receta completa para cada receta de la bd
+                for (recipeWithIngredients in list) {
+                    recipeList.add(recipeWithIngredients.toRecipe())
+                }
+            } catch (e: Exception) {
+                Log.d(ContentValues.TAG, "error al obtener recetas")
+            } finally {
+                db.close()
+            }
         }
     }
 
@@ -121,7 +151,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUp() {
-        recipeList = getRecipesList(this@MainActivity)
+        getRecipesList()
         fillActvEntry(actvEntry)
         initRecycleView()
     }
@@ -213,5 +243,17 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, RecipeInformation::class.java)
         intent.putExtra("recipe", recipe as java.io.Serializable)
         startActivity(intent)
+    }
+
+    /**
+     * Al cerrar la ventana nos aseguramos de
+     * que la conexion a la bd se cierre
+     *
+     */
+    override fun onDestroy() {
+        super.onDestroy()
+        //cerramos la conexion a la base de datos si estubiera abierta
+        val db = DataBaseBuilder.getInstance(this@MainActivity)
+        db.close()
     }
 }

@@ -9,7 +9,7 @@ data class RecipeEntity(
     val recipeId: String,
     val recipeName: String,
     val recipeNameEnglish: String,
-    val isVegan: Int,
+    var isVegan: Int,
     val difficulty: String,
     val time: Int,
     val image: String

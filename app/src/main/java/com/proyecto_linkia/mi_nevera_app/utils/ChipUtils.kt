@@ -1,6 +1,7 @@
 package com.proyecto_linkia.mi_nevera_app.utils
 
 import android.content.Context
+import android.widget.AutoCompleteTextView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
@@ -38,5 +39,22 @@ fun addChip(text:String, chipGroup: ChipGroup){
     chipGroup.addView(chip)
     chip.setOnCloseIconClickListener {
         chipGroup.removeView(chip)
+    }
+}
+
+/**
+ * Función que controla que el texto que se introduce un
+ * acutocompleteTextView no este vacio y entonces
+ * crea un chip al chipgroup entrado por parametro
+ *
+ * @param actEntry
+ * @param chipGroup
+ */
+fun addChipIfTextIsNotEmpty(actEntry:AutoCompleteTextView, chipGroup: ChipGroup) {
+    //mieramos si el texto no esta vacio,
+    //si no lo esta, añadimos chip y vaciamos el autocompletetextview
+    if (actEntry.text.toString().isNotEmpty()) {
+        addChip(actEntry.text.toString(), chipGroup)
+        actEntry.setText("")
     }
 }

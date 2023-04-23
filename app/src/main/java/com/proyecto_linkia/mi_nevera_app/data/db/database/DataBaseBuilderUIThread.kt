@@ -3,7 +3,7 @@ package com.proyecto_linkia.mi_nevera_app.data.db.database
 import android.content.Context
 import androidx.room.Room
 
-object DataBaseBuilder {
+object DataBaseBuilderUIThread {
 
     private var INSTANCE:AppDB? = null
     fun getInstance(context:Context):AppDB{

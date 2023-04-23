@@ -9,6 +9,8 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.proyecto_linkia.mi_nevera_app.data.IngredientsResponse
 import com.proyecto_linkia.mi_nevera_app.data.RecipesWithoutIngredientsResponse
 import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
+import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilderUIThread
+import com.proyecto_linkia.mi_nevera_app.data.db.entities.IngredientEntity
 import com.proyecto_linkia.mi_nevera_app.data.db.entities.relations.RecipeIngredientCrossReference
 import com.proyecto_linkia.mi_nevera_app.internet.APIService
 import com.proyecto_linkia.mi_nevera_app.internet.IngredientExternal
@@ -110,11 +112,13 @@ class LoadingActivity : AppCompatActivity() {
             //en caso de exito devolvemos la lista de ingredientes
             //y si hay problemas devolvemos una lista vacia para evitar errores
             if (call.isSuccessful) {
+                println(result?.recipes)
                 result?.recipes!!
             } else {
                 emptyList()
             }
         } catch (e: Exception) {
+            Log.d(TAG, "error al obtener recetas")
             emptyList()
         }
     }
@@ -125,20 +129,27 @@ class LoadingActivity : AppCompatActivity() {
      *
      * @param ingredients
      */
-    private suspend fun addIngredientToDB(ingredients: List<IngredientExternal>) {
-        try {
-            //creamos una instancia de la base de datos y nuestro DAO
-            val db = DataBaseBuilder.getInstance(this@LoadingActivity)
-            val dao = db.getIngredientsDao()
+    private fun addIngredientToDB(ingredients: List<IngredientExternal>) {
+        //creamos una instancia de la base de datos
+        //como en esta activity no hay nada en la ui, trabajamos directamentes
+        //directamente en el hilo principal con room
+        val db = DataBaseBuilderUIThread.getInstance(this@LoadingActivity)
+        val ingredientListEntity = mutableListOf<IngredientEntity>()
+        for(ingredientExternal in ingredients){
+            ingredientListEntity.add(ingredientExternal.toEntity())
+        }
 
-            //insertamos los elementos de la lista
-            for (ingredient in ingredients) {
-                dao.insertIngredient(ingredient.toEntity())
-            }
-            //cerramos la conexion a la base de datos
-            db.close()
+        try {
+            //obtenemos el dao e insertamos ingredientes
+            val dao = db.getIngredientsDao()
+            dao.insertIngredientList(ingredientListEntity)
         } catch (e: Exception) {
             Log.d(TAG, "${e.message}")
+        }finally {
+            //cerramos la conexion a la base de datos
+            if(db.isOpen){
+                db.openHelper.close()
+            }
         }
     }
 
@@ -148,24 +159,33 @@ class LoadingActivity : AppCompatActivity() {
      * @param recipes
      */
     private suspend fun addRecipesToDB(recipes: List<RecipeExternal>) {
+        //creamos una instancia de la base de datos
+        val db = DataBaseBuilder.getInstance(this@LoadingActivity)
         try {
-            //creamos una instancia de la base de datos y nuestro DAO
-            val db = DataBaseBuilder.getInstance(this@LoadingActivity)
+            //creamos nuestro DAO
             val dao = db.getRecipeDao()
 
             //añadimos las recetas y la relacion con los ingredientes a la base de datos
             for (recipe in recipes) {
-                dao.insertRecipe(recipe.toEmptyRecipeEntity())
-                for (ingredient in recipe.ingredients) {
-                    dao.insertRecipeIngredientsCrossReference(
-                        RecipeIngredientCrossReference(recipe.recipeId, ingredient)
-                    )
+
+                try {
+                    dao.insertRecipe(recipe.toEmptyRecipeEntity())
+                    for (ingredient in recipe.ingredients) {
+                        dao.insertRecipeIngredientsCrossReference(
+                            RecipeIngredientCrossReference(recipe.recipeId, ingredient)
+                        )
+                    }
+                }catch (e:Exception){
+                    Log.d(TAG, "error ingredient db")
                 }
             }
-            //cerramos la conexion a la base de datos
-            db.close()
         } catch (e: Exception) {
             Log.d(TAG, "error recipes db")
+        }finally {
+            //cerramos la conexion a la base de datos
+            if(db.isOpen){
+                db.openHelper.close()
+            }
         }
     }
 

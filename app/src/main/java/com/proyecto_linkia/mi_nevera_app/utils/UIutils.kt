@@ -19,14 +19,14 @@ import kotlinx.coroutines.*
  * @param context
  * @return
  */
-fun getRecipesList(context: Context): MutableList<Recipe> {
+suspend fun getRecipesList(context: Context): MutableList<Recipe> {
     //creamos variables y conexion a la base de datso
     val recipeList: MutableList<Recipe> = mutableListOf()
     val db = DataBaseBuilder.getInstance(context)
     val recipeDao = db.getRecipeDao()
 
     //iniciamos coroutina para trabajar con la bd
-    CoroutineScope(Dispatchers.IO).async {
+    //CoroutineScope(Dispatchers.IO).launch {
         //intentamos obtenes la lista de recetas o devolvemos una vacia para evitar errores
         //y cerramos la base de datos
         try {
@@ -48,7 +48,8 @@ fun getRecipesList(context: Context): MutableList<Recipe> {
         } finally {
             db.close()
         }
-    }
+    //}
+
     return recipeList
 }
 

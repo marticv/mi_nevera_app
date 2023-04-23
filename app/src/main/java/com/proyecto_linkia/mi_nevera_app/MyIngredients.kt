@@ -37,7 +37,7 @@ class MyIngredients : AppCompatActivity() {
     }
 
     private fun setUp() {
-        recipeList = getRecipesList(this@MyIngredients)
+        //getRecipesList()
         fillActvEntry(binding.actvEntry)
         initRecycleView()
         getData()
@@ -130,6 +130,7 @@ class MyIngredients : AppCompatActivity() {
                 runOnUiThread {
                     adapter.notifyDataSetChanged()
                 }
+                db.close()
             }catch (e:Exception){
                 showError()
             }

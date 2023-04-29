@@ -5,21 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".MainActivity">
+    tools:context=".SearchActivity">
+
 
     <AutoCompleteTextView
         android:id="@+id/actvEntry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="68dp"
         android:hint="Introduce ingredientes"
         android:maxLines="1"
         android:singleLine="true"
         app:layout_constraintEnd_toStartOf="@+id/btAddIngredient"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/cgIngredients"
@@ -41,9 +42,10 @@
         android:textColor="@color/clickable_types"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.528"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cgIngredients"
-        app:layout_constraintVertical_bias="0.305" />
+        app:layout_constraintVertical_bias="0.086" />
 
     <Button
         android:id="@+id/btAddIngredient"
@@ -77,53 +79,30 @@
         app:layout_constraintTop_toBottomOf="@+id/btSearch"
         app:layout_constraintVertical_bias="0.177" />
 
+
     <TextView
         android:id="@+id/tvVegan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
         android:text="@string/swVegan"
         android:textColor="@color/no_clickable_types"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/btSearch"
         app:layout_constraintTop_toTopOf="@+id/btSearch" />
 
-    <Button
-        android:id="@+id/btMyIngredients"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/button"
-        android:text="Button"
-        android:textColor="@color/clickable_types"
-        app:layout_constraintEnd_toStartOf="@+id/btSearch"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btSearch" />
-
-    <Button
-        android:id="@+id/btShopingList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="264dp"
-        android:backgroundTint="@color/button"
-        android:text="Shopinglist"
-        android:textColor="@color/clickable_types"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.913"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRecipe"
         android:layout_width="match_parent"
         android:layout_height="380dp"
         android:layout_margin="10dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="100dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btMyIngredients" />
+        app:layout_constraintTop_toBottomOf="@+id/btSearch" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fcMenu"
@@ -134,20 +113,13 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:layout="@layout/fragment_menu" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/swColorMode"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fcSettings"
+        android:name="com.proyecto_linkia.mi_nevera_app.SettingsFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:text="Switch"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btMyIngredients" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_settings" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/swLanguage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Switch"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/swColorMode" />
 </androidx.constraintlayout.widget.ConstraintLayout>

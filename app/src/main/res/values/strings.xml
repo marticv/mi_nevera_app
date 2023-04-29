@@ -9,7 +9,7 @@
     </string-array>
     <string name="bt_search">buscar</string>
     <string name="swVegan">Solo recetas veganas</string>
-    
+
     <!--Strings from insert recipe activity -->
     <string name="tvInsertName">Insertar nombre de receta</string>
     <string name="tvInsertIngeredients">Que ingredientes necesita?</string>
@@ -25,6 +25,19 @@
         <item>media</item>
         <item>dificil</item>
     </string-array>
+
+    <!--Strings for setting activity-->
+    <string name="tvDarkMode">Activar modo oscuro</string>
+    <string name="tvChoseActivity">Elige tu pantalla principal</string>
+    <string name="btBack">Volver atras</string>
+    <string-array name="ActivityItems">
+        <item>-- Elige pantalla principal --</item>
+        <item>Mis Ingredientes</item>
+        <item>Receta rapida</item>
+        <item>Lista de la compra</item>
+        <item>Introducir receta</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

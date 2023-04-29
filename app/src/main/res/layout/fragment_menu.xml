@@ -13,31 +13,32 @@
         <ImageButton
             android:id="@+id/ibMyIngredients"
             android:backgroundTint="@color/menu_background"
-            android:src="@drawable/ic_minus"
+            android:src="@drawable/ic_myfridge"
             android:layout_weight="1"
             android:layout_height="75dp"
             android:layout_width="75dp"/>
         <ImageButton
             android:id="@+id/ibSearch"
             android:backgroundTint="@color/menu_background"
-            android:src="@drawable/ic_minus"
-            android:layout_weight="1"
-            android:layout_width="75dp"
-            android:layout_height="75dp"/>
-        <ImageButton
-            android:id="@+id/ibShopingList"
-            android:backgroundTint="@color/menu_background"
-            android:src="@drawable/ic_add"
+            android:src="@drawable/ic_improvise"
             android:layout_weight="1"
             android:layout_width="75dp"
             android:layout_height="75dp"/>
         <ImageButton
             android:id="@+id/ibEnterRecipe"
             android:backgroundTint="@color/menu_background"
-            android:src="@drawable/ic_minus"
+            android:src="@drawable/ic_addrecipe"
             android:layout_weight="1"
             android:layout_width="75dp"
             android:layout_height="75dp"/>
+        <ImageButton
+            android:id="@+id/ibShopingList"
+            android:backgroundTint="@color/menu_background"
+            android:src="@drawable/ic_shoppingchart"
+            android:layout_weight="1"
+            android:layout_width="75dp"
+            android:layout_height="75dp"/>
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </FrameLayout>

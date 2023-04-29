@@ -9,9 +9,6 @@ import retrofit2.http.Url
 
 interface APIService {
     @GET
-    suspend fun getRecipes(@Url url:String):Response<RecipeResponse>
-
-    @GET
     suspend fun getRecipesWithoutIngredients(@Url url:String):Response<RecipesWithoutIngredientsResponse>
 
     @GET

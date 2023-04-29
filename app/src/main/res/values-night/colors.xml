@@ -12,7 +12,7 @@
     <color name="menu_background">#1E271F</color>
     <color name="background">#435046</color>
     <color name="button">#568565</color>
-    <color name="clickable_types">#FFFFFF</color>
+    <color name="clickable_types">#F3F2F2</color>
     <color name="no_clickable_types">#BFBFBF</color>
     <color name="menu_unselected_types">#878787</color>
     <color name="menu_selected_types">#DC6161</color>

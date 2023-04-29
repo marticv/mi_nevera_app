@@ -2,7 +2,6 @@ package com.proyecto_linkia.mi_nevera_app
 
 
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,9 +10,6 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.switchmaterial.SwitchMaterial
@@ -25,21 +21,16 @@ import com.proyecto_linkia.mi_nevera_app.databinding.ActivityMainBinding
 import com.proyecto_linkia.mi_nevera_app.utils.*
 import kotlinx.coroutines.*
 
-//import com.proyecto_linkia.mi_nevera_app.utils.*
 
-
-class MainActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity() {
     private lateinit var actvEntry: AutoCompleteTextView
     private lateinit var btAddIngedient: Button
-    private lateinit var btMyIngredients: Button
     private lateinit var cgIngredients: ChipGroup
     private lateinit var btSearch: Button
     private lateinit var tvResultados: TextView
     private lateinit var sVegan: SwitchMaterial
-    private lateinit var swDatkMode: SwitchMaterial
-    private lateinit var swLanguage: SwitchMaterial
     private lateinit var binding: ActivityMainBinding
-    var recipeList: MutableList<Recipe> = mutableListOf()
+    private var recipeList: MutableList<Recipe> = mutableListOf()
     var correctRecipes: MutableList<Recipe> = mutableListOf()
     private lateinit var adapter: RecipeAdapter
     private val llManager = LinearLayoutManager(this)
@@ -53,12 +44,9 @@ class MainActivity : AppCompatActivity() {
         //creamos objetos para todos los Views
         actvEntry = binding.actvEntry
         btAddIngedient = binding.btAddIngredient
-        btMyIngredients = binding.btMyIngredients
         cgIngredients = binding.cgIngredients
         btSearch = binding.btSearch
         sVegan = binding.sVegan
-        swDatkMode = binding.swColorMode
-        swLanguage = binding.swLanguage
         tvResultados = binding.tvResultados
 
         //preparamos la activity
@@ -66,35 +54,18 @@ class MainActivity : AppCompatActivity() {
 
         //damos funcionalidad a los botones
         btAddIngedient.setOnClickListener {
-            addChipIfTextIsNotEmpty(actvEntry,cgIngredients)
-        }
-
-        btMyIngredients.setOnClickListener {
-            val intent = Intent(this, MyIngredients::class.java)
-            startActivity(intent)
-        }
-
-        binding.btShopingList.setOnClickListener {
-            startActivity(Intent(this, Shopping::class.java))
+            addChipIfTextIsNotEmpty(actvEntry, cgIngredients)
         }
 
         btSearch.setOnClickListener {
             searchSuitableRecipes()
-        }
-
-        swDatkMode.setOnCheckedChangeListener { _, isSelected ->
-            if (isSelected) {
-                enableDarkMode()
-            } else {
-                disableDarkMode()
-            }
         }
     }
 
     private fun getRecipesList() {
         //creamos variables y conexion a la base de datso
         //val recipeList: MutableList<Recipe> = mutableListOf()
-        val db = DataBaseBuilder.getInstance(this@MainActivity)
+        val db = DataBaseBuilder.getInstance(this@SearchActivity)
         val recipeDao = db.getRecipeDao()
 
         //iniciamos coroutina para trabajar con la bd
@@ -124,30 +95,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun searchSuitableRecipes() {
+        correctRecipes.clear()
         if (recipeList.isEmpty()) {
             tvResultados.text = "sin resultados"
-        }
-        correctRecipes.clear()
-        val selectedIngr: ArrayList<String> = obtainSelectedIngredients(cgIngredients)
-        var myRecipes = recipeList
-        var resultRecipes = findSuitableRecipes(selectedIngr, myRecipes)
+        } else {
+            val selectedIngr: ArrayList<String> = obtainSelectedIngredients(cgIngredients)
+            var myRecipes = recipeList
+            var resultRecipes = findSuitableRecipes(selectedIngr, myRecipes)
 
-        if (checkVegan(sVegan)) {
-            for (i in 0..resultRecipes.size - 1) {
-                if (resultRecipes.get(i).isVegan == false) {
-                    resultRecipes.remove(resultRecipes.get(i))
+            if (checkVegan(sVegan)) {
+                for (i in 0..resultRecipes.size - 1) {
+                    if (resultRecipes.get(i).isVegan == false) {
+                        resultRecipes.remove(resultRecipes.get(i))
+                    }
                 }
             }
+
+            if (correctRecipes.isEmpty()) tvResultados.text = "sin resultados"
+
+            for (recipe in resultRecipes) {
+                correctRecipes.add((recipe))
+                adapter.notifyDataSetChanged()
+            }
+
+            binding.rvRecipe.visibility = View.VISIBLE
         }
 
-        if (correctRecipes.isEmpty()) tvResultados.text = "sin resultados"
 
-        for (recipe in resultRecipes) {
-            correctRecipes.add((recipe))
-            adapter.notifyDataSetChanged()
-        }
-
-        binding.rvRecipe.visibility = View.VISIBLE
     }
 
     private fun setUp() {
@@ -156,16 +130,6 @@ class MainActivity : AppCompatActivity() {
         initRecycleView()
     }
 
-
-    private fun enableDarkMode() {
-        AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
-        delegate.applyDayNight()
-    }
-
-    private fun disableDarkMode() {
-        AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
-        delegate.applyDayNight()
-    }
 
     /**
      * Compara la lista de recetas del sistema con la lista de ingredientes para ver cuales son las recetas adientes
@@ -177,9 +141,9 @@ class MainActivity : AppCompatActivity() {
     private fun findSuitableRecipes(
         ingredients: ArrayList<String>, recipes: List<Recipe>
     ): ArrayList<Recipe> {
-        var correctRecipes: ArrayList<Recipe> = ArrayList<Recipe>()
-        for (i in 0 until recipes.size) {
-            if (checkRecipe(recipes[i], ingredients)) correctRecipes.add(recipes[i])
+        val correctRecipes: ArrayList<Recipe> = ArrayList()
+        for (recipe in recipes) {
+            if (checkRecipe(recipe, ingredients))  correctRecipes.add(recipe)
         }
         return correctRecipes
     }
@@ -253,7 +217,7 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         //cerramos la conexion a la base de datos si estubiera abierta
-        val db = DataBaseBuilder.getInstance(this@MainActivity)
+        val db = DataBaseBuilder.getInstance(this@SearchActivity)
         db.close()
     }
 }

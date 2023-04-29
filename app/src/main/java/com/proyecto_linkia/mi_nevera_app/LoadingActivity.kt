@@ -52,7 +52,7 @@ class LoadingActivity : AppCompatActivity() {
             }
 
             // una vez listo cambiamos de activity y cerramos esta para que no se pueda accefer por error
-            val intent = Intent(this@LoadingActivity, MainActivity::class.java)
+            val intent = Intent(this@LoadingActivity, SearchActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -83,15 +83,15 @@ class LoadingActivity : AppCompatActivity() {
                 getFirebaseData().create(APIService::class.java)
                     .getIngredients("myingredients.json")
             val result: IngredientsResponse? = call.body()
+            //en caso de exito devolvemos la lista de ingredientes o devolvevemos una lista vacia para evitar errores
             if (call.isSuccessful) {
-                //en caso de exito devolvemos la lista de ingredientes
                 result?.ingredients!!
             } else {
-                //si la api no contiene datos devolvemos una lista vacia
                 emptyList()
             }
         } catch (e: Exception) {
             //en caso de error devolvemos una lista vacia
+            Log.d(TAG, "error al obtener ingredientes")
             emptyList()
         }
     }
@@ -112,7 +112,6 @@ class LoadingActivity : AppCompatActivity() {
             //en caso de exito devolvemos la lista de ingredientes
             //y si hay problemas devolvemos una lista vacia para evitar errores
             if (call.isSuccessful) {
-                println(result?.recipes)
                 result?.recipes!!
             } else {
                 emptyList()

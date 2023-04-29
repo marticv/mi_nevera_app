@@ -5,6 +5,7 @@
     android:id="@+id/Screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".MyIngredients">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -13,10 +14,10 @@
         android:layout_height="250dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.038" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView"
@@ -52,6 +53,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:text="Añadir"
+        android:textColor="@color/clickable_types"
+        android:backgroundTint="@color/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/actvEntry" />
 
@@ -60,6 +63,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Atras"
+        android:textColor="@color/clickable_types"
+        android:backgroundTint="@color/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.761"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,6 +75,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ingredientes"
+        android:textColor="@color/clickable_types"
+        android:backgroundTint="@color/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.07"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,8 +86,9 @@
         android:id="@+id/rvRecipes"
         android:layout_width="match_parent"
         android:layout_height="546dp"
+        android:layout_marginTop="56dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -92,4 +100,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout="@layout/fragment_menu" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fcSettings"
+        android:name="com.proyecto_linkia.mi_nevera_app.SettingsFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_settings" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

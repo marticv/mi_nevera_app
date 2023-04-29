@@ -13,7 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class Shopping : AppCompatActivity() {
+class ShoppingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityShoppingBinding
     private lateinit var toBuyAdapter: ToBuyIngredientAdapter
@@ -55,7 +55,7 @@ class Shopping : AppCompatActivity() {
 
             //guardamos el item en la base de datos
             CoroutineScope(Dispatchers.IO).launch {
-                val db = DataBaseBuilder.getInstance(this@Shopping)
+                val db = DataBaseBuilder.getInstance(this@ShoppingActivity)
                 val dao = db.getShoppingIngredientDao()
                 dao.insertToBuyIngredient(ingredient)
             }
@@ -75,7 +75,7 @@ class Shopping : AppCompatActivity() {
             bought = 1
         }
         CoroutineScope(Dispatchers.IO).launch {
-            val db = DataBaseBuilder.getInstance(this@Shopping)
+            val db = DataBaseBuilder.getInstance(this@ShoppingActivity)
             val dao = db.getShoppingIngredientDao()
             dao.updateShoppingIngredient(ingredient)
         }
@@ -94,7 +94,7 @@ class Shopping : AppCompatActivity() {
             bought = 0
         }
         CoroutineScope(Dispatchers.IO).launch {
-            val db = DataBaseBuilder.getInstance(this@Shopping)
+            val db = DataBaseBuilder.getInstance(this@ShoppingActivity)
             val dao = db.getShoppingIngredientDao()
             dao.updateShoppingIngredient(ingredient)
         }
@@ -157,7 +157,7 @@ class Shopping : AppCompatActivity() {
         //iniciamos corrutina para obtener datos
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val db = DataBaseBuilder.getInstance(this@Shopping)
+                val db = DataBaseBuilder.getInstance(this@ShoppingActivity)
                 val dao = db.getShoppingIngredientDao()
 
 
@@ -184,12 +184,12 @@ class Shopping : AppCompatActivity() {
     }
 
     private fun showError() {
-        Toast.makeText(this@Shopping, "error", Toast.LENGTH_LONG).show()
+        Toast.makeText(this@ShoppingActivity, "error", Toast.LENGTH_LONG).show()
     }
     override fun onDestroy() {
         super.onDestroy()
         CoroutineScope(Dispatchers.IO).launch {
-            val db = DataBaseBuilder.getInstance(this@Shopping)
+            val db = DataBaseBuilder.getInstance(this@ShoppingActivity)
             db.close()
         }
     }

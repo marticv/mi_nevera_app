@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
 import com.proyecto_linkia.mi_nevera_app.databinding.FragmentMenuBinding
@@ -40,39 +41,53 @@ class MenuFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentMenuBinding.inflate(inflater,container,false)
+        _binding = FragmentMenuBinding.inflate(inflater, container, false)
         return binding.root
-
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //al crear el fragment marcamos la activity seleccionada
-        when(activity?.javaClass?.simpleName){
-            "MyIngredients"->binding.ibMyIngredients.setImageResource(resources.getDrawable(R.drawable.ic_myfridge_selected))
-            "SearchActivity"-> binding.ibSearch.setImageDrawable(R.drawable.ic_myfridge_selected.toDrawable())
-            "InsertRecipeActivity"-> binding.ibEnterRecipe.setImageDrawable(R.drawable.ic_myfridge_selected.toDrawable())
-            "ShoppingActivity"-> binding.ibShopingList.setImageDrawable(R.drawable.ic_myfridge_selected.toDrawable())
+        //obtenemos el nombre de la activity padre
+        val activityName = activity?.javaClass?.simpleName
+
+        //al crear el fragment marcamos la activity seleccionada.
+        //Primero obtenemos el nombre de la activity padre y cambiamos
+        //la src del imagebutton que corresponada a la activity seleccionada
+        when (activityName) {
+            "MyIngredients" -> binding.ibMyIngredients.setImageResource(R.drawable.ic_myfridge_selected)
+            "SearchActivity" -> binding.ibSearch.setImageResource(R.drawable.ic_improvise_selected)
+            "InsertRecipeActivity" -> binding.ibEnterRecipe.setImageResource(R.drawable.ic_addrecipe_selected)
+            "ShoppingActivity" -> binding.ibShopingList.setImageResource(R.drawable.ic_shoppingchart_selected)
         }
 
-        //damos funcionalidad a los botones
+        //damos funcionalidad a los botones,
+        //para cada uno será abrir la activity seleccionada y cerrar la actual
+        //en caso de que estemos en la activiy, no hacemos nada
         binding.ibMyIngredients.setOnClickListener {
-            startActivity((Intent(context,MyIngredients::class.java)))
-            activity?.finish()
+            if (!activityName.equals("MyIngredients")) {
+                startActivity((Intent(context, MyIngredients::class.java)))
+                activity?.finish()
+            }
         }
         binding.ibSearch.setOnClickListener {
-            startActivity((Intent(context,SearchActivity::class.java)))
-            activity?.finish()
+            if (!activityName.equals("SearchActivity")) {
+                startActivity((Intent(context, SearchActivity::class.java)))
+                activity?.finish()
+            }
         }
         binding.ibEnterRecipe.setOnClickListener {
-            startActivity((Intent(context,InsertRecipeActivity::class.java)))
-            activity?.finish()
+            if (!activityName.equals("InsertRecipeActivity")) {
+                startActivity((Intent(context, InsertRecipeActivity::class.java)))
+                activity?.finish()
+            }
         }
         binding.ibShopingList.setOnClickListener {
-            startActivity(Intent(context, ShoppingActivity::class.java))
-            activity?.finish()
+            if (!activityName.equals("ShoppingActivity")) {
+                startActivity(Intent(context, ShoppingActivity::class.java))
+                activity?.finish()
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package com.proyecto_linkia.mi_nevera_app
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.proyecto_linkia.mi_nevera_app.clases.Recipe
 import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
@@ -29,9 +30,13 @@ class InsertRecipeActivity : AppCompatActivity() {
             addChipIfTextIsNotEmpty(binding.actvEntry, binding.cgIngredients)
         }
         binding.btAddRecipe.setOnClickListener {
-            val recipe = obtainNewRecipeData()
-            enterRecipeToDb(recipe)
-            clearData()
+            if (checkEntry()) {
+                val recipe = obtainNewRecipeData()
+                enterRecipeToDb(recipe)
+                clearData()
+            }else{
+                Toast.makeText(this, "Receta incompleta", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -48,6 +53,18 @@ class InsertRecipeActivity : AppCompatActivity() {
     }
 
     /**
+     * Funcion que comprueva que los campos nos esten vacios
+     *
+     * @return true si esta correcto
+     */
+    private fun checkEntry(): Boolean {
+        if (binding.etRecipeName.text.toString().trim().isEmpty()) return false
+        if (obtainSelectedIngredients(binding.cgIngredients).isEmpty()) return false
+        if (binding.editTextNumber.text.toString().isEmpty()) return false
+        return true
+    }
+
+    /**
      * Función que obtiene los datos para una objeto receta
      * a partir de los datos del usuario
      *
@@ -56,7 +73,7 @@ class InsertRecipeActivity : AppCompatActivity() {
     private fun obtainNewRecipeData(): Recipe {
         return Recipe(
             //leemos los datos introducidos por el usuario
-            binding.etRecipeName.text.toString(),
+            binding.etRecipeName.text.toString().trim(),
             obtainSelectedIngredients(binding.cgIngredients),
             binding.swIsVegan.isChecked,
             binding.spDifficulty.selectedItem.toString(),

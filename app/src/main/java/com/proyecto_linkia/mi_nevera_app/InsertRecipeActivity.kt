@@ -30,13 +30,24 @@ class InsertRecipeActivity : AppCompatActivity() {
             addChipIfTextIsNotEmpty(binding.actvEntry, binding.cgIngredients)
         }
         binding.btAddRecipe.setOnClickListener {
-            if (checkEntry()) {
-                val recipe = obtainNewRecipeData()
-                enterRecipeToDb(recipe)
-                clearData()
-            }else{
-                Toast.makeText(this, "Receta incompleta", Toast.LENGTH_SHORT).show()
-            }
+            addRecipeIfCorrect()
+        }
+    }
+
+    /**
+     * Función que añade una receta a la base de datos si es correcta
+     *
+     */
+    private fun addRecipeIfCorrect() {
+        //miramos si la receta es correcta y si lo es añadimos a la bd y limpiamos los campos
+        if (checkEntry()) {
+            val recipe = obtainNewRecipeData()
+            enterRecipeToDb(recipe)
+            clearData()
+            Toast.makeText(this, "Receta añadida", Toast.LENGTH_SHORT).show()
+        } else {
+            //si faltan campos informamos al usuario
+            Toast.makeText(this, "Receta incompleta", Toast.LENGTH_SHORT).show()
         }
     }
 

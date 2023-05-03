@@ -35,14 +35,30 @@ class ShoppingActivity : AppCompatActivity() {
         initBoughtRecycleView()
 
         binding.btAddToShopingList.setOnClickListener { addIngredient() }
+        binding.btDeleteBought.setOnClickListener { deleteBoughtItems() }
+    }
+
+    private fun deleteBoughtItems() {
+        if(boughtList.size>0) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val db = DataBaseBuilder.getInstance(this@ShoppingActivity)
+                val dao = db.getShoppingIngredientDao()
+                for (item in boughtList) {
+                    dao.deleteShoppingIngredient(item)
+                    boughtList.remove(item)
+                }
+                runOnUiThread {
+                    boughtList.clear()
+                    boughtAdapter.notifyDataSetChanged()
+                }
+                db.close()
+            }
+        }
     }
 
     private fun addIngredient() {
         //cogemos el texto y lo convertimos en un ingrediente que pasamos al listado
         val ingredient= ShoppingIngredient(binding.actvEntry.text.toString())
-        binding.textView2.text = ingredient.toBuy.toString()
-        binding.textView3.text = ingredient.bought.toString()
-        //binding.textView4.text = ingredient.id.toString()
 
         //comprobamos si el ingrediente esta ya en la lista
         if(!toBuyList.contains(ingredient)) {
@@ -58,8 +74,8 @@ class ShoppingActivity : AppCompatActivity() {
                 val db = DataBaseBuilder.getInstance(this@ShoppingActivity)
                 val dao = db.getShoppingIngredientDao()
                 dao.insertToBuyIngredient(ingredient)
+                db.close()
             }
-
         }else{
             //informamos al usuario
             Toast.makeText(this, "${ingredient.ingredientName} ya en la lista", Toast.LENGTH_LONG).show()
@@ -78,11 +94,8 @@ class ShoppingActivity : AppCompatActivity() {
             val db = DataBaseBuilder.getInstance(this@ShoppingActivity)
             val dao = db.getShoppingIngredientDao()
             dao.updateShoppingIngredient(ingredient)
+            db.close()
         }
-
-        binding.textView2.text = ingredient.toBuy.toString()
-        binding.textView3.text = ingredient.bought.toString()
-        //binding.textView4.text = ingredient.id.toString()
         boughtList.add(0,ingredient)
         boughtAdapter.notifyItemInserted(0)
     }
@@ -97,10 +110,9 @@ class ShoppingActivity : AppCompatActivity() {
             val db = DataBaseBuilder.getInstance(this@ShoppingActivity)
             val dao = db.getShoppingIngredientDao()
             dao.updateShoppingIngredient(ingredient)
+            db.close()
         }
-        binding.textView2.text = ingredient.toBuy.toString()
-        binding.textView3.text = ingredient.bought.toString()
-        //binding.textView4.text = ingredient.id.toString()
+
         toBuyList.add(0,ingredient)
         toBuyAdapter.notifyItemInserted(0)
     }
@@ -160,7 +172,6 @@ class ShoppingActivity : AppCompatActivity() {
                 val db = DataBaseBuilder.getInstance(this@ShoppingActivity)
                 val dao = db.getShoppingIngredientDao()
 
-
                 val toBuyIngredientsList = dao.getAllToBuyIngredients()
                 for (item in toBuyIngredientsList) {
                     toBuyList.add(item)
@@ -174,18 +185,17 @@ class ShoppingActivity : AppCompatActivity() {
                     toBuyAdapter.notifyDataSetChanged()
                     boughtAdapter.notifyDataSetChanged()
                 }
-
+                db.close()
             }catch (e:Exception){
                 showError()
             }
-
-
         }
     }
 
     private fun showError() {
         Toast.makeText(this@ShoppingActivity, "error", Toast.LENGTH_LONG).show()
     }
+
     override fun onDestroy() {
         super.onDestroy()
         CoroutineScope(Dispatchers.IO).launch {

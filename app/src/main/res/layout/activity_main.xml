@@ -67,18 +67,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvVegan" />
 
+
     <TextView
         android:id="@+id/tvResultados"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btSearch"
-        app:layout_constraintVertical_bias="0.177" />
-
+        app:layout_constraintTop_toTopOf="@+id/btSearch" />
 
     <TextView
         android:id="@+id/tvVegan"
@@ -96,13 +92,10 @@
         android:id="@+id/rvRecipe"
         android:layout_width="match_parent"
         android:layout_height="380dp"
-        android:layout_margin="10dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="112dp"
         android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btSearch" />
+        app:layout_constraintTop_toBottomOf="@+id/btSearch"
+        tools:layout_editor_absoluteX="4dp" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fcMenu"
@@ -121,5 +114,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_settings" />
+
+    <Spinner
+        android:id="@+id/spDifficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btSearch" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

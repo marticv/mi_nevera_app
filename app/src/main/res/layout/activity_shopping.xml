@@ -31,10 +31,10 @@
         android:id="@+id/actvEntry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="128dp"
         android:hint="Que hay que comprar?"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvBought" />
 
@@ -42,36 +42,45 @@
         android:id="@+id/btAddToShopingList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/button"
-        android:textColor="@color/clickable_types"
         android:layout_marginEnd="4dp"
+        android:backgroundTint="@color/button"
         android:text="Añadir"
+        android:textColor="@color/clickable_types"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/actvEntry" />
 
-    <TextView
-        android:id="@+id/textView2"
+    <Button
+        android:id="@+id/btDeleteBought"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:backgroundTint="@color/button"
+        android:text="Borrar recientes"
+        android:textColor="@color/clickable_types"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvBought" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tvRecientes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/rvBought" />
+        android:text="Comprados recientemente:"
+        android:textColor="@color/no_clickable_types"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/rvBought"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/tvToBuy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvBought" />
+        android:text="Hay que comprar:"
+        android:textColor="@color/no_clickable_types"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fcMenu"
         android:name="com.proyecto_linkia.mi_nevera_app.MenuFragment"
@@ -80,6 +89,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout="@layout/fragment_menu" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fcSettings"
         android:name="com.proyecto_linkia.mi_nevera_app.SettingsFragment"

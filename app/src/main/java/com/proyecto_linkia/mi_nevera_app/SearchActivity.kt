@@ -8,18 +8,24 @@ import android.util.Log
 import android.view.View
 import android.widget.AutoCompleteTextView
 import android.widget.Button
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.proyecto_linkia.mi_nevera_app.adapter.RecipeAdapter
 import com.proyecto_linkia.mi_nevera_app.clases.Recipe
+import com.proyecto_linkia.mi_nevera_app.clases.UserProfile
 import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
 import com.proyecto_linkia.mi_nevera_app.data.db.entities.relations.RecipeWithIngredients
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivityMainBinding
 import com.proyecto_linkia.mi_nevera_app.utils.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.map
 
 
 class SearchActivity : AppCompatActivity() {
@@ -29,6 +35,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var btSearch: Button
     private lateinit var tvResultados: TextView
     private lateinit var sVegan: SwitchMaterial
+    private lateinit var spDifficulty: Spinner
     private lateinit var binding: ActivityMainBinding
     private var recipeList: MutableList<Recipe> = mutableListOf()
     var correctRecipes: MutableList<Recipe> = mutableListOf()
@@ -48,9 +55,12 @@ class SearchActivity : AppCompatActivity() {
         btSearch = binding.btSearch
         sVegan = binding.sVegan
         tvResultados = binding.tvResultados
+        spDifficulty = binding.spDifficulty
 
         //preparamos la activity
         setUp()
+
+        tvResultados.text = recipeList.size.toString()
 
         //damos funcionalidad a los botones
         btAddIngedient.setOnClickListener {
@@ -58,6 +68,9 @@ class SearchActivity : AppCompatActivity() {
         }
 
         btSearch.setOnClickListener {
+            if (recipeList.size == 0) {
+                getRecipesList()
+            }
             searchSuitableRecipes()
         }
     }
@@ -83,8 +96,10 @@ class SearchActivity : AppCompatActivity() {
                 }
 
                 //creamos una receta completa para cada receta de la bd
-                for (recipeWithIngredients in list) {
-                    recipeList.add(recipeWithIngredients.toRecipe())
+                runOnUiThread {
+                    for (recipeWithIngredients in list) {
+                        recipeList.add(recipeWithIngredients.toRecipe())
+                    }
                 }
             } catch (e: Exception) {
                 Log.d(ContentValues.TAG, "error al obtener recetas")
@@ -127,6 +142,8 @@ class SearchActivity : AppCompatActivity() {
     private fun setUp() {
         getRecipesList()
         fillActvEntry(actvEntry)
+        val difficultyOptions: Array<String> = resources.getStringArray(R.array.difficultyItems)
+        fillSpinner(spDifficulty, difficultyOptions)
         initRecycleView()
     }
 
@@ -143,7 +160,7 @@ class SearchActivity : AppCompatActivity() {
     ): ArrayList<Recipe> {
         val correctRecipes: ArrayList<Recipe> = ArrayList()
         for (recipe in recipes) {
-            if (checkRecipe(recipe, ingredients))  correctRecipes.add(recipe)
+            if (checkRecipe(recipe, ingredients)) correctRecipes.add(recipe)
         }
         return correctRecipes
     }
@@ -162,6 +179,9 @@ class SearchActivity : AppCompatActivity() {
         if (checkVegan(sVegan)) {
             if (!recipe.isVegan) return false
         }
+
+        //if(!checkDifficulty(recipe)) return false
+
         for (i in 0 until recipe.ingredients.size) {
             ingredientInRecipe = recipe.ingredients[i]
             if (selectedIngredients.contains(ingredientInRecipe)) count++
@@ -169,6 +189,21 @@ class SearchActivity : AppCompatActivity() {
         return count == ingredientNumber
     }
 
+    /**
+     * Funcion que compara la dificultad de una receta
+     * con la maxima requerida por el usuario
+     *
+     * @param recipe
+     * @return
+     */
+    private fun checkDifficulty(recipe: Recipe): Boolean {
+        when (spDifficulty.selectedItem.toString()) {
+            "facil" -> return recipe.difficulty == "facil"
+            "medio" -> return recipe.difficulty == "facil" || recipe.difficulty == "medio"
+            "dificil" -> return true
+            else -> return false
+        }
+    }
 
     /**
      * Comprobamos si el estado del switch
@@ -179,6 +214,7 @@ class SearchActivity : AppCompatActivity() {
     private fun checkVegan(sVegan: SwitchMaterial): Boolean {
         return sVegan.isChecked
     }
+
 
     private fun initRecycleView() {
         //creamos el adapter y lo pasamos al recyclerview para que se renderice

@@ -5,7 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
+import com.proyecto_linkia.mi_nevera_app.clases.UserProfile
 import com.proyecto_linkia.mi_nevera_app.data.IngredientsResponse
 import com.proyecto_linkia.mi_nevera_app.data.RecipesWithoutIngredientsResponse
 import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
@@ -15,15 +19,18 @@ import com.proyecto_linkia.mi_nevera_app.data.db.entities.relations.RecipeIngred
 import com.proyecto_linkia.mi_nevera_app.internet.APIService
 import com.proyecto_linkia.mi_nevera_app.internet.IngredientExternal
 import com.proyecto_linkia.mi_nevera_app.internet.RecipeExternal
+import com.proyecto_linkia.mi_nevera_app.utils.dataStore
 import com.proyecto_linkia.mi_nevera_app.utils.toEmptyRecipeEntity
 import com.proyecto_linkia.mi_nevera_app.utils.toEntity
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.map
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
 class LoadingActivity : AppCompatActivity() {
+    private val userProfile = UserProfile("main",false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //creamos instancia del splash antes de que se cree la vista
@@ -51,8 +58,16 @@ class LoadingActivity : AppCompatActivity() {
                 addRecipesToDB(recipes)
             }
 
+//            getUserPreferences().collect{
+//                userProfile.activity=it.activity
+//                userProfile.mode = it.mode
+//            }
+//
+
+
+
             // una vez listo cambiamos de activity y cerramos esta para que no se pueda accefer por error
-            val intent = Intent(this@LoadingActivity, SearchActivity::class.java)
+            val intent = Intent(this@LoadingActivity, LoadSettingsActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -134,7 +149,7 @@ class LoadingActivity : AppCompatActivity() {
         //directamente en el hilo principal con room
         val db = DataBaseBuilderUIThread.getInstance(this@LoadingActivity)
         val ingredientListEntity = mutableListOf<IngredientEntity>()
-        for(ingredientExternal in ingredients){
+        for (ingredientExternal in ingredients) {
             ingredientListEntity.add(ingredientExternal.toEntity())
         }
 
@@ -144,9 +159,9 @@ class LoadingActivity : AppCompatActivity() {
             dao.insertIngredientList(ingredientListEntity)
         } catch (e: Exception) {
             Log.d(TAG, "${e.message}")
-        }finally {
+        } finally {
             //cerramos la conexion a la base de datos
-            if(db.isOpen){
+            if (db.isOpen) {
                 db.openHelper.close()
             }
         }
@@ -174,18 +189,31 @@ class LoadingActivity : AppCompatActivity() {
                             RecipeIngredientCrossReference(recipe.recipeId, ingredient)
                         )
                     }
-                }catch (e:Exception){
+                } catch (e: Exception) {
                     Log.d(TAG, "error ingredient db")
                 }
             }
         } catch (e: Exception) {
             Log.d(TAG, "error recipes db")
-        }finally {
+        } finally {
             //cerramos la conexion a la base de datos
-            if(db.isOpen){
+            if (db.isOpen) {
                 db.openHelper.close()
             }
         }
+    }
+
+    private fun getUserPreferences() = dataStore.data.map { preferences ->
+        UserProfile(
+            activity = preferences[stringPreferencesKey("activity")].orEmpty(),
+            mode = preferences[booleanPreferencesKey("mode")] ?: false
+        )
+    }
+
+    private fun enableDarkMode() {
+        //cambiamos al modo oscuro com predeterinado y lo aplicamos
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        delegate.applyDayNight()
     }
 
     /**
@@ -199,4 +227,6 @@ class LoadingActivity : AppCompatActivity() {
         val db = DataBaseBuilder.getInstance(this@LoadingActivity)
         db.close()
     }
+
+
 }

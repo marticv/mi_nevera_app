@@ -24,28 +24,27 @@
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/cgIngredients"
-        android:layout_width="wrap_content"
-        android:layout_height="52dp"
+        android:layout_width="match_parent"
+        android:layout_height="126dp"
+        android:layout_margin="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.038"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/actvEntry"
-        app:layout_constraintVertical_bias="0.085" />
+        app:layout_constraintVertical_bias="0.004" />
 
     <Button
         android:id="@+id/btSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:backgroundTint="@color/button"
         android:text="@string/bt_search"
         android:textColor="@color/clickable_types"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.528"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cgIngredients"
-        app:layout_constraintVertical_bias="0.086" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDifficulty" />
 
     <Button
         android:id="@+id/btAddIngredient"
@@ -62,47 +61,71 @@
         android:id="@+id/sVegan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.849"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvVegan" />
+        app:layout_constraintStart_toStartOf="@+id/swFavourites"
+        app:layout_constraintTop_toTopOf="@+id/tvVegan" />
+
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/swFavourites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spDifficulty" />
-
+        android:layout_marginStart="84dp"
+        app:layout_constraintStart_toEndOf="@+id/tvFavourite"
+        app:layout_constraintTop_toTopOf="@+id/tvFavourite" />
 
     <TextView
         android:id="@+id/tvResultados"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="500dp"
         android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btSearch" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvVegan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:text="@string/swVegan"
         android:textColor="@color/no_clickable_types"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/btSearch"
-        app:layout_constraintTop_toTopOf="@+id/btSearch" />
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/tvFavourite"
+        app:layout_constraintTop_toBottomOf="@+id/tvFavourite" />
+
+    <TextView
+        android:id="@+id/tvDifficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dificultad máxima"
+        android:textColor="@color/no_clickable_types"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/tvVegan"
+        app:layout_constraintTop_toBottomOf="@+id/sVegan" />
+
+    <TextView
+        android:id="@+id/tvFavourite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="132dp"
+        android:text="Solo Favoritos"
+        android:textColor="@color/no_clickable_types"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.112"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cgIngredients" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRecipe"
         android:layout_width="match_parent"
         android:layout_height="380dp"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="8dp"
         android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@+id/btSearch"
-        tools:layout_editor_absoluteX="4dp" />
+        tools:layout_editor_absoluteX="16dp" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fcMenu"
@@ -126,7 +149,7 @@
         android:id="@+id/spDifficulty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btSearch" />
+        app:layout_constraintStart_toStartOf="@+id/sVegan"
+        app:layout_constraintTop_toTopOf="@+id/tvDifficulty" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -221,12 +221,13 @@ class SearchActivity : AppCompatActivity() {
      * @return
      */
     private fun checkDifficulty(recipe: Recipe): Boolean {
-        when (spDifficulty.selectedItem.toString()) {
-            "facil" -> return recipe.difficulty == "facil"
-            "medio" -> return recipe.difficulty == "facil" || recipe.difficulty == "medio"
-            "dificil" -> return true
+        when (spDifficulty.selectedItemPosition) {
+            0 -> if(recipe.difficulty.equals("easy")) return false
+            1 -> if(recipe.difficulty=="difficult") return false
+            2 -> return true
             else -> return false
         }
+        return false
     }
 
 

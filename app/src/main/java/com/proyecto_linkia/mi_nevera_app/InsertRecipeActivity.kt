@@ -87,9 +87,19 @@ class InsertRecipeActivity : AppCompatActivity() {
             binding.etRecipeName.text.toString().trim(),
             obtainSelectedIngredients(binding.cgIngredients),
             binding.swIsVegan.isChecked,
-            binding.spDifficulty.selectedItem.toString(),
+            when (binding.spDifficulty.selectedItemPosition) {
+                0 -> {
+                    "easy"
+                }
+                1 -> {
+                    "medium"
+                }
+                else -> {
+                    "difficult"
+                }
+            },
             binding.editTextNumber.text.toString().toInt(),
-            "",false
+            "", false
         )
     }
 

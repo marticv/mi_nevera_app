@@ -12,5 +12,6 @@ data class RecipeEntity(
     var isVegan: Int,
     val difficulty: String,
     val time: Int,
-    val image: String
+    val image: String,
+    val isFavourite: Int
 )

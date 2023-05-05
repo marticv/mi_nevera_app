@@ -8,5 +8,6 @@ data class Recipe(
     val isVegan: Boolean,
     val difficulty: String,
     val time: Int,
-    val image: String
+    val image: String,
+    var isFavourite: Boolean
 ): Serializable

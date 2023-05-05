@@ -14,7 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.common.api.internal.LifecycleActivity
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.proyecto_linkia.mi_nevera_app.adapter.RecipeAdapter
@@ -135,8 +137,6 @@ class SearchActivity : AppCompatActivity() {
 
             binding.rvRecipe.visibility = View.VISIBLE
         }
-
-
     }
 
     private fun setUp() {
@@ -145,6 +145,22 @@ class SearchActivity : AppCompatActivity() {
         val difficultyOptions: Array<String> = resources.getStringArray(R.array.difficultyItems)
         fillSpinner(spDifficulty, difficultyOptions)
         initRecycleView()
+        applyUserPreferences()
+    }
+
+    private fun applyUserPreferences(){
+        lifecycleScope.launch(Dispatchers.IO) {
+            getUserPreferences().collect{
+                withContext(Dispatchers.Main){
+                    if(it){
+                        binding.sVegan.isChecked=true
+                    }
+                }
+            }
+        }
+    }
+    private fun getUserPreferences() = dataStore.data.map { preferences ->
+        preferences[booleanPreferencesKey(name = "vegan")] ?:false
     }
 
 
@@ -180,13 +196,21 @@ class SearchActivity : AppCompatActivity() {
             if (!recipe.isVegan) return false
         }
 
-        //if(!checkDifficulty(recipe)) return false
+        if(!checkDifficulty(recipe)) return false
+        if(!checkFavourites(binding.swFavourites,recipe)) return false
 
         for (i in 0 until recipe.ingredients.size) {
             ingredientInRecipe = recipe.ingredients[i]
             if (selectedIngredients.contains(ingredientInRecipe)) count++
         }
         return count == ingredientNumber
+    }
+
+    private fun checkFavourites(switch: SwitchMaterial,recipe: Recipe): Boolean {
+        if(switch.isChecked){
+            if(!recipe.isFavourite) return false
+        }
+        return true
     }
 
     /**
@@ -205,6 +229,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+
     /**
      * Comprobamos si el estado del switch
      *
@@ -221,20 +246,26 @@ class SearchActivity : AppCompatActivity() {
         val recyclerView = binding.rvRecipe
         adapter = RecipeAdapter(recipeList = correctRecipes, onClickListener = { position ->
             showRecipe(position)
-        })
+        }, onClickFavourite = { position -> onClickFavourite(position) })
         recyclerView.layoutManager = llManager
         recyclerView.adapter = adapter
         adapter.notifyDataSetChanged()
     }
 
-    private fun onDeletedItem(position: Int) {
-        //Obtenemos el ingrediente a eliminar de la lista y lo pasamos a una corrutina
-        //para eliminarlo tambien de la base de datos
-        val recipe = recipeList[position]
 
-        //eliminamos el item del recyclerView y avisamos al adaptador
-        recipeList.removeAt(position)
-        adapter.notifyItemRemoved(position)
+    private fun onClickFavourite(position: Int) {
+        val recipe = correctRecipes[position]
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val db = DataBaseBuilder.getInstance(this@SearchActivity)
+            val recipeDao = db.getRecipeDao()
+            if(recipe.isFavourite){
+                recipeDao.udateToNotFavourite(recipe.recipeName)
+            }else{
+                recipeDao.udateToFavourite(recipe.recipeName)
+            }
+            db.close()
+        }
     }
 
     private fun showRecipe(position: Int) {

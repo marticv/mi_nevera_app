@@ -30,7 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 class LoadingActivity : AppCompatActivity() {
-    private val userProfile = UserProfile("main",false)
+    private val userProfile = UserProfile("main", false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //creamos instancia del splash antes de que se cree la vista
@@ -57,13 +57,6 @@ class LoadingActivity : AppCompatActivity() {
                 addIngredientToDB(ingredients)
                 addRecipesToDB(recipes)
             }
-
-//            getUserPreferences().collect{
-//                userProfile.activity=it.activity
-//                userProfile.mode = it.mode
-//            }
-//
-
 
 
             // una vez listo cambiamos de activity y cerramos esta para que no se pueda accefer por error
@@ -152,7 +145,6 @@ class LoadingActivity : AppCompatActivity() {
         for (ingredientExternal in ingredients) {
             ingredientListEntity.add(ingredientExternal.toEntity())
         }
-
         try {
             //obtenemos el dao e insertamos ingredientes
             val dao = db.getIngredientsDao()
@@ -181,13 +173,16 @@ class LoadingActivity : AppCompatActivity() {
 
             //añadimos las recetas y la relacion con los ingredientes a la base de datos
             for (recipe in recipes) {
-
                 try {
-                    dao.insertRecipe(recipe.toEmptyRecipeEntity())
-                    for (ingredient in recipe.ingredients) {
-                        dao.insertRecipeIngredientsCrossReference(
-                            RecipeIngredientCrossReference(recipe.recipeId, ingredient)
-                        )
+                    //miramos si la receta ya esta en la base de datos, sino, la insertamos
+                    val recipeInDb = dao.recipeInDB(recipe.recipeId)
+                    if (recipeInDb == 0) {
+                        dao.insertRecipe(recipe.toEmptyRecipeEntity())
+                        for (ingredient in recipe.ingredients) {
+                            dao.insertRecipeIngredientsCrossReference(
+                                RecipeIngredientCrossReference(recipe.recipeId, ingredient)
+                            )
+                        }
                     }
                 } catch (e: Exception) {
                     Log.d(TAG, "error ingredient db")
@@ -201,19 +196,6 @@ class LoadingActivity : AppCompatActivity() {
                 db.openHelper.close()
             }
         }
-    }
-
-    private fun getUserPreferences() = dataStore.data.map { preferences ->
-        UserProfile(
-            activity = preferences[stringPreferencesKey("activity")].orEmpty(),
-            mode = preferences[booleanPreferencesKey("mode")] ?: false
-        )
-    }
-
-    private fun enableDarkMode() {
-        //cambiamos al modo oscuro com predeterinado y lo aplicamos
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        delegate.applyDayNight()
     }
 
     /**

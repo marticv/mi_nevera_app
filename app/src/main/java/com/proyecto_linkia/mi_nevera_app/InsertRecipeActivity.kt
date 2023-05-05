@@ -89,7 +89,7 @@ class InsertRecipeActivity : AppCompatActivity() {
             binding.swIsVegan.isChecked,
             binding.spDifficulty.selectedItem.toString(),
             binding.editTextNumber.text.toString().toInt(),
-            ""
+            "",false
         )
     }
 

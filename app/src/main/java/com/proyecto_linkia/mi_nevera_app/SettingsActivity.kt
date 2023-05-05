@@ -8,11 +8,14 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.lifecycleScope
+import com.proyecto_linkia.mi_nevera_app.clases.UserProfile
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivitySettingsBinding
 import com.proyecto_linkia.mi_nevera_app.utils.dataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -36,18 +39,25 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         binding.btSave.setOnClickListener {
-            saveValues(isUsingNightModeResources(),binding.spChoseActivity.selectedItem.toString())
+            saveValues(
+                isUsingNightModeResources(),
+                binding.swVegan.isChecked,
+                binding.spChoseActivity.selectedItem.toString()
+            )
         }
 
-        binding.button.setOnClickListener {
+        binding.btClose.setOnClickListener {
             finish()
         }
     }
 
-    private fun saveValues(mode: Boolean, activity: String) {
-        lifecycleScope.launch(Dispatchers.IO) { dataStore.edit{ preferences->
-            preferences[stringPreferencesKey("activity")] =activity
-            preferences[booleanPreferencesKey("mode")]=mode }
+    private fun saveValues(mode: Boolean, vegan: Boolean, activity: String) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            dataStore.edit { preferences ->
+                preferences[booleanPreferencesKey("mode")] = mode
+                preferences[stringPreferencesKey("activity")] = activity
+                preferences[booleanPreferencesKey(name = "vegan")] = vegan
+            }
         }
     }
 
@@ -61,6 +71,16 @@ class SettingsActivity : AppCompatActivity() {
         fillSpinner()
         //si el modo oscuro esta activado, activamos el switch
         if (isUsingNightModeResources()) binding.swDarkMode.isChecked = true
+        //si el usuario prefiere sempre vegano activamos el switch
+        lifecycleScope.launch(Dispatchers.IO) {
+            getUserPreferences().collect{
+                withContext(Dispatchers.Main){
+                    if(it){
+                        binding.swVegan.isChecked=true
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -110,4 +130,9 @@ class SettingsActivity : AppCompatActivity() {
             else -> false
         }
     }
+
+    private fun getUserPreferences() = dataStore.data.map { preferences ->
+        preferences[booleanPreferencesKey(name = "vegan")] ?:false
+    }
+
 }

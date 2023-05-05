@@ -13,6 +13,9 @@ interface RecipeDao {
     @Query("SELECT COUNT(recipeId) FROM recipeentity WHERE recipeId LIKE 'B%'")
     suspend fun getUserRecipeNumber():Int
 
+    @Query("SELECT COUNT(recipeId) FROM recipeentity WHERE recipeId LIKE :recipeId")
+    suspend fun recipeInDB(recipeId: String):Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecipe(emptyRecipeEntity: RecipeEntity)
 
@@ -21,6 +24,12 @@ interface RecipeDao {
 
     @Delete
     suspend fun deleteRecipe(emptyRecipeEntity: RecipeEntity)
+
+    @Query("UPDATE recipeentity SET isFavourite =1 WHERE recipeName =:recipeName ")
+    suspend fun udateToFavourite(recipeName:String)
+
+    @Query("UPDATE recipeentity SET isFavourite =0 WHERE recipeName =:recipeName ")
+    suspend fun udateToNotFavourite(recipeName:String)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecipeIngredientsCrossReference(crossReference: RecipeIngredientCrossReference)

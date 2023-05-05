@@ -27,11 +27,18 @@
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toTopOf="@+id/textView5" />
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/swVegan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/swDarkMode"
+        app:layout_constraintTop_toTopOf="@+id/tvVegan" />
+
     <TextView
         android:id="@+id/tvChoseActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="136dp"
         android:text="@string/tvChoseActivity"
         android:textColor="@color/no_clickable_types"
         android:textSize="25dp"
@@ -46,10 +53,10 @@
         app:layout_constraintTop_toBottomOf="@+id/tvChoseActivity" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="36dp"
         android:backgroundTint="@color/button"
         android:text="@string/btBack"
         android:textColor="@color/clickable_types"
@@ -63,13 +70,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="8dp"
         android:backgroundTint="@color/button"
         android:text="Guardar"
         android:textColor="@color/clickable_types"
-
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button" />
+        app:layout_constraintTop_toTopOf="@+id/btClose" />
+
+    <TextView
+        android:id="@+id/tvVegan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="Vegano por defecto?"
+        android:textColor="@color/no_clickable_types"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,7 +23,8 @@ fun RecipeExternal.toEmptyRecipeEntity(): RecipeEntity {
         },
         this.difficulty,
         this.time,
-        this.image
+        this.image,
+        0
     )
 }
 
@@ -39,7 +40,8 @@ fun RecipeWithIngredients.toRecipe(): Recipe {
         recipeEntity.isVegan == 1,
         recipeEntity.difficulty,
         recipeEntity.time,
-        recipeEntity.image
+        recipeEntity.image,
+        this.recipeEntity.isFavourite != 0
     )
 }
 
@@ -49,14 +51,18 @@ fun Recipe.toEntity(id: String): RecipeEntity {
             1
         } else {
             0
-        }, this.difficulty, this.time, if(this.image == ""){
+        }, this.difficulty, this.time, if (this.image == "") {
             "nullFromUser"
-            }else{
-                this.image
+        } else {
+            this.image
+        }, if (this.isFavourite) {
+            1
+        } else {
+            0
         }
     )
 }
 
-fun String.toEntity(id:String): IngredientEntity{
-    return IngredientEntity(id,this,"nullfromUser")
+fun String.toEntity(id: String): IngredientEntity {
+    return IngredientEntity(id, this, "nullfromUser")
 }

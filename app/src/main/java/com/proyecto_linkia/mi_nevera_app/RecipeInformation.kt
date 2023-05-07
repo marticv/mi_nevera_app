@@ -59,7 +59,11 @@ class RecipeInformation : AppCompatActivity() {
         }
 
         val image = recipe.image
-        Picasso.get().load(image).into(binding.ivRecipe)
+        if (image != "nullFromUser") {
+            Picasso.get().load(image).into(binding.ivRecipe)
+        }else{
+            binding.ivRecipe.setImageResource(R.mipmap.ic_launcher)
+        }
 
         binding.btClose.setOnClickListener {
             finish()

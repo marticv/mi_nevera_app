@@ -134,7 +134,6 @@ class SearchActivity : AppCompatActivity() {
                 correctRecipes.add((recipe))
                 adapter.notifyDataSetChanged()
             }
-
             binding.rvRecipe.visibility = View.VISIBLE
         }
     }

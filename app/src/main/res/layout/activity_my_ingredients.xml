@@ -11,23 +11,23 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvIngredients"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="297dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/tvInstructions"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvInstructions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="52dp"
         android:maxLines="1"
         android:singleLine="true"
         android:text="Clica para borrar"
-        android:textSize="15dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,59 +38,58 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="48dp"
         android:hint="Introduce ingredientes"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btAddMyIngredient"
-        app:layout_constraintHorizontal_bias="0.265"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvIngredients"
-        app:layout_constraintVertical_bias="0.373" />
+        app:layout_constraintVertical_bias="0.096" />
 
     <Button
         android:id="@+id/btAddMyIngredient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
+        android:backgroundTint="@color/button"
         android:text="Añadir"
         android:textColor="@color/clickable_types"
-        android:backgroundTint="@color/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/actvEntry" />
 
     <Button
-        android:id="@+id/btBack"
+        android:id="@+id/btRecipes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Atras"
-        android:textColor="@color/clickable_types"
         android:backgroundTint="@color/button"
+        android:text="Recetas"
+        android:textColor="@color/clickable_types"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.761"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/btFilters"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/actvEntry" />
+        app:layout_constraintTop_toBottomOf="@+id/rvRecipes" />
 
     <Button
-        android:id="@+id/btIngredients"
+        android:id="@+id/btFilters"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ingredientes"
-        android:textColor="@color/clickable_types"
         android:backgroundTint="@color/button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.07"
+        android:text="Filtros"
+        android:textColor="@color/clickable_types"
+        app:layout_constraintEnd_toStartOf="@+id/btRecipes"
+        app:layout_constraintHorizontal_bias="0.291"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/actvEntry" />
+        app:layout_constraintTop_toBottomOf="@+id/rvRecipes" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRecipes"
         android:layout_width="match_parent"
-        android:layout_height="546dp"
-        android:layout_marginTop="56dp"
+        android:layout_height="706dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/fcSettings" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fcMenu"
@@ -109,5 +108,73 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_settings" />
+
+    <TextView
+        android:id="@+id/tvFiltros"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Filtros:"
+        android:textColor="@color/no_clickable_types"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.542"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/actvEntry" />
+
+    <TextView
+        android:id="@+id/tvFavourite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Solo Favoritos"
+        android:textColor="@color/no_clickable_types"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.151"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFiltros" />
+
+    <TextView
+        android:id="@+id/tvVegan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/swVegan"
+        android:textColor="@color/no_clickable_types"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/tvFavourite"
+        app:layout_constraintTop_toBottomOf="@+id/tvFavourite" />
+
+    <TextView
+        android:id="@+id/tvDifficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Dificultad máxima"
+        android:textColor="@color/no_clickable_types"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/tvVegan"
+        app:layout_constraintTop_toBottomOf="@+id/tvVegan" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/swFavourites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        app:layout_constraintStart_toEndOf="@+id/tvFavourite"
+        app:layout_constraintTop_toTopOf="@+id/tvFavourite" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/sVegan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/swFavourites"
+        app:layout_constraintTop_toTopOf="@+id/tvVegan" />
+
+    <Spinner
+        android:id="@+id/spDifficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/sVegan"
+        app:layout_constraintTop_toTopOf="@+id/tvDifficulty" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

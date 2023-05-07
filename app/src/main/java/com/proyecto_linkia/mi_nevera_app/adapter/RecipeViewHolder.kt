@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.proyecto_linkia.mi_nevera_app.R
 import com.proyecto_linkia.mi_nevera_app.clases.Recipe
 import com.proyecto_linkia.mi_nevera_app.databinding.ItemRecipeBinding
+import com.squareup.picasso.Picasso
 
 class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val binding = ItemRecipeBinding.bind(view)
@@ -16,16 +17,16 @@ class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     ) {
         binding.tvRecipeName.text = recipeModel.recipeName
 
-        var ingredientList = ""
-        for (ingredient in recipeModel.ingredients) {
-            ingredientList += "$ingredient\n"
+        val image = recipeModel.image
+        if (image != "nullFromUser") {
+            Picasso.get().load(image).into(binding.imageView)
+        }else{
+            binding.imageView.setImageResource(R.mipmap.ic_launcher)
         }
 
-        binding.tvIngredientList.text = ingredientList
-
-        if(recipeModel.isFavourite){
+        if (recipeModel.isFavourite) {
             binding.ibFavourite.setImageResource(R.drawable.ic_favourite_selected)
-        }else{
+        } else {
             binding.ibFavourite.setImageResource(R.drawable.ic_favourite)
         }
 

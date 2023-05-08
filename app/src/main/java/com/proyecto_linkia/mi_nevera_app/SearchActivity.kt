@@ -78,6 +78,11 @@ class SearchActivity : AppCompatActivity() {
             correctRecipes.clear()
             adapter.notifyDataSetChanged()
             searchSuitableRecipes()
+            if(correctRecipes.size!=0){
+                binding.ivFridge.visibility =View.INVISIBLE
+            }else{
+                binding.ivFridge.visibility =View.VISIBLE
+            }
         }
     }
 

@@ -38,6 +38,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var tvResultados: TextView
     private lateinit var sVegan: SwitchMaterial
     private lateinit var spDifficulty: Spinner
+    private lateinit var spTime: Spinner
     private lateinit var binding: ActivityMainBinding
     private var recipeList: MutableList<Recipe> = mutableListOf()
     var correctRecipes: MutableList<Recipe> = mutableListOf()
@@ -58,6 +59,7 @@ class SearchActivity : AppCompatActivity() {
         sVegan = binding.sVegan
         tvResultados = binding.tvResultados
         spDifficulty = binding.spDifficulty
+        spTime = binding.spTime
 
         //preparamos la activity
         setUp()
@@ -73,6 +75,8 @@ class SearchActivity : AppCompatActivity() {
             if (recipeList.size == 0) {
                 getRecipesList()
             }
+            correctRecipes.clear()
+            adapter.notifyDataSetChanged()
             searchSuitableRecipes()
         }
     }
@@ -143,6 +147,8 @@ class SearchActivity : AppCompatActivity() {
         fillActvEntry(actvEntry)
         val difficultyOptions: Array<String> = resources.getStringArray(R.array.difficultyItems)
         fillSpinner(spDifficulty, difficultyOptions)
+        val timeOptions:Array<String> = resources.getStringArray(R.array.TimeItems)
+        fillSpinner(spTime,timeOptions)
         initRecycleView()
         applyUserPreferences()
     }
@@ -197,12 +203,24 @@ class SearchActivity : AppCompatActivity() {
 
         if(!checkDifficulty(recipe)) return false
         if(!checkFavourites(binding.swFavourites,recipe)) return false
+        if(!checkTime(recipe)) return false
 
         for (i in 0 until recipe.ingredients.size) {
             ingredientInRecipe = recipe.ingredients[i]
             if (selectedIngredients.contains(ingredientInRecipe)) count++
         }
         return count == ingredientNumber
+    }
+
+    private fun checkTime(recipe: Recipe): Boolean{
+        when(binding.spTime.selectedItemPosition){
+            0-> if (recipe.time<=30) return true
+            1-> if (recipe.time<=45) return true
+            2-> if (recipe.time<=60) return true
+            3-> if (recipe.time<=90) return true
+            4-> return true
+        }
+        return false
     }
 
     private fun checkFavourites(switch: SwitchMaterial,recipe: Recipe): Boolean {
@@ -220,9 +238,9 @@ class SearchActivity : AppCompatActivity() {
      * @return
      */
     private fun checkDifficulty(recipe: Recipe): Boolean {
-        when (spDifficulty.selectedItemPosition) {
-            0 -> if(recipe.difficulty.equals("easy")) return false
-            1 -> if(recipe.difficulty=="difficult") return false
+        when (binding.spDifficulty.selectedItemPosition) {
+            0 -> if (recipe.difficulty == "easy") return true
+            1 -> return recipe.difficulty != "difficult"
             2 -> return true
             else -> return false
         }

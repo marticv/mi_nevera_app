@@ -35,7 +35,7 @@ class MyIngredients : AppCompatActivity() {
     private val glManager = GridLayoutManager(this, 2)
     var recipeList: MutableList<Recipe> = mutableListOf()
     var correctRecipes: MutableList<Recipe> = mutableListOf()
-    var ingredientList:MutableList<String> = mutableListOf()
+    var ingredientList: MutableList<String> = mutableListOf()
     private val llManager = LinearLayoutManager(this)
 
 
@@ -54,6 +54,8 @@ class MyIngredients : AppCompatActivity() {
             if (recipeList.size == 0) {
                 getRecipesList()
             }
+            correctRecipes.clear()
+            adapterRecipes.notifyDataSetChanged()
             searchSuitableRecipes()
         }
         binding.btFilters.setOnClickListener {
@@ -62,9 +64,9 @@ class MyIngredients : AppCompatActivity() {
         }
     }
 
-    private fun getIngredients():ArrayList<String> {
+    private fun getIngredients(): ArrayList<String> {
         var ingredientsInList = ArrayList<String>()
-        for(ingredient in ingredientsMutableList){
+        for (ingredient in ingredientsMutableList) {
             ingredientsInList.add(ingredient.ingredientName)
         }
         return ingredientsInList
@@ -87,9 +89,9 @@ class MyIngredients : AppCompatActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             val db = DataBaseBuilder.getInstance(this@MyIngredients)
             val recipeDao = db.getRecipeDao()
-            if(recipe.isFavourite){
+            if (recipe.isFavourite) {
                 recipeDao.udateToNotFavourite(recipe.recipeName)
-            }else{
+            } else {
                 recipeDao.udateToFavourite(recipe.recipeName)
             }
             db.close()
@@ -144,8 +146,11 @@ class MyIngredients : AppCompatActivity() {
         fillActvEntry(binding.actvEntry)
         val difficultyOptions: Array<String> = resources.getStringArray(R.array.difficultyItems)
         fillSpinner(binding.spDifficulty, difficultyOptions)
+        val timeOptions:Array<String> = resources.getStringArray(R.array.TimeItems)
+        fillSpinner(binding.spTime,timeOptions)
         initRecycleViewIngredients()
         initRecycleViewRecipes()
+        binding.rvRecipes.visibility = View.INVISIBLE
         getData()
     }
 
@@ -174,8 +179,8 @@ class MyIngredients : AppCompatActivity() {
             }
         } else {
             //informamos al usuario
-            Toast.makeText(this, "${ingredient.ingredientName} ya en la lista", Toast.LENGTH_LONG)
-                .show()
+            //Toast.makeText(this, "${ingredient.ingredientName} ya en la lista", Toast.LENGTH_LONG)
+            //.show()
         }
         //reiniciamos el texto
         binding.actvEntry.setText("")
@@ -260,7 +265,7 @@ class MyIngredients : AppCompatActivity() {
     }
 
     private fun showError() {
-        Toast.makeText(this@MyIngredients, "error", Toast.LENGTH_LONG).show()
+        // Toast.makeText(this@MyIngredients, "error", Toast.LENGTH_LONG).show()
     }
 
     private fun showRecipes() {
@@ -276,9 +281,11 @@ class MyIngredients : AppCompatActivity() {
         binding.tvFavourite.visibility = View.VISIBLE
         binding.tvVegan.visibility = View.VISIBLE
         binding.tvDifficulty.visibility = View.VISIBLE
+        binding.tvTime.visibility = View.VISIBLE
         binding.swFavourites.visibility = View.VISIBLE
         binding.sVegan.visibility = View.VISIBLE
         binding.spDifficulty.visibility = View.VISIBLE
+        binding.spTime.visibility = View.VISIBLE
         binding.tvInstructions.visibility = View.VISIBLE
         binding.actvEntry.visibility = View.VISIBLE
         binding.btAddMyIngredient.visibility = View.VISIBLE
@@ -290,9 +297,11 @@ class MyIngredients : AppCompatActivity() {
         binding.tvFavourite.visibility = View.INVISIBLE
         binding.tvVegan.visibility = View.INVISIBLE
         binding.tvDifficulty.visibility = View.INVISIBLE
+        binding.tvTime.visibility = View.INVISIBLE
         binding.swFavourites.visibility = View.INVISIBLE
         binding.sVegan.visibility = View.INVISIBLE
         binding.spDifficulty.visibility = View.INVISIBLE
+        binding.spTime.visibility = View.INVISIBLE
         binding.tvInstructions.visibility = View.INVISIBLE
         binding.actvEntry.visibility = View.INVISIBLE
         binding.btAddMyIngredient.visibility = View.INVISIBLE
@@ -341,8 +350,9 @@ class MyIngredients : AppCompatActivity() {
             if (!recipe.isVegan) return false
         }
 
-        if(!checkDifficulty(recipe)) return false
-        if(!checkFavourites(binding.swFavourites,recipe)) return false
+        if (!checkDifficulty(recipe)) return false
+        if (!checkFavourites(binding.swFavourites, recipe)) return false
+        if(!checkTime(recipe)) return false
 
         for (i in 0 until recipe.ingredients.size) {
             ingredientInRecipe = recipe.ingredients[i]
@@ -351,18 +361,30 @@ class MyIngredients : AppCompatActivity() {
         return count == ingredientNumber
     }
 
+    private fun checkTime(recipe: Recipe): Boolean{
+        when(binding.spTime.selectedItemPosition){
+            0-> if (recipe.time<=30) return true
+            1-> if (recipe.time<=45) return true
+            2-> if (recipe.time<=60) return true
+            3-> if (recipe.time<=90) return true
+            4-> return true
+        }
+        return false
+    }
+
     private fun checkDifficulty(recipe: Recipe): Boolean {
         when (binding.spDifficulty.selectedItemPosition) {
-            0 -> if(recipe.difficulty.equals("easy")) return false
-            1 -> if(recipe.difficulty=="difficult") return false
+            0 -> if (recipe.difficulty == "easy") return true
+            1 -> return recipe.difficulty != "difficult"
             2 -> return true
             else -> return false
         }
         return false
     }
-    private fun checkFavourites(switch: SwitchMaterial,recipe: Recipe): Boolean {
-        if(switch.isChecked){
-            if(!recipe.isFavourite) return false
+
+    private fun checkFavourites(switch: SwitchMaterial, recipe: Recipe): Boolean {
+        if (switch.isChecked) {
+            if (!recipe.isFavourite) return false
         }
         return true
     }
@@ -376,7 +398,6 @@ class MyIngredients : AppCompatActivity() {
     private fun checkVegan(sVegan: SwitchMaterial): Boolean {
         return sVegan.isChecked
     }
-
 
 
     /**

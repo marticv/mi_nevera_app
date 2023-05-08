@@ -38,7 +38,7 @@
         android:id="@+id/btSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="80dp"
         android:backgroundTint="@color/button"
         android:text="@string/bt_search"
         android:textColor="@color/clickable_types"
@@ -118,11 +118,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/cgIngredients" />
 
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Tiempo máximo"
+        android:textColor="@color/no_clickable_types"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/tvDifficulty"
+        app:layout_constraintTop_toBottomOf="@+id/tvDifficulty" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRecipe"
         android:layout_width="match_parent"
-        android:layout_height="380dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="300dp"
         android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@+id/btSearch"
         tools:layout_editor_absoluteX="16dp" />
@@ -151,5 +161,12 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@+id/sVegan"
         app:layout_constraintTop_toTopOf="@+id/tvDifficulty" />
+
+    <Spinner
+        android:id="@+id/spTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/spDifficulty"
+        app:layout_constraintTop_toTopOf="@+id/tvTime" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

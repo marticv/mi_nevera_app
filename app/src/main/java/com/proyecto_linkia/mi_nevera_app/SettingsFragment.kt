@@ -2,11 +2,10 @@ package com.proyecto_linkia.mi_nevera_app
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.proyecto_linkia.mi_nevera_app.databinding.FragmentMenuBinding
+import androidx.fragment.app.Fragment
 import com.proyecto_linkia.mi_nevera_app.databinding.FragmentSettingsBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -20,6 +19,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class SettingsFragment : Fragment() {
+    //añadimos layout al fragment
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
 
@@ -46,10 +46,12 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?){
         binding.ibSettings.setOnClickListener {
+            //damos funcionalidad al boton, abrir la activity settings
             startActivity(Intent(context,SettingsActivity::class.java,))
         }
     }
 
+    //codigo prehecho por android studio
     companion object {
         /**
          * Use this factory method to create a new instance of

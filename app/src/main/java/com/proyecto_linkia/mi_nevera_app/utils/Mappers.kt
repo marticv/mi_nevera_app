@@ -4,13 +4,24 @@ import com.proyecto_linkia.mi_nevera_app.clases.Recipe
 import com.proyecto_linkia.mi_nevera_app.data.db.entities.IngredientEntity
 import com.proyecto_linkia.mi_nevera_app.data.db.entities.RecipeEntity
 import com.proyecto_linkia.mi_nevera_app.data.db.entities.relations.RecipeWithIngredients
-import com.proyecto_linkia.mi_nevera_app.internet.IngredientExternal
-import com.proyecto_linkia.mi_nevera_app.internet.RecipeExternal
+import com.proyecto_linkia.mi_nevera_app.internet.pojoExternal.IngredientExternal
+import com.proyecto_linkia.mi_nevera_app.internet.pojoExternal.RecipeExternal
 
+/*
+* EStas funciones permiten pasar de un objeto a otro
+* entidad - externo - pojo
+* */
+
+/**
+ * Transforma un ingredientExternal a entity
+ */
 fun IngredientExternal.toEntity(): IngredientEntity {
     return IngredientEntity(this.ingredient, this.ingredientName, this.ingredientNameEnglish)
 }
 
+/**
+ * Transforma una recipeExterternal en entity
+ */
 fun RecipeExternal.toEmptyRecipeEntity(): RecipeEntity {
     return RecipeEntity(
         this.recipeId,
@@ -28,6 +39,9 @@ fun RecipeExternal.toEmptyRecipeEntity(): RecipeEntity {
     )
 }
 
+/**
+ * Transforma una recipeeithingredients en recipe
+ */
 fun RecipeWithIngredients.toRecipe(): Recipe {
     val ingredientsArray: ArrayList<String> = arrayListOf()
     for (ingredient in this.ingredients) {
@@ -45,6 +59,9 @@ fun RecipeWithIngredients.toRecipe(): Recipe {
     )
 }
 
+/**
+ * transforma una recipe del usuario en entity
+ */
 fun Recipe.toEntity(id: String): RecipeEntity {
     return RecipeEntity(
         id, this.recipeName, "nullfromUser", if (this.isVegan) {
@@ -63,6 +80,9 @@ fun Recipe.toEntity(id: String): RecipeEntity {
     )
 }
 
+/**
+ * transforma una sring en IngrdientEntity
+ */
 fun String.toEntity(id: String): IngredientEntity {
     return IngredientEntity(id, this, "nullfromUser")
 }

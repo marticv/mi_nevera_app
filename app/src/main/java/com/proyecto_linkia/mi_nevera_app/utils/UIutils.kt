@@ -10,7 +10,14 @@ import com.proyecto_linkia.mi_nevera_app.clases.Recipe
 import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
 import com.proyecto_linkia.mi_nevera_app.data.db.entities.IngredientEntity
 import com.proyecto_linkia.mi_nevera_app.data.db.entities.relations.RecipeWithIngredients
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+
+/*
+Funciones relacionadas con la ui o la preparacion de la ui
+ */
 
 
 /**
@@ -23,7 +30,7 @@ suspend fun getRecipesList(context: Context): MutableList<Recipe> {
     //creamos variables y conexion a la base de datso
     val recipeList: MutableList<Recipe> = mutableListOf()
     val db = DataBaseBuilder.getInstance(context)
-    val recipeDao = db.getRecipeDao()
+    val dao = db.getRecipeDao()
 
     //iniciamos coroutina para trabajar con la bd
     //CoroutineScope(Dispatchers.IO).launch {
@@ -31,12 +38,12 @@ suspend fun getRecipesList(context: Context): MutableList<Recipe> {
         //y cerramos la base de datos
         try {
             //obtenemos la lista de recetas
-            val recipes = recipeDao.getAllRecipe()
+            val recipes = dao.getAllRecipe()
             val list: MutableList<RecipeWithIngredients> = mutableListOf()
 
             //obtenemos la lista de ingredientes para cada receta
             for (recipe in recipes) {
-                list.add(recipeDao.getIngredientsOfRecipe(recipe.recipeId))
+                list.add(dao.getIngredientsOfRecipe(recipe.recipeId))
             }
 
             //creamos una receta completa para cada receta de la bd

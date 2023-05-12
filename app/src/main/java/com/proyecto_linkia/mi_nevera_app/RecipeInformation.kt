@@ -15,7 +15,6 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import com.proyecto_linkia.mi_nevera_app.clases.Recipe
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivityRecipeInformationBinding
 import com.squareup.picasso.Picasso
@@ -31,15 +30,19 @@ class RecipeInformation : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-
+        //añadimos la vista a la activity
         super.onCreate(savedInstanceState)
         binding = ActivityRecipeInformationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        //recvimos los datos de la activity padre
         recipe = intent.extras?.get("recipe") as Recipe
+
+        //preparamos datos
         stringShare = "Hoy cocinamos:\n${recipe.recipeName}\nEnviado desde mi_nevaraApp"
 
+        //obtenemos las medidas del dispositivo y modificamos el tamaño
+        //de la activity para dar efecto de sobreposicion
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
         val width = metrics.widthPixels
@@ -48,6 +51,7 @@ class RecipeInformation : AppCompatActivity() {
 
         binding.tvRecipeName.text = recipe.recipeName
 
+        //modificamos el texto que ve el usuario segun la receta
         var ingredients = ""
         for (ingredient in recipe.ingredients) {
             ingredients += "$ingredient\n"
@@ -65,6 +69,7 @@ class RecipeInformation : AppCompatActivity() {
             binding.ivRecipe.setImageResource(R.mipmap.ic_launcher)
         }
 
+        //damos funcionalidad a los botones
         binding.btClose.setOnClickListener {
             finish()
         }
@@ -135,9 +140,11 @@ class RecipeInformation : AppCompatActivity() {
                 put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
                 put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES+"/Screenshots")
             }
+            //obtenemos la uri del screenshoot
             val uri = this.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
             if(uri!=null){
-                this.contentResolver.openOutputStream(uri).use {
+                //lo pasamos a bitmap
+                this.contentResolver.openOutputStream(uri).use { it ->
                     if (it == null) return@use
                     bitmap.compress(Bitmap.CompressFormat.PNG,85,it)
                     it.flush()

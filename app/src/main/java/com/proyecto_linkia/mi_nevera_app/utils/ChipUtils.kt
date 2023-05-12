@@ -1,6 +1,5 @@
 package com.proyecto_linkia.mi_nevera_app.utils
 
-import android.content.Context
 import android.widget.AutoCompleteTextView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -13,7 +12,7 @@ import com.google.android.material.chip.ChipGroup
 fun obtainSelectedIngredients(cgIngredients:ChipGroup):ArrayList<String>{
     var ingredientList : ArrayList<String> = ArrayList<String>()
     var chip : Chip
-
+    //para cada chip obtenemos el nombre y lo añadimos a un arraylist
     for(i in 0 until cgIngredients.childCount){
         chip = cgIngredients.getChildAt(i) as Chip
         if(!ingredientList.contains(chip.text)){

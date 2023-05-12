@@ -1,4 +1,4 @@
-package com.proyecto_linkia.mi_nevera_app.internet
+package com.proyecto_linkia.mi_nevera_app.internet.pojoExternal
 
 data class IngredientExternal(
     val ingredient: String,

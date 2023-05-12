@@ -8,10 +8,8 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.lifecycleScope
-import com.proyecto_linkia.mi_nevera_app.clases.UserProfile
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivitySettingsBinding
 import com.proyecto_linkia.mi_nevera_app.utils.dataStore
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -22,6 +20,7 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //unimos la vista a la activity
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -38,6 +37,7 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
+        //damos funcionalidad a los botones
         binding.btSave.setOnClickListener {
             saveValues(
                 isUsingNightModeResources(),
@@ -51,7 +51,12 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Función que guarda los valores elegidos en las
+     * datastore preferences
+     */
     private fun saveValues(mode: Boolean, vegan: Boolean, activity: String) {
+        //lanzamos corutina y guardamos las preferencias como pares clave-valor
         lifecycleScope.launch(Dispatchers.IO) {
             dataStore.edit { preferences ->
                 preferences[booleanPreferencesKey("mode")] = mode
@@ -131,6 +136,9 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Funcion que coge datos de las datastore preferences
+     */
     private fun getUserPreferences() = dataStore.data.map { preferences ->
         preferences[booleanPreferencesKey(name = "vegan")] ?:false
     }

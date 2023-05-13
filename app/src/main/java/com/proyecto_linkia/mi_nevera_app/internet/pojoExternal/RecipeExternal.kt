@@ -2,6 +2,9 @@ package com.proyecto_linkia.mi_nevera_app.internet.pojoExternal
 
 import java.io.Serializable
 
+/**
+ * Clase que recive los datos de internet
+ */
 data class RecipeExternal(
     val recipeId: String,
     val recipeName: String,

@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.proyecto_linkia.mi_nevera_app.adapters.MyIngredientAdapter
 import com.proyecto_linkia.mi_nevera_app.adapters.RecipeAdapter
-import com.proyecto_linkia.mi_nevera_app.clases.Recipe
-import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.MyIngredient
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.relations.RecipeWithIngredients
+import com.proyecto_linkia.mi_nevera_app.pojo.Recipe
+import com.proyecto_linkia.mi_nevera_app.data.database.DataBaseBuilder
+import com.proyecto_linkia.mi_nevera_app.data.entities.MyIngredient
+import com.proyecto_linkia.mi_nevera_app.data.entities.relations.RecipeWithIngredients
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivityMyIngredientsBinding
 import com.proyecto_linkia.mi_nevera_app.utils.*
 import kotlinx.coroutines.CoroutineScope
@@ -34,17 +34,18 @@ class MyIngredients : AppCompatActivity() {
     private val glManager = GridLayoutManager(this, 2)
     var recipeList: MutableList<Recipe> = mutableListOf()
     var correctRecipes: MutableList<Recipe> = mutableListOf()
-    var ingredientList: MutableList<String> = mutableListOf()
     private val llManager = LinearLayoutManager(this)
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        //creamos un link entre la activity y el layout
         super.onCreate(savedInstanceState)
         binding = ActivityMyIngredientsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //iniciamos la parte grafica
         setUp()
 
+        //damos funcionalidad a los botones
         binding.btAddMyIngredient.setOnClickListener { addIngredient() }
         binding.btRecipes.setOnClickListener {
             hideIngredientsAndFilters()
@@ -63,6 +64,12 @@ class MyIngredients : AppCompatActivity() {
         }
     }
 
+    /**
+     * Funcion que obtiene los ingredientes de  ingedientsmutablelist
+     * y los pasa a un arrylist
+     *
+     * @return
+     */
     private fun getIngredients(): ArrayList<String> {
         var ingredientsInList = ArrayList<String>()
         for (ingredient in ingredientsMutableList) {
@@ -71,20 +78,32 @@ class MyIngredients : AppCompatActivity() {
         return ingredientsInList
     }
 
+    /**
+     * FUncion que inicia el recicleview de recetas
+     *
+     */
     private fun initRecycleViewRecipes() {
         //creamos el adapter y lo pasamos al recyclerview para que se renderice
         val recyclerView = binding.rvRecipes
         adapterRecipes = RecipeAdapter(recipeList = correctRecipes, onClickListener = { position ->
             showRecipe(position)
         }, onClickFavourite = { position -> onClickFavourite(position) })
+        //le asignamos el adapter y el manage
         recyclerView.layoutManager = llManager
         recyclerView.adapter = adapterRecipes
         adapterRecipes.notifyDataSetChanged()
     }
 
+    /**
+     * FUncion que controla el paso de favorito a no favorito
+     *
+     * @param position
+     */
     private fun onClickFavourite(position: Int) {
+        //obtenemos la receta
         val recipe = correctRecipes[position]
 
+        //informamos a la bd y cambiamos el icono
         lifecycleScope.launch(Dispatchers.IO) {
             val db = DataBaseBuilder.getInstance(this@MyIngredients)
             val recipeDao = db.getRecipeDao()
@@ -97,17 +116,24 @@ class MyIngredients : AppCompatActivity() {
         }
     }
 
+    /**
+     * Mostramos la activi con la info de la receta al clicar
+     *
+     * @param position
+     */
     private fun showRecipe(position: Int) {
         val recipe = correctRecipes[position]
-
         val intent = Intent(this, RecipeInformation::class.java)
         intent.putExtra("recipe", recipe as java.io.Serializable)
         startActivity(intent)
     }
 
+    /**
+     * Obtenemos las recetas de la bd
+     *
+     */
     private fun getRecipesList() {
         //creamos variables y conexion a la base de datso
-        //val recipeList: MutableList<Recipe> = mutableListOf()
         val db = DataBaseBuilder.getInstance(this@MyIngredients)
         val recipeDao = db.getRecipeDao()
 
@@ -139,8 +165,12 @@ class MyIngredients : AppCompatActivity() {
         }
     }
 
+    /**
+     * Prepara la parte visual de la activity
+     *
+     */
     private fun setUp() {
-        //getRecipesList()
+        getRecipesList()
         applyUserPreferences()
         fillActvEntry(binding.actvEntry)
         val difficultyOptions: Array<String> = resources.getStringArray(R.array.difficultyItems)

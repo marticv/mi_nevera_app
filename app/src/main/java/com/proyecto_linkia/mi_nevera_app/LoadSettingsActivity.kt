@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.lifecycleScope
-import com.proyecto_linkia.mi_nevera_app.clases.UserProfile
+import com.proyecto_linkia.mi_nevera_app.pojo.UserProfile
 import com.proyecto_linkia.mi_nevera_app.utils.dataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map

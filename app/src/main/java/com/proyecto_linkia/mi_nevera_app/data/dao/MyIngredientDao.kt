@@ -1,7 +1,7 @@
-package com.proyecto_linkia.mi_nevera_app.data.db.dao
+package com.proyecto_linkia.mi_nevera_app.data.dao
 
 import androidx.room.*
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.MyIngredient
+import com.proyecto_linkia.mi_nevera_app.data.entities.MyIngredient
 
 @Dao
 interface MyIngredientDao {

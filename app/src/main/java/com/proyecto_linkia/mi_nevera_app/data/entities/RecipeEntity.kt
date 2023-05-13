@@ -1,4 +1,4 @@
-package com.proyecto_linkia.mi_nevera_app.data.db.entities
+package com.proyecto_linkia.mi_nevera_app.data.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

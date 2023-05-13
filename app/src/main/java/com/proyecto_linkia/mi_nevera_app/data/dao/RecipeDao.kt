@@ -1,9 +1,9 @@
-package com.proyecto_linkia.mi_nevera_app.data.db.dao
+package com.proyecto_linkia.mi_nevera_app.data.dao
 
 import androidx.room.*
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.RecipeEntity
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.relations.RecipeWithIngredients
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.relations.RecipeIngredientCrossReference
+import com.proyecto_linkia.mi_nevera_app.data.entities.RecipeEntity
+import com.proyecto_linkia.mi_nevera_app.data.entities.relations.RecipeWithIngredients
+import com.proyecto_linkia.mi_nevera_app.data.entities.relations.RecipeIngredientCrossReference
 
 @Dao
 interface RecipeDao {
@@ -36,5 +36,5 @@ interface RecipeDao {
 
     @Transaction
     @Query("SELECT * FROM recipeentity WHERE recipeId = :recipeId")
-    suspend fun getIngredientsOfRecipe(recipeId:String):RecipeWithIngredients
+    suspend fun getIngredientsOfRecipe(recipeId:String): RecipeWithIngredients
 }

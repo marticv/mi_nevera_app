@@ -1,4 +1,4 @@
-package com.proyecto_linkia.mi_nevera_app.data.db.entities.relations
+package com.proyecto_linkia.mi_nevera_app.data.entities.relations
 
 import androidx.room.Entity
 

@@ -74,17 +74,6 @@
         app:layout_constraintTop_toTopOf="@+id/tvFavourite" />
 
     <TextView
-        android:id="@+id/tvResultados"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="500dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.47"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
         android:id="@+id/tvVegan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -135,7 +124,7 @@
         android:layout_height="300dp"
         android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@+id/btSearch"
-        tools:layout_editor_absoluteX="16dp" />
+        tools:layout_editor_absoluteX="-81dp" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fcMenu"
@@ -173,11 +162,10 @@
         android:id="@+id/ivFridge"
         android:layout_width="185dp"
         android:layout_height="159dp"
-        android:layout_marginTop="48dp"
-        app:layout_constraintBottom_toBottomOf="@+id/rvRecipe"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvResultados"
+        app:layout_constraintTop_toBottomOf="@+id/btSearch"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
 

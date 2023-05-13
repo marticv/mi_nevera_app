@@ -4,7 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.proyecto_linkia.mi_nevera_app.R
-import com.proyecto_linkia.mi_nevera_app.clases.Recipe
+import com.proyecto_linkia.mi_nevera_app.adapters.viewholders.RecipeViewHolder
+import com.proyecto_linkia.mi_nevera_app.pojo.Recipe
 
 class RecipeAdapter(
     private val recipeList: List<Recipe>,

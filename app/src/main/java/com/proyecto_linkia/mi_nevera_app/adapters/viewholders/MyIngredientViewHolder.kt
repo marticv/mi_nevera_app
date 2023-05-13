@@ -1,8 +1,8 @@
-package com.proyecto_linkia.mi_nevera_app.adapters
+package com.proyecto_linkia.mi_nevera_app.adapters.viewholders
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.MyIngredient
+import com.proyecto_linkia.mi_nevera_app.data.entities.MyIngredient
 import com.proyecto_linkia.mi_nevera_app.databinding.ItemIngredientBinding
 
 class MyIngredientViewHolder(view: View) :RecyclerView.ViewHolder(view){

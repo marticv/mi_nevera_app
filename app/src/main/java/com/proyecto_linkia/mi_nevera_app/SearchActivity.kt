@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.Spinner
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.lifecycle.lifecycleScope
@@ -17,9 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.proyecto_linkia.mi_nevera_app.adapters.RecipeAdapter
-import com.proyecto_linkia.mi_nevera_app.clases.Recipe
-import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.relations.RecipeWithIngredients
+import com.proyecto_linkia.mi_nevera_app.pojo.Recipe
+import com.proyecto_linkia.mi_nevera_app.data.database.DataBaseBuilder
+import com.proyecto_linkia.mi_nevera_app.data.entities.relations.RecipeWithIngredients
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivityMainBinding
 import com.proyecto_linkia.mi_nevera_app.utils.*
 import kotlinx.coroutines.*
@@ -31,7 +30,6 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var btAddIngedient: Button
     private lateinit var cgIngredients: ChipGroup
     private lateinit var btSearch: Button
-    private lateinit var tvResultados: TextView
     private lateinit var sVegan: SwitchMaterial
     private lateinit var spDifficulty: Spinner
     private lateinit var spTime: Spinner
@@ -53,14 +51,11 @@ class SearchActivity : AppCompatActivity() {
         cgIngredients = binding.cgIngredients
         btSearch = binding.btSearch
         sVegan = binding.sVegan
-        tvResultados = binding.tvResultados
         spDifficulty = binding.spDifficulty
         spTime = binding.spTime
 
         //preparamos la activity
         setUp()
-
-        tvResultados.text = recipeList.size.toString()
 
         //damos funcionalidad a los botones
         btAddIngedient.setOnClickListener {
@@ -74,10 +69,10 @@ class SearchActivity : AppCompatActivity() {
             correctRecipes.clear()
             adapter.notifyDataSetChanged()
             searchSuitableRecipes()
-            if(correctRecipes.size!=0){
-                binding.ivFridge.visibility =View.INVISIBLE
-            }else{
-                binding.ivFridge.visibility =View.VISIBLE
+            if (correctRecipes.size != 0) {
+                binding.ivFridge.visibility = View.INVISIBLE
+            } else {
+                binding.ivFridge.visibility = View.VISIBLE
             }
         }
     }
@@ -118,29 +113,25 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchSuitableRecipes() {
         correctRecipes.clear()
-        if (recipeList.isEmpty()) {
-            tvResultados.text = "sin resultados"
-        } else {
-            val selectedIngr: ArrayList<String> = obtainSelectedIngredients(cgIngredients)
-            var myRecipes = recipeList
-            var resultRecipes = findSuitableRecipes(selectedIngr, myRecipes)
 
-            if (checkVegan(sVegan)) {
-                for (i in 0..resultRecipes.size - 1) {
-                    if (resultRecipes.get(i).isVegan == false) {
-                        resultRecipes.remove(resultRecipes.get(i))
-                    }
+        val selectedIngr: ArrayList<String> = obtainSelectedIngredients(cgIngredients)
+        var myRecipes = recipeList
+        var resultRecipes = findSuitableRecipes(selectedIngr, myRecipes)
+
+        if (checkVegan(sVegan)) {
+            for (i in 0..resultRecipes.size - 1) {
+                if (resultRecipes.get(i).isVegan == false) {
+                    resultRecipes.remove(resultRecipes.get(i))
                 }
             }
-
-            if (correctRecipes.isEmpty()) tvResultados.text = "sin resultados"
-
-            for (recipe in resultRecipes) {
-                correctRecipes.add((recipe))
-                adapter.notifyDataSetChanged()
-            }
-            binding.rvRecipe.visibility = View.VISIBLE
         }
+
+        for (recipe in resultRecipes) {
+            correctRecipes.add((recipe))
+            adapter.notifyDataSetChanged()
+        }
+        binding.rvRecipe.visibility = View.VISIBLE
+
     }
 
     private fun setUp() {
@@ -148,25 +139,26 @@ class SearchActivity : AppCompatActivity() {
         fillActvEntry(actvEntry)
         val difficultyOptions: Array<String> = resources.getStringArray(R.array.difficultyItems)
         fillSpinner(spDifficulty, difficultyOptions)
-        val timeOptions:Array<String> = resources.getStringArray(R.array.TimeItems)
-        fillSpinner(spTime,timeOptions)
+        val timeOptions: Array<String> = resources.getStringArray(R.array.TimeItems)
+        fillSpinner(spTime, timeOptions)
         initRecycleView()
         applyUserPreferences()
     }
 
-    private fun applyUserPreferences(){
+    private fun applyUserPreferences() {
         lifecycleScope.launch(Dispatchers.IO) {
-            getUserPreferences().collect{
-                withContext(Dispatchers.Main){
-                    if(it){
-                        binding.sVegan.isChecked=true
+            getUserPreferences().collect {
+                withContext(Dispatchers.Main) {
+                    if (it) {
+                        binding.sVegan.isChecked = true
                     }
                 }
             }
         }
     }
+
     private fun getUserPreferences() = dataStore.data.map { preferences ->
-        preferences[booleanPreferencesKey(name = "vegan")] ?:false
+        preferences[booleanPreferencesKey(name = "vegan")] ?: false
     }
 
 
@@ -202,9 +194,9 @@ class SearchActivity : AppCompatActivity() {
             if (!recipe.isVegan) return false
         }
 
-        if(!checkDifficulty(recipe)) return false
-        if(!checkFavourites(binding.swFavourites,recipe)) return false
-        if(!checkTime(recipe)) return false
+        if (!checkDifficulty(recipe)) return false
+        if (!checkFavourites(binding.swFavourites, recipe)) return false
+        if (!checkTime(recipe)) return false
 
         for (i in 0 until recipe.ingredients.size) {
             ingredientInRecipe = recipe.ingredients[i]
@@ -213,20 +205,20 @@ class SearchActivity : AppCompatActivity() {
         return count == ingredientNumber
     }
 
-    private fun checkTime(recipe: Recipe): Boolean{
-        when(binding.spTime.selectedItemPosition){
-            0-> if (recipe.time<=30) return true
-            1-> if (recipe.time<=45) return true
-            2-> if (recipe.time<=60) return true
-            3-> if (recipe.time<=90) return true
-            4-> return true
+    private fun checkTime(recipe: Recipe): Boolean {
+        when (binding.spTime.selectedItemPosition) {
+            0 -> if (recipe.time <= 30) return true
+            1 -> if (recipe.time <= 45) return true
+            2 -> if (recipe.time <= 60) return true
+            3 -> if (recipe.time <= 90) return true
+            4 -> return true
         }
         return false
     }
 
-    private fun checkFavourites(switch: SwitchMaterial,recipe: Recipe): Boolean {
-        if(switch.isChecked){
-            if(!recipe.isFavourite) return false
+    private fun checkFavourites(switch: SwitchMaterial, recipe: Recipe): Boolean {
+        if (switch.isChecked) {
+            if (!recipe.isFavourite) return false
         }
         return true
     }
@@ -278,9 +270,9 @@ class SearchActivity : AppCompatActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             val db = DataBaseBuilder.getInstance(this@SearchActivity)
             val recipeDao = db.getRecipeDao()
-            if(recipe.isFavourite){
+            if (recipe.isFavourite) {
                 recipeDao.udateToNotFavourite(recipe.recipeName)
-            }else{
+            } else {
                 recipeDao.udateToFavourite(recipe.recipeName)
             }
             db.close()

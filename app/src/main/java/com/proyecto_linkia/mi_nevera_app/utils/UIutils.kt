@@ -6,10 +6,10 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Spinner
-import com.proyecto_linkia.mi_nevera_app.clases.Recipe
-import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.IngredientEntity
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.relations.RecipeWithIngredients
+import com.proyecto_linkia.mi_nevera_app.pojo.Recipe
+import com.proyecto_linkia.mi_nevera_app.data.database.DataBaseBuilder
+import com.proyecto_linkia.mi_nevera_app.data.entities.IngredientEntity
+import com.proyecto_linkia.mi_nevera_app.data.entities.relations.RecipeWithIngredients
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking

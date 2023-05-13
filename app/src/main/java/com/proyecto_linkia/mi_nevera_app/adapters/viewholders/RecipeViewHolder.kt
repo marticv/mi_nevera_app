@@ -1,9 +1,9 @@
-package com.proyecto_linkia.mi_nevera_app.adapters
+package com.proyecto_linkia.mi_nevera_app.adapters.viewholders
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.proyecto_linkia.mi_nevera_app.R
-import com.proyecto_linkia.mi_nevera_app.clases.Recipe
+import com.proyecto_linkia.mi_nevera_app.pojo.Recipe
 import com.proyecto_linkia.mi_nevera_app.databinding.ItemRecipeBinding
 import com.squareup.picasso.Picasso
 

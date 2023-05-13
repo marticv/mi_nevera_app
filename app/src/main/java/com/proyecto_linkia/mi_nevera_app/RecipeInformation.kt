@@ -15,7 +15,7 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.proyecto_linkia.mi_nevera_app.clases.Recipe
+import com.proyecto_linkia.mi_nevera_app.pojo.Recipe
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivityRecipeInformationBinding
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat

@@ -1,9 +1,9 @@
 package com.proyecto_linkia.mi_nevera_app.utils
 
-import com.proyecto_linkia.mi_nevera_app.clases.Recipe
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.IngredientEntity
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.RecipeEntity
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.relations.RecipeWithIngredients
+import com.proyecto_linkia.mi_nevera_app.pojo.Recipe
+import com.proyecto_linkia.mi_nevera_app.data.entities.IngredientEntity
+import com.proyecto_linkia.mi_nevera_app.data.entities.RecipeEntity
+import com.proyecto_linkia.mi_nevera_app.data.entities.relations.RecipeWithIngredients
 import com.proyecto_linkia.mi_nevera_app.internet.pojoExternal.IngredientExternal
 import com.proyecto_linkia.mi_nevera_app.internet.pojoExternal.RecipeExternal
 

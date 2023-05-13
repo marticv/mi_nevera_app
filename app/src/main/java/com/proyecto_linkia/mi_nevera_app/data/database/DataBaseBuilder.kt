@@ -1,13 +1,13 @@
-package com.proyecto_linkia.mi_nevera_app.data.db.database
+package com.proyecto_linkia.mi_nevera_app.data.database
 
 import android.content.Context
 import androidx.room.Room
 
 object DataBaseBuilder {
 
-    private var INSTANCE:AppDB? = null
-    fun getInstance(context:Context):AppDB{
-        if(INSTANCE==null){
+    private var INSTANCE: AppDB? = null
+    fun getInstance(context:Context): AppDB {
+        if(INSTANCE ==null){
             synchronized(AppDB::class){
                 INSTANCE = buildRoomDB(context)
             }

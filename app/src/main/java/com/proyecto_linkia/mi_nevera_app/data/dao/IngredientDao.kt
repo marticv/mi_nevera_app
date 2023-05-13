@@ -1,7 +1,7 @@
-package com.proyecto_linkia.mi_nevera_app.data.db.dao
+package com.proyecto_linkia.mi_nevera_app.data.dao
 
 import androidx.room.*
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.IngredientEntity
+import com.proyecto_linkia.mi_nevera_app.data.entities.IngredientEntity
 
 @Dao
 interface IngredientDao {
@@ -9,7 +9,7 @@ interface IngredientDao {
     suspend fun getAllIngredients():List<IngredientEntity>
 
     @Query("SELECT * FROM ingrediententity WHERE ingredientName=:name")
-    suspend fun getIngredientFromName(name:String):IngredientEntity
+    suspend fun getIngredientFromName(name:String): IngredientEntity
 
     @Query("SELECT COUNT(ingredientName) FROM ingrediententity WHERE ingredientName=:name")
     suspend fun checkIngredient(name:String):Int

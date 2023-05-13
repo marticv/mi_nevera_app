@@ -6,11 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.proyecto_linkia.mi_nevera_app.adapters.BoughtIngredientAdapter
 import com.proyecto_linkia.mi_nevera_app.adapters.ToBuyIngredientAdapter
-import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.ShoppingIngredient
+import com.proyecto_linkia.mi_nevera_app.data.database.DataBaseBuilder
+import com.proyecto_linkia.mi_nevera_app.data.entities.ShoppingIngredient
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivityShoppingBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ShoppingActivity : AppCompatActivity() {
@@ -51,6 +52,7 @@ class ShoppingActivity : AppCompatActivity() {
                 val dao = db.getShoppingIngredientDao()
                 //borramos los elementos de la bd y de la lista
                 for (item in boughtList) {
+                    delay(500)
                     dao.deleteShoppingIngredient(item)
                     boughtList.remove(item)
                 }
@@ -101,7 +103,7 @@ class ShoppingActivity : AppCompatActivity() {
      */
     private fun addFromToBuyList(position: Int){
         //obtenemos el nombre del ingrediente y le cambiamos el si es para comprar o vender
-        val ingredient=ShoppingIngredient( toBuyList[position].ingredientName)
+        val ingredient= ShoppingIngredient( toBuyList[position].ingredientName)
         ingredient.apply {
             toBuy=0
             bought = 1
@@ -123,7 +125,7 @@ class ShoppingActivity : AppCompatActivity() {
      */
     private fun addFromBoughtList(position: Int){
         //obtenemos el ingrediente y le cambiamos los parametros para comprar y reciente
-        val ingredient=ShoppingIngredient(boughtList[position].ingredientName)
+        val ingredient= ShoppingIngredient(boughtList[position].ingredientName)
         ingredient.apply {
             toBuy= 1
             bought = 0

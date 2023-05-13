@@ -44,7 +44,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvIngredients"
-        app:layout_constraintVertical_bias="0.096" />
+        app:layout_constraintVertical_bias="0.006" />
 
     <Button
         android:id="@+id/btAddMyIngredient"
@@ -65,10 +65,9 @@
         android:text="Recetas"
         android:textColor="@color/clickable_types"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btFilters"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvRecipes" />
+        app:layout_constraintTop_toTopOf="@+id/btFilters" />
 
     <Button
         android:id="@+id/btFilters"
@@ -78,14 +77,15 @@
         android:text="Filtros"
         android:textColor="@color/clickable_types"
         app:layout_constraintEnd_toStartOf="@+id/btRecipes"
-        app:layout_constraintHorizontal_bias="0.291"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvRecipes" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRecipes"
         android:layout_width="match_parent"
-        android:layout_height="706dp"
+        android:layout_height="650dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"

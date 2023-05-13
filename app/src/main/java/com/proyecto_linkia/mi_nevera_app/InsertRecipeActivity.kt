@@ -3,10 +3,10 @@ package com.proyecto_linkia.mi_nevera_app
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.proyecto_linkia.mi_nevera_app.clases.Recipe
-import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.RecipeEntity
-import com.proyecto_linkia.mi_nevera_app.data.db.entities.relations.RecipeIngredientCrossReference
+import com.proyecto_linkia.mi_nevera_app.pojo.Recipe
+import com.proyecto_linkia.mi_nevera_app.data.database.DataBaseBuilder
+import com.proyecto_linkia.mi_nevera_app.data.entities.RecipeEntity
+import com.proyecto_linkia.mi_nevera_app.data.entities.relations.RecipeIngredientCrossReference
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivityInsertRecipeBinding
 import com.proyecto_linkia.mi_nevera_app.utils.*
 import kotlinx.coroutines.CoroutineScope

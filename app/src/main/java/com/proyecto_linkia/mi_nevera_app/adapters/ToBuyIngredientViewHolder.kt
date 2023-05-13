@@ -1,4 +1,4 @@
-package com.proyecto_linkia.mi_nevera_app.adapter
+package com.proyecto_linkia.mi_nevera_app.adapters
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

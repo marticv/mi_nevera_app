@@ -5,15 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.proyecto_linkia.mi_nevera_app.adapter.MyIngredientAdapter
-import com.proyecto_linkia.mi_nevera_app.adapter.RecipeAdapter
+import com.proyecto_linkia.mi_nevera_app.adapters.MyIngredientAdapter
+import com.proyecto_linkia.mi_nevera_app.adapters.RecipeAdapter
 import com.proyecto_linkia.mi_nevera_app.clases.Recipe
 import com.proyecto_linkia.mi_nevera_app.data.db.database.DataBaseBuilder
 import com.proyecto_linkia.mi_nevera_app.data.db.entities.MyIngredient

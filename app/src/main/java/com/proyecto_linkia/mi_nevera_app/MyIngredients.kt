@@ -5,14 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.proyecto_linkia.mi_nevera_app.adapters.MyIngredientAdapter
-import com.proyecto_linkia.mi_nevera_app.adapters.RecipeAdapter
+import com.proyecto_linkia.mi_nevera_app.adapterClases.adapters.MyIngredientAdapter
+import com.proyecto_linkia.mi_nevera_app.adapterClases.adapters.RecipeAdapter
 import com.proyecto_linkia.mi_nevera_app.pojo.Recipe
 import com.proyecto_linkia.mi_nevera_app.data.database.DataBaseBuilder
 import com.proyecto_linkia.mi_nevera_app.data.entities.MyIngredient
@@ -175,8 +176,8 @@ class MyIngredients : AppCompatActivity() {
         fillActvEntry(binding.actvEntry)
         val difficultyOptions: Array<String> = resources.getStringArray(R.array.difficultyItems)
         fillSpinner(binding.spDifficulty, difficultyOptions)
-        val timeOptions:Array<String> = resources.getStringArray(R.array.TimeItems)
-        fillSpinner(binding.spTime,timeOptions)
+        val timeOptions: Array<String> = resources.getStringArray(R.array.TimeItems)
+        fillSpinner(binding.spTime, timeOptions)
         initRecycleViewIngredients()
         initRecycleViewRecipes()
         binding.rvRecipes.visibility = View.INVISIBLE
@@ -208,8 +209,8 @@ class MyIngredients : AppCompatActivity() {
             }
         } else {
             //informamos al usuario
-            //Toast.makeText(this, "${ingredient.ingredientName} ya en la lista", Toast.LENGTH_LONG)
-            //.show()
+            Toast.makeText(this, "${ingredient.ingredientName} ya en la lista", Toast.LENGTH_LONG)
+                .show()
         }
         //reiniciamos el texto
         binding.actvEntry.setText("")
@@ -263,7 +264,6 @@ class MyIngredients : AppCompatActivity() {
                 val dao = db.getMyIngredientDao()
                 val myIngredientsList = dao.getAllMyIngredients()
                 //pasamos la lista a mutablelist
-                //val list=myIngredientsList.toMutableList()
                 for (item in myIngredientsList) {
                     ingredientsMutableList.add(item)
                 }
@@ -277,9 +277,16 @@ class MyIngredients : AppCompatActivity() {
         }
     }
 
+    /**
+     * FUncion que busca en las datastore preferences
+     * las preferencias del usuario sobre recetas veganas
+     *
+     */
     private fun applyUserPreferences() {
+        //lanzamos coroutina para obtener los datos
         lifecycleScope.launch(Dispatchers.IO) {
             getUserPreferences().collect {
+                //cambiamos el contexto para aplicar al hilo principal (ui)
                 withContext(Dispatchers.Main) {
                     if (it) {
                         binding.sVegan.isChecked = true
@@ -289,22 +296,43 @@ class MyIngredients : AppCompatActivity() {
         }
     }
 
+    /**
+     * Funcion que obtiene las preferencias dle usuario
+     *
+     * @return flow con las preferencias del usuario
+     */
     private fun getUserPreferences() = dataStore.data.map { preferences ->
         preferences[booleanPreferencesKey(name = "vegan")] ?: false
     }
 
+    /**
+     * FUncion que mustra un toast con el indicando que hay un error
+     *
+     */
     private fun showError() {
-        // Toast.makeText(this@MyIngredients, "error", Toast.LENGTH_LONG).show()
+        Toast.makeText(this@MyIngredients, "error", Toast.LENGTH_LONG).show()
     }
 
+    /**
+     * hace visible el recicleview con las recetas
+     *
+     */
     private fun showRecipes() {
         binding.rvRecipes.visibility = View.VISIBLE
     }
 
+    /**
+     * Hace invisible el recicleview con las recetas
+     *
+     */
     private fun hideRecipes() {
         binding.rvRecipes.visibility = View.INVISIBLE
     }
 
+    /**
+     * hace visible los view relacionados con los filtros
+     *
+     */
     private fun showIngredientsAndFilters() {
         binding.tvFiltros.visibility = View.VISIBLE
         binding.tvFavourite.visibility = View.VISIBLE
@@ -321,6 +349,10 @@ class MyIngredients : AppCompatActivity() {
         binding.rvIngredients.visibility = View.VISIBLE
     }
 
+    /**
+     * Hacemos invisible los views relacionados con los filtros
+     *
+     */
     private fun hideIngredientsAndFilters() {
         binding.tvFiltros.visibility = View.INVISIBLE
         binding.tvFavourite.visibility = View.INVISIBLE
@@ -337,30 +369,39 @@ class MyIngredients : AppCompatActivity() {
         binding.rvIngredients.visibility = View.INVISIBLE
     }
 
+    /**
+     * FUncion que busca las recetas correctas y las muestra
+     *
+     */
     private fun searchSuitableRecipes() {
         correctRecipes.clear()
-        if (recipeList.isEmpty()) {
-            //tvResultados.text = "sin resultados"
-        } else {
-            val selectedIngr: ArrayList<String> = getIngredients()
-            var myRecipes = recipeList
-            var resultRecipes = findSuitableRecipes(selectedIngr, myRecipes)
+        val selectedIngr: ArrayList<String> = getIngredients()
+        var myRecipes = recipeList
+        var resultRecipes = findSuitableRecipes(selectedIngr, myRecipes)
 
-            if (checkVegan(binding.sVegan)) {
-                for (i in 0..resultRecipes.size - 1) {
-                    if (resultRecipes.get(i).isVegan == false) {
-                        resultRecipes.remove(resultRecipes.get(i))
-                    }
+        //quitamos las recetas no veganas de la lista
+        if (checkVegan(binding.sVegan)) {
+            for (i in 0..resultRecipes.size - 1) {
+                if (resultRecipes.get(i).isVegan == false) {
+                    resultRecipes.remove(resultRecipes.get(i))
                 }
             }
-
-            for (recipe in resultRecipes) {
-                correctRecipes.add((recipe))
-                adapterRecipes.notifyDataSetChanged()
-            }
         }
+
+        //añadimos las correctas a la lista y notificamos al adapter
+        for (recipe in resultRecipes) {
+            correctRecipes.add((recipe))
+        }
+        adapterRecipes.notifyDataSetChanged()
     }
 
+    /**
+     * funcion que busca las recetas correctas segun los criterios
+     *
+     * @param ingredients
+     * @param recipes
+     * @return ArrayList con las recetas correctas segun los ingredientes
+     */
     private fun findSuitableRecipes(
         ingredients: ArrayList<String>, recipes: List<Recipe>
     ): ArrayList<Recipe> {
@@ -371,18 +412,26 @@ class MyIngredients : AppCompatActivity() {
         return correctRecipes
     }
 
+    /**
+     * Funcion que mira si una receta es correcta respecto a los ingredientes entrados
+     *
+     * @param recipe
+     * @param selectedIngredients
+     * @return true si la receta es correcta
+     */
     private fun checkRecipe(recipe: Recipe, selectedIngredients: ArrayList<String>): Boolean {
+        //iniciamos un contador para ver si las recetas tienn los ingredientes necesarios
         var count = 0
         val ingredientNumber: Int = recipe.ingredients.size
         var ingredientInRecipe: String
+        //comprovamos que las recetas cumplan los parametros, sino, ya devolvemos false
         if (checkVegan(binding.sVegan)) {
             if (!recipe.isVegan) return false
         }
-
         if (!checkDifficulty(recipe)) return false
         if (!checkFavourites(binding.swFavourites, recipe)) return false
-        if(!checkTime(recipe)) return false
-
+        if (!checkTime(recipe)) return false
+        //miramos si la receta tiene todos los ingredientes de la lista o devolvemos false
         for (i in 0 until recipe.ingredients.size) {
             ingredientInRecipe = recipe.ingredients[i]
             if (selectedIngredients.contains(ingredientInRecipe)) count++
@@ -390,17 +439,31 @@ class MyIngredients : AppCompatActivity() {
         return count == ingredientNumber
     }
 
-    private fun checkTime(recipe: Recipe): Boolean{
-        when(binding.spTime.selectedItemPosition){
-            0-> if (recipe.time<=30) return true
-            1-> if (recipe.time<=45) return true
-            2-> if (recipe.time<=60) return true
-            3-> if (recipe.time<=90) return true
-            4-> return true
+    /**
+     * Funcion que compara el tiempo maximo del usuario
+     * con el de la receta
+     *
+     * @param recipe
+     * @return
+     */
+    private fun checkTime(recipe: Recipe): Boolean {
+        when (binding.spTime.selectedItemPosition) {
+            0 -> if (recipe.time <= 30) return true
+            1 -> if (recipe.time <= 45) return true
+            2 -> if (recipe.time <= 60) return true
+            3 -> if (recipe.time <= 90) return true
+            4 -> return true
         }
         return false
     }
 
+    /**
+     * Funcion que compara la dificultad maxima del usuario
+     * con el de la receta
+     *
+     * @param recipe
+     * @return
+     */
     private fun checkDifficulty(recipe: Recipe): Boolean {
         when (binding.spDifficulty.selectedItemPosition) {
             0 -> if (recipe.difficulty == "easy") return true
@@ -411,6 +474,13 @@ class MyIngredients : AppCompatActivity() {
         return false
     }
 
+    /**
+     * Funcion que compara si la receta esta en favorito o no
+     *
+     * @param switch
+     * @param recipe
+     * @return
+     */
     private fun checkFavourites(switch: SwitchMaterial, recipe: Recipe): Boolean {
         if (switch.isChecked) {
             if (!recipe.isFavourite) return false

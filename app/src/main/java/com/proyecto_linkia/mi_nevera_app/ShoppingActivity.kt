@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import com.proyecto_linkia.mi_nevera_app.adapters.BoughtIngredientAdapter
-import com.proyecto_linkia.mi_nevera_app.adapters.ToBuyIngredientAdapter
+import com.proyecto_linkia.mi_nevera_app.adapterClases.adapters.BoughtIngredientAdapter
+import com.proyecto_linkia.mi_nevera_app.adapterClases.adapters.ToBuyIngredientAdapter
 import com.proyecto_linkia.mi_nevera_app.data.database.DataBaseBuilder
 import com.proyecto_linkia.mi_nevera_app.data.entities.ShoppingIngredient
 import com.proyecto_linkia.mi_nevera_app.databinding.ActivityShoppingBinding

@@ -1,10 +1,10 @@
-package com.proyecto_linkia.mi_nevera_app.adapters
+package com.proyecto_linkia.mi_nevera_app.adapterClases.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.proyecto_linkia.mi_nevera_app.R
-import com.proyecto_linkia.mi_nevera_app.adapters.viewholders.MyIngredientViewHolder
+import com.proyecto_linkia.mi_nevera_app.adapterClases.viewholders.MyIngredientViewHolder
 import com.proyecto_linkia.mi_nevera_app.data.entities.MyIngredient
 
 class MyIngredientAdapter(private val myIngredientList: List<MyIngredient>,

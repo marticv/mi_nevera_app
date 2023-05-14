@@ -15,7 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.proyecto_linkia.mi_nevera_app.adapters.RecipeAdapter
+import com.proyecto_linkia.mi_nevera_app.adapterClases.adapters.RecipeAdapter
 import com.proyecto_linkia.mi_nevera_app.pojo.Recipe
 import com.proyecto_linkia.mi_nevera_app.data.database.DataBaseBuilder
 import com.proyecto_linkia.mi_nevera_app.data.entities.relations.RecipeWithIngredients
@@ -77,6 +77,10 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * FUncion que obtiene la lista de recetas de la bd
+     *
+     */
     private fun getRecipesList() {
         //creamos variables y conexion a la base de datso
         //val recipeList: MutableList<Recipe> = mutableListOf()
@@ -111,13 +115,19 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * FUncion que busca las recetas correctas y las muestra por pantalla
+     *
+     */
     private fun searchSuitableRecipes() {
         correctRecipes.clear()
-
+        //obtenemos la lista de ingredientes
         val selectedIngr: ArrayList<String> = obtainSelectedIngredients(cgIngredients)
         var myRecipes = recipeList
+        //comparamos la lista de ingredientes con la de recetas en la bd
         var resultRecipes = findSuitableRecipes(selectedIngr, myRecipes)
 
+        //compravamos si son veganas
         if (checkVegan(sVegan)) {
             for (i in 0..resultRecipes.size - 1) {
                 if (resultRecipes.get(i).isVegan == false) {
@@ -125,15 +135,18 @@ class SearchActivity : AppCompatActivity() {
                 }
             }
         }
-
+        //añadimos las recetas correctas a la del adapter y las pintamos por pantalla
         for (recipe in resultRecipes) {
             correctRecipes.add((recipe))
-            adapter.notifyDataSetChanged()
         }
+        adapter.notifyDataSetChanged()
         binding.rvRecipe.visibility = View.VISIBLE
-
     }
 
+    /**
+     * Funcion que prepara la ui de la activity
+     *
+     */
     private fun setUp() {
         getRecipesList()
         fillActvEntry(actvEntry)
@@ -145,9 +158,15 @@ class SearchActivity : AppCompatActivity() {
         applyUserPreferences()
     }
 
+    /**
+     * Funcion que aplica las preferencias del usuario (recetas veganas marcado)
+     *
+     */
     private fun applyUserPreferences() {
+        //obtenemos las preferencias del usuario
         lifecycleScope.launch(Dispatchers.IO) {
             getUserPreferences().collect {
+                //las aplicamos en el hilo de la ui
                 withContext(Dispatchers.Main) {
                     if (it) {
                         binding.sVegan.isChecked = true
@@ -157,6 +176,12 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Funcion que obtiene las preferencias en cuanto a veganimos del usuario
+     * de las datastore preferencfes
+     *
+     * @return flow con un boolean
+     */
     private fun getUserPreferences() = dataStore.data.map { preferences ->
         preferences[booleanPreferencesKey(name = "vegan")] ?: false
     }
@@ -173,6 +198,7 @@ class SearchActivity : AppCompatActivity() {
         ingredients: ArrayList<String>, recipes: List<Recipe>
     ): ArrayList<Recipe> {
         val correctRecipes: ArrayList<Recipe> = ArrayList()
+        //por cada receta de la lista de posibles miramos si cumple las caracteristicas necesarios
         for (recipe in recipes) {
             if (checkRecipe(recipe, ingredients)) correctRecipes.add(recipe)
         }
@@ -187,17 +213,18 @@ class SearchActivity : AppCompatActivity() {
      * @return true si la receta cumple los criterios o false si no
      */
     private fun checkRecipe(recipe: Recipe, selectedIngredients: ArrayList<String>): Boolean {
+        //iniciamos un contador para ver si las recetas tienn los ingredientes necesarios
         var count = 0
         val ingredientNumber: Int = recipe.ingredients.size
         var ingredientInRecipe: String
+        //comprovamos que las recetas cumplan los parametros, sino, ya devolvemos false
         if (checkVegan(sVegan)) {
             if (!recipe.isVegan) return false
         }
-
         if (!checkDifficulty(recipe)) return false
         if (!checkFavourites(binding.swFavourites, recipe)) return false
         if (!checkTime(recipe)) return false
-
+        //miramos si la receta tiene todos los ingredientes de la lista o devolvemos false
         for (i in 0 until recipe.ingredients.size) {
             ingredientInRecipe = recipe.ingredients[i]
             if (selectedIngredients.contains(ingredientInRecipe)) count++
@@ -205,6 +232,13 @@ class SearchActivity : AppCompatActivity() {
         return count == ingredientNumber
     }
 
+    /**
+     * Funcion que compara el tiempo maximo del usuario
+     * con el de la receta
+     *
+     * @param recipe
+     * @return
+     */
     private fun checkTime(recipe: Recipe): Boolean {
         when (binding.spTime.selectedItemPosition) {
             0 -> if (recipe.time <= 30) return true
@@ -216,6 +250,13 @@ class SearchActivity : AppCompatActivity() {
         return false
     }
 
+    /**
+     * Funcion que compara si la receta esta en favorito o no
+     *
+     * @param switch
+     * @param recipe
+     * @return
+     */
     private fun checkFavourites(switch: SwitchMaterial, recipe: Recipe): Boolean {
         if (switch.isChecked) {
             if (!recipe.isFavourite) return false
@@ -263,10 +304,15 @@ class SearchActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
     }
 
-
+    /**
+     * FUncion que controla el paso de favorito a no favorito
+     *
+     * @param position
+     */
     private fun onClickFavourite(position: Int) {
+        //obtenemos la receta
         val recipe = correctRecipes[position]
-
+        //informamos a la bd y cambiamos el icono
         lifecycleScope.launch(Dispatchers.IO) {
             val db = DataBaseBuilder.getInstance(this@SearchActivity)
             val recipeDao = db.getRecipeDao()
@@ -279,9 +325,13 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Mostramos la activi con la info de la receta al clicar
+     *
+     * @param position
+     */
     private fun showRecipe(position: Int) {
         val recipe = correctRecipes[position]
-
         val intent = Intent(this, RecipeInformation::class.java)
         intent.putExtra("recipe", recipe as java.io.Serializable)
         startActivity(intent)
